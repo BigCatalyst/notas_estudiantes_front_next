@@ -1,5 +1,5 @@
 "use client";
-import { me } from "@/services/users";
+import { me } from "@/services/api/users";
 import { useEffect, useState } from "react";
 export default function Perfil() {
   const [userData, setUserData] = useState(null);

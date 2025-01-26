@@ -81,3 +81,139 @@ my-next-app/
 ├── tsconfig.json     # Configuración de TypeScript
 └── ...
 ```
+
+
+
+
+---
+
+# Convenciones de Nombres en el Proyecto
+
+Este documento describe las convenciones de nombres utilizadas en el proyecto para mantener un código limpio, consistente y fácil de entender.
+
+---
+
+## 1. Nombres de Archivos y Carpetas
+
+- **kebab-case**: Usa guiones (`-`) para separar palabras. Esto es común en el ecosistema JavaScript.
+  - Ejemplo: `my-component.tsx`, `user-profile.tsx`, `api-service.ts`.
+  - Ejemplo de carpeta: `components/user-cards`.
+
+- **Plural para carpetas**: Si una carpeta contiene varios archivos del mismo tipo, usa nombres en plural.
+  - Ejemplo: `components/forms`, `hooks`, `services`.
+
+- **Nombres cortos y descriptivos**: Asegúrate de que los nombres sean fáciles de entender.
+  - Ejemplo: `auth-service.ts`, `user-profile.tsx`.
+
+---
+
+## 2. Nombres de Componentes React
+
+- **PascalCase**: Usa la primera letra de cada palabra en mayúscula, sin espacios.
+  - Ejemplo: `UserProfile`, `ProductCard`, `LoginForm`.
+
+- **Nombres descriptivos**: El nombre del componente debe indicar claramente su propósito.
+  - Ejemplo: `Header`, `Footer`, `Sidebar`.
+
+- **Sufijos para tipos de componentes**: Si tienes componentes de diferentes tipos, usa sufijos.
+  - Ejemplo: `MainLayout`, `ModalComponent`.
+
+---
+
+## 3. Nombres de Hooks Personalizados
+
+- **use + PascalCase**: Comienza el nombre del hook con `use` seguido del nombre en PascalCase.
+  - Ejemplo: `useFetchData`, `useFormState`, `useAuth`.
+
+- **Nombres descriptivos**: El nombre del hook debe indicar qué hace.
+  - Ejemplo: `useUserData`, `useThemeToggle`.
+
+---
+
+## 4. Nombres de Funciones
+
+- **camelCase**: Usa la primera palabra en minúscula y la primera letra de las siguientes palabras en mayúscula, sin espacios.
+  - Ejemplo: `handleFormSubmit`, `fetchUserData`, `validateEmail`.
+
+- **Nombres descriptivos**: El nombre de la función debe indicar claramente su acción.
+  - Ejemplo: `calculateTotalPrice`, `sendNotification`.
+
+- **Verbos al inicio**: Usualmente, las funciones realizan acciones, así que empieza el nombre con un verbo.
+  - Ejemplo: `getUserInfo`, `updateProfile`.
+
+---
+
+## 5. Nombres de Variables y Constantes
+
+- **camelCase para variables**:
+  - Ejemplo: `userName`, `isLoggedIn`, `productPrice`.
+
+- **UPPER_CASE_SNAKE_CASE para constantes**:
+  - Ejemplo: `API_URL`, `MAX_ITEMS`, `DEFAULT_PAGE_SIZE`.
+
+- **Nombres descriptivos**: Evita abreviaciones poco claras.
+  - Ejemplo: `maxRetryAttempts`, `initialLoadingState`.
+
+- **Tipos explícitos en TypeScript**: Especifica los tipos de tus variables y constantes.
+  - Ejemplo: `const user: User = { name: 'John' };`.
+
+---
+
+## 6. Nombres de Tipos e Interfaces
+
+- **PascalCase**: Usa la primera letra de cada palabra en mayúscula.
+  - Ejemplo: `User`, `Product`, `ApiResponse`.
+
+- **Sufijos para distinguir**: Si es necesario, agrega sufijos para distinguir entre tipos e interfaces.
+  - Ejemplo: `UserType`, `UserInterface`.
+
+---
+
+## 7. Nombres de Enums
+
+- **PascalCase**: Usa la primera letra de cada palabra en mayúscula.
+  - Ejemplo: `OrderStatus`, `UserRole`.
+
+- **Miembros del enum en UPPER_CASE_SNAKE_CASE**:
+  - Ejemplo: `OrderStatus.PENDING`, `UserRole.ADMIN`.
+
+---
+
+## 8. Nombres de Variables de Entorno
+
+- **UPPER_CASE_SNAKE_CASE**: Usa letras mayúsculas y guiones bajos.
+  - Ejemplo: `NEXT_PUBLIC_API_URL`, `DATABASE_URL`.
+
+- **Prefijo para variables públicas**: Si tu variable es del lado del cliente, usa `NEXT_PUBLIC_` al inicio.
+  - Ejemplo: `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID`.
+
+---
+
+## 9. Nombres de Clases CSS (Si usas CSS Modules o Similar)
+
+- **kebab-case**: Utiliza guiones (`-`) para separar palabras.
+  - Ejemplo: `.user-card`, `.form-input`, `.header-title`.
+
+- **Nombres descriptivos**: Evita nombres genéricos como `.container` o `.item` si es posible.
+  - Ejemplo: `.primary-button`, `.error-message`.
+
+---
+
+## Resumen
+
+| Tipo                     | Convención               | Ejemplo                     |
+|--------------------------|--------------------------|-----------------------------|
+| Archivos y Carpetas       | kebab-case               | `user-profile.tsx`          |
+| Componentes React         | PascalCase               | `UserProfile`               |
+| Hooks Personalizados      | use + PascalCase         | `useFetchData`              |
+| Funciones                 | camelCase                | `handleFormSubmit`          |
+| Variables                 | camelCase                | `userName`                  |
+| Constantes                | UPPER_CASE_SNAKE_CASE    | `API_URL`                   |
+| Tipos e Interfaces        | PascalCase               | `UserType`                  |
+| Enums                     | PascalCase               | `OrderStatus`               |
+| Variables de Entorno      | UPPER_CASE_SNAKE_CASE    | `NEXT_PUBLIC_API_URL`       |
+| Clases CSS                | kebab-case               | `.user-card`                |
+
+---
+
+Con estas convenciones, el código será más consistente, fácil de leer y mantener. 😊
