@@ -6,6 +6,12 @@ export const DJANGO_AUTH_TOKEN = "django_auth_token";
 export const DJANGO_AUTH_REFRESH_TOKEN = "django_refresh_token";
 const TOKEN_URL = "token";
 
+import { store } from "@/redux/store";
+import {
+  login as storeLoguin,
+  logout as storeLogout,
+} from "@/redux/slices/authSlice";
+
 export const getToken = () => localStorage.getItem(DJANGO_AUTH_TOKEN);
 
 export const api = axios.create({
@@ -101,6 +107,8 @@ export async function loguin(username: str, password: str) {
     localStorage.setItem(DJANGO_AUTH_TOKEN, response.data.access);
     localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, response.data.refresh);
     localStorage.setItem("current_user_id", response.data.user.pk);
+
+    store.dispatch(storeLoguin({ ...response.data.user, roles: [] }));
   }
   return response;
 }
@@ -116,7 +124,7 @@ export async function logout(
     const { redirectToLogin = false, msg = null, callLogout = true } = params;
 
     const refreshToken = localStorage.getItem(DJANGO_AUTH_REFRESH_TOKEN); // Obtén el token de refresco
-
+    store.dispatch(storeLogout());
     if (callLogout) {
       // Llama al endpoint de logout
       await apiAuth.post(`${TOKEN_URL}/logout/`, {

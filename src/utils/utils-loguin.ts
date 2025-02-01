@@ -1,4 +1,4 @@
-export const URL_PAGE_LOGIN = '/login'; // Define la URL de la página de login
+export const URL_PAGE_LOGIN = "/login"; // Define la URL de la página de login
 
 export function getUrlLogin(msg: string | null = null): string {
   // Si hay un mensaje, codifícalo y añádelo como query parameter
@@ -11,13 +11,13 @@ export function getUrlLogin(msg: string | null = null): string {
   return URL_PAGE_LOGIN;
 }
 
-export function routePushLogin(router,msg=null){
-    if(msg){
-        router.push({
-            pathname: getUrlLogin(),
-            query: { message: msg },
-          });
-    }else{
-        router.push(getUrlLogin())
-    }
+export function routePushLogin(router, msg = null) {
+  if (msg) {
+    router.push({
+      pathname: getUrlLogin(),
+      query: { message: msg },
+    });
+  } else {
+    router.push(getUrlLogin());
+  }
 }

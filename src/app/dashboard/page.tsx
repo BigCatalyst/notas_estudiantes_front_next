@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Perfil from "@/components/perfil";
 import { useLogout } from "@/hooks/useLogout";
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { store } from "@/redux/store";
 import { loguin } from "@/services/api";
 import { URL_PAGE_LOGIN } from "@/utils/utils-loguin";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,6 +10,10 @@ export default function LoguinPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [msg, setMsg] = useState(null);
+
+  const state = store.getState();
+  const { isAuthenticated, user } = state.auth;
+  console.log(`3isAuthenticated: ${isAuthenticated}`);
 
   useEffect(() => {
     const message = searchParams.get("message");

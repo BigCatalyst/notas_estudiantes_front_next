@@ -1,10 +1,15 @@
 "use client";
+import { store } from "@/redux/store";
 import { me } from "@/services/api/users";
 import { useEffect, useState } from "react";
 export default function Perfil() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const state = store.getState();
+  const { isAuthenticated, user } = state.auth;
+  console.log(`2isAuthenticated: ${isAuthenticated}`);
 
   useEffect(() => {
     // Función para obtener los datos del usuario
