@@ -5,12 +5,12 @@ import { getUrlLogin } from "@/utils/utils-loguin";
 import { useRouter } from "next/navigation";
 
 // Función para hacer logout
-export function useLogout(msg = null) {
+export function useLogout() {
   // Redirige al usuario a la página de login
   const router = useRouter();
-  const callLogout = async () => {
+  const callLogout = async (msg = null) => {
     await logout();
-    router.push(getUrlLogin());
+    router.push(getUrlLogin(msg));
   };
 
   return { callLogout };
