@@ -1,7 +1,8 @@
 "use client";
 
-import { store } from "@/redux/store";
-import { loguin } from "@/services/api";
+
+import { useAuth } from "@/contexts/AuthContext";
+import { loguin as call_login } from "@/services/api";
 import { URL_PAGE_LOGIN } from "@/utils/utils-loguin";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,10 +11,8 @@ export default function LoguinPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [msg, setMsg] = useState(null);
-
-  const state = store.getState();
-  const { isAuthenticated, user } = state.auth;
-  console.log(`3isAuthenticated: ${isAuthenticated}`);
+  const { login, user, roles  } = useAuth();
+  
 
   useEffect(() => {
     const message = searchParams.get("message");
@@ -36,9 +35,12 @@ export default function LoguinPage() {
   const handlerSubmit = async (e) => {
     e.preventDefault();
     console.log(credentials);
-    const response = await loguin(credentials.username, credentials.password);
+    const response = await call_login(credentials.username, credentials.password);
     if (response.status == 200) {
-      router.push("/dashboard");
+      login(response.data.user,['admin', 'editor'] );
+      console.log(user);
+      console.log(roles);
+      //router.push("/dashboard");
     } else {
       alert("Loguin incorrecto");
     }
