@@ -1,19 +1,138 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+html {
+  box-sizing: border-box;
+  /* font-size: 16px;
+  font-family: sans-serif; */
+  /* padding: 1rem; */
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f7f7f7;
+}
+
+.container-neo {
+  background-color: #f7f7f7;
+}
+
+.shadow-neo {
+  box-shadow: -3px -3px 5px #ffffff, 3px 3px 5px rgba(209, 209, 209, 0.705);
+}
+
+.shadow-neo-inset {
+  box-shadow: inset 6px 6px 8px rgba(97, 97, 97, 0.075),
+    6px 6px 6px rgba(255, 255, 255, 0.781);
+}
+
+.shadow-neo-btn {
+  box-shadow: -3px -3px 5px #ffffff, 3px 3px 5px rgba(209, 209, 209, 0.705);
+  transition: all 0.2s ease;
+}
+
+.shadow-neo-btn:active {
+  box-shadow: 0 0 0 transparent, 0 0 0 transparent, inset 2px 2px 5px #babecc,
+    inset -5px -5px 10px #ffffff73;
+}
+
+.input-neo {
+  @apply w-[90%] md:w-[50%] lg:w-[70%] relative m-4 rounded-[2rem] block border-none px-12 py-4 bg-inherit text-[rgb(161,161,161)];
+  box-shadow: inset 6px 6px 8px rgba(97, 97, 97, 0.075),
+    6px 6px 6px rgba(255, 255, 255, 0.781);
+  transition: box-shadow 0.2s ease;
+}
+
+.input-neo input {
+  @apply w-full bg-transparent outline-none;
+}
+
+.input-neo:focus-within {
+  box-shadow: inset 2px 2px 5px #babecc, 0 0 0 transparent,
+    inset -5px -5px 10px #ffffff73;
+}
+
+.input-neo:focus-within svg {
+  @apply stroke-slate-500;
+}
+
+.submit-neo {
+  @apply w-[90%] md:w-[50%] lg:w-[70%] relative m-4 rounded-[2rem] block border-none px-12 py-4 bg-inherit text-[rgb(161,161,161)];
+
+  margin-top: 20px;
+  font-weight: bold;
+  box-shadow: -3px -3px 5px #ffffff, 3px 3px 5px rgba(209, 209, 209, 0.705);
+  color: rgb(112, 112, 112);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.submit-neo:active {
+  color: #1c487a;
+  box-shadow: 0 0 0 transparent, 0 0 0 transparent, inset 2px 2px 5px #babecc,
+    inset -5px -5px 10px #ffffff73;
+}
+
+.or {
+  position: relative;
+  font-weight: bold;
+  color: rgb(112, 112, 112);
+}
+
+.or::before,
+.or::after {
+  position: absolute;
+  content: "";
+  width: 700%;
+  height: 3px;
+  top: 50%;
+  margin: 0 6px;
+  background-color: rgba(0, 0, 0, 0.247);
+}
+
+.or::before {
+  right: 100%;
+}
+
+.animate-icon {
+  animation-name: animate-icon;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+@keyframes animate-icon {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(-90deg) scale(1.2);
+  }
+
+  70% {
+    transform: scale(0.8);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.5s ease-out forwards;
 }
