@@ -1,9 +1,10 @@
 import { API_URL } from "@/config";
 import axios from "axios";
+import { logout } from "./api/auth";
 
 export const DJANGO_AUTH_TOKEN = "django_auth_token";
 export const DJANGO_AUTH_REFRESH_TOKEN = "django_refresh_token";
-const TOKEN_URL = "token";
+// const TOKEN_URL = "token";
 
 export const getToken = () => localStorage.getItem(DJANGO_AUTH_TOKEN);
 
@@ -90,56 +91,56 @@ apiAuth.interceptors.response.use(
   }
 );
 
-export async function loguin(username: string, password: string) {
-  const response = await api.post(`${TOKEN_URL}/`, {
-    username: username,
-    password: password,
-  });
-  console.log(response);
-  if (response.status == 200) {
-    localStorage.setItem(DJANGO_AUTH_TOKEN, response.data.access);
-    localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, response.data.refresh);
-    localStorage.setItem("current_user_id", response.data.user.pk);
-  }
-  return response;
-}
+// export async function loguin(username: string, password: string) {
+//   const response = await api.post(`${TOKEN_URL}/`, {
+//     username: username,
+//     password: password,
+//   });
+//   console.log(response);
+//   if (response.status == 200) {
+//     localStorage.setItem(DJANGO_AUTH_TOKEN, response.data.access);
+//     localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, response.data.refresh);
+//     localStorage.setItem("current_user_id", response.data.user.pk);
+//   }
+//   return response;
+// }
 
-export async function logout(
-  params: {
-    redirectToLogin?: boolean;
-    msg?: string;
-    callLogout?: boolean;
-  } = {}
-) {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { redirectToLogin = false, msg = null, callLogout = true } = params;
+// export async function logout(
+//   params: {
+//     redirectToLogin?: boolean;
+//     msg?: string;
+//     callLogout?: boolean;
+//   } = {}
+// ) {
+//   try {
+//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//     const { redirectToLogin = false, msg = null, callLogout = true } = params;
 
-    const refreshToken = localStorage.getItem(DJANGO_AUTH_REFRESH_TOKEN); // Obtén el token de refresco
+//     const refreshToken = localStorage.getItem(DJANGO_AUTH_REFRESH_TOKEN); // Obtén el token de refresco
 
-    if (callLogout) {
-      // Llama al endpoint de logout
-      await apiAuth.post(`${TOKEN_URL}/logout/`, {
-        refresh: refreshToken,
-      });
-    }
+//     if (callLogout) {
+//       // Llama al endpoint de logout
+//       await apiAuth.post(`${TOKEN_URL}/logout/`, {
+//         refresh: refreshToken,
+//       });
+//     }
 
-    // Elimina los tokens del almacenamiento local
-    localStorage.removeItem(DJANGO_AUTH_TOKEN);
-    localStorage.removeItem(DJANGO_AUTH_REFRESH_TOKEN);
+//     // Elimina los tokens del almacenamiento local
+//     localStorage.removeItem(DJANGO_AUTH_TOKEN);
+//     localStorage.removeItem(DJANGO_AUTH_REFRESH_TOKEN);
 
-    if (redirectToLogin) {
-      window.location.href = "/login";
-    }
-  } catch (error) {
-    console.error("Error al hacer logout:", error);
-    // Puedes manejar errores aquí, como mostrar un mensaje al usuario
-  }
-}
+//     if (redirectToLogin) {
+//       window.location.href = "/login";
+//     }
+//   } catch (error) {
+//     console.error("Error al hacer logout:", error);
+//     // Puedes manejar errores aquí, como mostrar un mensaje al usuario
+//   }
+// }
 
 export async function callRefreshToken() {
   const refreshToken = localStorage.getItem(DJANGO_AUTH_REFRESH_TOKEN);
-  const response = await api.post(`${TOKEN_URL}/refresh/`, {
+  const response = await api.post(`token/refresh/`, {
     refresh: refreshToken,
   });
 
