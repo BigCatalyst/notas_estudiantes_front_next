@@ -8,9 +8,11 @@ import MensageError from "../message/MensageError";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import ApiService from "@/services/ApiService";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";
+import { loginSuccess } from "@/redux/features/authSlice";
 
 // Define el esquema de validación con zod
 const schema = z.object({
@@ -35,6 +37,11 @@ const LoginForm = () => {
 
   const [error, setError] = useState(false);
 
+  const dispatch = useDispatch();
+  const state = useSelector((state: any) => state.auth);
+
+  console.log(state);
+
   const onSubmit = async (data: any) => {
     setError(false);
 
@@ -45,9 +52,12 @@ const LoginForm = () => {
       }
     );
 
-    console.log(res);
+    //console.log(res);
 
-    if (res) redirect("/dashboard");
+    if (res) {
+      dispatch(loginSuccess(res));
+      redirect("/dashboard");
+    }
   };
 
   return (

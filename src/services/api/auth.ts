@@ -4,7 +4,7 @@ import {
   DJANGO_AUTH_REFRESH_TOKEN,
   DJANGO_AUTH_TOKEN,
 } from "../api";
-import { AuthVerify } from "../Types";
+import { AuthVerify, LoginRes } from "../Types";
 const USER_URL = "users";
 const TOKEN_URL = "token";
 
@@ -15,19 +15,21 @@ export const me = async (): Promise<AuthVerify> => {
   return data;
 };
 
-export async function loguin(username: string, password: string) {
+export const loguin = async (
+  username: string,
+  password: string
+): Promise<LoginRes> => {
   const response = await api.post(`${TOKEN_URL}/`, {
     username: username,
     password: password,
   });
-  console.log(response);
   if (response.status == 200) {
     localStorage.setItem(DJANGO_AUTH_TOKEN, response.data.access);
     localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, response.data.refresh);
     localStorage.setItem("current_user_id", response.data.user.pk);
   }
-  return response;
-}
+  return response.data;
+};
 
 export async function logout(
   params: {
