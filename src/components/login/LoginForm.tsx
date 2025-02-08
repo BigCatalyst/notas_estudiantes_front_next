@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import ApiService from "@/services/ApiService";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 // Define el esquema de validación con zod
 const schema = z.object({
@@ -25,8 +25,6 @@ interface LoginFormData {
 }
 
 const LoginForm = () => {
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -38,17 +36,18 @@ const LoginForm = () => {
   const [error, setError] = useState(false);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
-    try {
-      const res = await ApiService.loguin(data.username, data.password);
+    setError(false);
 
-      console.log(res);
+    const res = await ApiService.loguin(data.username, data.password).catch(
+      (error) => {
+        console.log(error);
+        setError(true);
+      }
+    );
 
-      router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
-      setError(true);
-    }
+    console.log(res);
+
+    if (res) redirect("/dashboard");
   };
 
   return (
@@ -74,9 +73,9 @@ const LoginForm = () => {
         Login
       </div>
       {error && (
-        <div className="animate-slide-down">
+        <div className="animate-slide-down" key={Date.now()}>
           <MensageError
-            duration={60000}
+            duration={10000}
             message="Usuario o contraseña incorrecto"
           />
         </div>
