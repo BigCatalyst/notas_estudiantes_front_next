@@ -189,8 +189,14 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                 {navigationItemsDashboard.map(
                   ({ name, path, Icon, rols }, index) =>
                     rols &&
-                    rols.findIndex((rol) => rol === userAuth?.user?.rol) !==
-                      -1 && (
+                    rols.findIndex(
+                      (rol: string) =>
+                        userAuth.user?.roles &&
+                        userAuth.user?.roles.length > 0 &&
+                        userAuth?.user?.roles.findIndex(
+                          (item) => rol === item
+                        ) > -1
+                    ) !== -1 && (
                       <li key={index}>
                         <Link
                           href={path}

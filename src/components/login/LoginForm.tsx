@@ -55,7 +55,9 @@ const LoginForm = () => {
 
       if (me) {
         dispatch(
-          loginSuccess({ user: { ...res.user, rol: me.groups[0].name } })
+          loginSuccess({
+            user: { ...res.user, roles: me.groups.map(({ name }) => name) },
+          })
         );
         redirect("/dashboard");
       }
