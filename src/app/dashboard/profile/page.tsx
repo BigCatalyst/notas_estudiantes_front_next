@@ -17,9 +17,9 @@ export function Profile() {
       </div>
 
       {/* Contenido principal */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-6 container-neo">
         {/* Sección de Información Personal */}
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-6 rounded-xl shadow-sm shadow-neo container-neo">
           <h2 className="text-xl font-semibold mb-4 text-gray-800">
             Personal Information
           </h2>
@@ -54,7 +54,7 @@ export function Profile() {
         </div>
 
         {/* Sección de Roles */}
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-6 rounded-xl shadow-sm shadow-neo container-neo">
           <h2 className="text-xl font-semibold mb-4 text-gray-800">Roles</h2>
           <div className="flex flex-wrap gap-2">
             {user?.roles.map((role) => (
