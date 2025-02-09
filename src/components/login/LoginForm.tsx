@@ -34,9 +34,7 @@ const LoginForm = () => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(schema),
   });
-
   const [error, setError] = useState(false);
-
   const dispatch = useDispatch();
   const state = useSelector((state: any) => state.auth);
 
@@ -52,11 +50,15 @@ const LoginForm = () => {
       }
     );
 
-    //console.log(res);
-
     if (res) {
-      dispatch(loginSuccess(res));
-      redirect("/dashboard");
+      const me = await ApiService.me();
+
+      if (me) {
+        dispatch(
+          loginSuccess({ user: { ...res.user, rol: me.groups[0].name } })
+        );
+        redirect("/dashboard");
+      }
     }
   };
 

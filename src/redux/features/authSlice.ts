@@ -2,23 +2,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "@/services/Types";
 
-interface Tokens {
-  access: string;
-  refresh: string;
-}
-
-export interface InitialState {
+export interface State {
   isAuthenticated: boolean;
   user: User | null;
-  tokens: Tokens | null;
   loading: boolean;
   error: string | null;
 }
 
-const initialState: InitialState = {
+const initialState: State = {
   isAuthenticated: false,
   user: null,
-  tokens: null,
   loading: false,
   error: null,
 };
@@ -31,16 +24,11 @@ export const authSlice = createSlice({
       // Actualiza el estado con los datos del usuario
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      state.tokens = {
-        access: action.payload.access,
-        refresh: action.payload.refresh,
-      };
       state.loading = false;
     },
     logout: (state) => {
       state.isAuthenticated = false;
       state.user = null;
-      state.tokens = null;
       state.loading = false;
       state.error = null;
     },
