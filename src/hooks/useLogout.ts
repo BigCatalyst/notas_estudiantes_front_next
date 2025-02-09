@@ -10,7 +10,7 @@ export function useLogout(msg = null) {
   const router = useRouter();
   const callLogout = async () => {
     await logout();
-    router.push(getUrlLogin());
+    router.push(getUrlLogin(msg));
   };
 
   return { callLogout };

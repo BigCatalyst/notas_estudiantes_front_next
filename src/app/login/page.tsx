@@ -1,11 +1,13 @@
 "use client";
 
 import { loguin } from "@/services/api";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { URL_PAGE_LOGIN } from "@/utils/utils-loguin";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function LoguinPage() {
+  const  authStore = useAuthStore();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [msg, setMsg] = useState(null);
@@ -33,6 +35,11 @@ export default function LoguinPage() {
     console.log(credentials);
     const response = await loguin(credentials.username, credentials.password);
     if (response.status == 200) {
+      authStore.login({
+        ...response.data.user,
+        roles:['admin', 'editor']
+      });
+      // window.location.href = "/dashboard"
       router.push("/dashboard");
     } else {
       alert("Loguin incorrecto");
