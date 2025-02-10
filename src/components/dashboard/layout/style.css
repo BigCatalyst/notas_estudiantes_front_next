@@ -1,0 +1,40 @@
+/* .shine {
+  @apply before:ease-linear relative w-[70px] h-[40px] flex justify-center items-center overflow-hidden transition-all before:absolute  before:-top-10 before:h-[200px] before:w-6 before:shadow-2xl before:translate-x-12 before:rotate-[45deg] before:bg-gray-300 before:opacity-30 before:duration-700 hover:before:-translate-x-40
+  after:absolute after:right-1 after:bottom-0 after:w-0 after:h-[2px] after:bg-slate-300 after:transition-all after:duration-500 hover:after:w-[70px];
+}
+
+.shine1 {
+  @apply before:ease-linear relative w-[80px] h-[50px] flex justify-center items-center overflow-hidden transition-all before:absolute before:right-0 before:-top-10 before:h-[200px] before:w-6 before:shadow-2xl before:translate-x-12 before:rotate-[45deg] before:bg-gray-300 before:opacity-30 before:duration-700 hover:before:-translate-x-40;
+} */
+
+.open-menu {
+  animation-name: openusermenu;
+  animation-duration: 200ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  opacity: 0;
+  scale: 0;
+}
+
+@keyframes openusermenu {
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.close-menu {
+  animation-name: closeusermenu;
+  animation-duration: 200ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  opacity: 1;
+  scale: 1;
+}
+
+@keyframes closeusermenu {
+  to {
+    opacity: 0;
+    scale: 0;
+  }
+}
