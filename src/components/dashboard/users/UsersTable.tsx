@@ -4,7 +4,6 @@
 import { useEffect, useState } from "react";
 import { Group, User } from "./Types";
 import ApiService from "@/services/ApiService";
-import { IoIosArrowDown } from "react-icons/io";
 
 export default function UsersTable() {
   const [users, setUsers] = useState<User[]>([]);
@@ -108,16 +107,14 @@ export default function UsersTable() {
             handleFilterChange("groups__name__contains", e.target.value)
           }
         />
-        <div className="relative">
-          <select
-            className="p-2 border rounded bg-no-repeat bg-[length:22px] appearance-none"
-            onChange={(e) => handleFilterChange("is_active", e.target.value)}
-          >
-            <option value="">Todos los estados</option>
-            <option value="true">Activo</option>
-            <option value="false">Inactivo</option>
-          </select>
-        </div>
+        <select
+          className="p-2 border rounded bg-no-repeat bg-[length:22px] appearance-none"
+          onChange={(e) => handleFilterChange("is_active", e.target.value)}
+        >
+          <option value="">Todos los estados</option>
+          <option value="true">Activo</option>
+          <option value="false">Inactivo</option>
+        </select>
       </div>
 
       {/* Tabla */}
