@@ -116,7 +116,9 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                           <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 border-2"></span>
                         </span>
                         <span className="w-[24px] h-[24px] font-bold">
-                          {userAuth.user?.username.charAt(0).toUpperCase()}
+                          {userAuth.user &&
+                            userAuth.user?.username &&
+                            userAuth.user?.username.charAt(0).toUpperCase()}
                         </span>
                       </button>
                       <IoIosArrowDown
