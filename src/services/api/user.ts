@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { UsersDashboardResponse } from "@/components/dashboard/users/Types";
 import { apiAuth } from "../api";
 
 export const update = async (user: any): Promise<ResUsers | undefined> => {
@@ -6,6 +7,21 @@ export const update = async (user: any): Promise<ResUsers | undefined> => {
     const response = await apiAuth.patch(`users/${user?.id}/`, user);
 
     const data: ResUsers = response.data;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const users = async (
+  query: string
+): Promise<UsersDashboardResponse | undefined> => {
+  console.log(`users/?${query}`);
+  try {
+    const response = await apiAuth.get(`users/?${query}`);
+
+    const data: UsersDashboardResponse = response.data;
 
     return data;
   } catch (error) {

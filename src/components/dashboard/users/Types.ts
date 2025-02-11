@@ -16,7 +16,7 @@ export interface User {
   is_superuser: boolean;
 }
 
-interface Group {
+export interface Group {
   id: number;
   name: string;
 }
