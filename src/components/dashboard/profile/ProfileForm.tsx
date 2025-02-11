@@ -6,12 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
-import { TbLoader2 } from "react-icons/tb";
+import { TbEdit, TbLoader2 } from "react-icons/tb";
 import { State, updateProfileSuccess } from "@/redux/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "@/services/api/user";
 import { User } from "@/services/Types";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { FaUser } from "react-icons/fa";
 
 // Esquema de validación
 const formSchema = z.object({
@@ -98,13 +99,22 @@ export function ProfileForm() {
   return (
     <div className="flex items-center justify-center h-[500px]">
       <div className="w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <div className="mb-8 border-b pb-4 border-b-gray-400">
+        <div className="mb-8 border-b pb-4 border-b-gray-400 relative">
           <h1 className="text-2xl font-bold text-gray-700">
             Perfil de Usuario
           </h1>
           <p className="text-gray-600 mt-1">
             Actualiza tu información personal
           </p>
+          <div className="absolute right-10 top-3">
+            <button
+              className="btn"
+              onClick={() => redirect("/dashboard/profile")}
+            >
+              <FaUser className="w-4 h-4" />
+              Profile
+            </button>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -204,18 +214,16 @@ export function ProfileForm() {
           )}
 
           {/* Botón de enviar */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button type="submit" disabled={isLoading} className="btn">
             {isLoading ? (
               <span className="flex items-center justify-center">
                 <TbLoader2 className="animate-spin mr-2 h-4 w-4" />
                 Guardando...
               </span>
             ) : (
-              "Guardar cambios"
+              <span className="inline-flex items-center gap-2">
+                <TbEdit className="h-5 w-5" /> Guardar cambios
+              </span>
             )}
           </button>
         </form>

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";
 import { loginSuccess, State } from "@/redux/features/authSlice";
+import { User } from "@/services/Types";
 
 // Define el esquema de validación con zod
 const schema = z.object({
@@ -58,9 +59,18 @@ const LoginForm = () => {
       const me = await ApiService.me();
 
       if (me) {
+        const user: User = {
+          id: me.id,
+          roles: me.groups.map(({ name }) => name),
+          email: me.email,
+          first_name: me.first_name,
+          last_name: me.last_name,
+          username: me.username,
+        };
+
         dispatch(
           loginSuccess({
-            user: { ...res.user, roles: me.groups.map(({ name }) => name) },
+            user,
           })
         );
         redirect("/dashboard");
