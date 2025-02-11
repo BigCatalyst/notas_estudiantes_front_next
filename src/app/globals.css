@@ -16,6 +16,10 @@ body {
   background-color: #f7f7f7;
 }
 
+.btn {
+  @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 inline-flex items-center gap-2 shadow-md hover:shadow-2xl hover:scale-103 active:scale-100 active:shadow-md transition-all border-2 border-gray-700;
+}
+
 .container-neo {
   background-color: #f7f7f7;
 }

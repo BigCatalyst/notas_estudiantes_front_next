@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import { HiOutlineUser } from "react-icons/hi2";
-import { TbLockCog } from "react-icons/tb";
+import { TbLoader2, TbLockCog } from "react-icons/tb";
 import MensageError from "../message/MensageError";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";
 import { loginSuccess, State } from "@/redux/features/authSlice";
+import { User } from "@/services/Types";
 
 // Define el esquema de validación con zod
 const schema = z.object({
@@ -35,6 +36,7 @@ const LoginForm = () => {
     resolver: zodResolver(schema),
   });
   const [error, setError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userAuth: State = useSelector((state: any) => state.auth);
 
@@ -46,11 +48,13 @@ const LoginForm = () => {
 
   const onSubmit = async (data: any) => {
     setError(false);
+    setLoading(true);
 
     const res = await ApiService.loguin(data.username, data.password).catch(
       (error) => {
         console.log(error);
         setError(true);
+        setLoading(false);
       }
     );
 
@@ -58,9 +62,20 @@ const LoginForm = () => {
       const me = await ApiService.me();
 
       if (me) {
+        const user: User = {
+          id: me.id,
+          roles: me.groups.map(({ name }) => name),
+          email: me.email,
+          first_name: me.first_name,
+          last_name: me.last_name,
+          username: me.username,
+        };
+
+        setLoading(false);
+
         dispatch(
           loginSuccess({
-            user: { ...res.user, roles: me.groups.map(({ name }) => name) },
+            user,
           })
         );
         redirect("/dashboard");
@@ -122,7 +137,18 @@ const LoginForm = () => {
           <TbLockCog className="absolute left-4 top-[27%] w-[27px] h-[27px] stroke-[1px]" />
         </div>
 
-        <input type="submit" value="Log in" className="submit-neo" />
+        {/* <input type="submit" value="Log in" className="submit-neo" /> */}
+
+        <button className="submit-neo" type="submit">
+          {isLoading ? (
+            <span className="flex items-center justify-center">
+              <TbLoader2 className="animate-spin mr-2 h-4 w-4" />
+              Registrándose...
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-2">LogIn</span>
+          )}
+        </button>
       </form>
     </>
   );
