@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { State } from "@/redux/features/authSlice";
+import { redirect } from "next/navigation";
+import { FaUserEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
-export function Profile() {
+function Profile() {
   const { user }: State = useSelector((state: any) => state.auth);
 
   return (
@@ -11,7 +13,11 @@ export function Profile() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900">User Profile</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 inline-flex items-center gap-2 shadow-md hover:shadow-2xl hover:scale-102 active:scale-100 active:shadow-md transition-all"
+          onClick={() => redirect("/dashboard/profile/update")}
+        >
+          <FaUserEdit className="w-5.5 h-5.5" />
           Edit Profile
         </button>
       </div>
