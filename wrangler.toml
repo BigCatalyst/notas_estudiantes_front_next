@@ -1,0 +1,7 @@
+name="notas_estudiantes_front_next"
+
+compatibility_date = "2025-02-10"
+compatibility_flags =["nodejs_compat]
+
+main=".worker-next/index.msj"
+assets = {directory = ".worker-next/assets", binding = "ASSETS"}
