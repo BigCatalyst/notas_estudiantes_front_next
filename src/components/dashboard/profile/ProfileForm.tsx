@@ -11,7 +11,7 @@ import { State, updateProfileSuccess } from "@/redux/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "@/services/api/user";
 import { User } from "@/services/Types";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // Esquema de validación
 const formSchema = z.object({
