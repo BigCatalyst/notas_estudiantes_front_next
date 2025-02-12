@@ -127,8 +127,8 @@ export default function UsersTable() {
       <div
         className={
           !openFilter
-            ? "transition-all h-0 overflow-hidden"
-            : "transition-all h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6 duration-400"
+            ? "transition-all h-0 overflow-hidden opacity-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"
+            : "transition-all h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6 duration-400 shadow-md p-7 shadow-gray-300 rounded-lg"
         }
       >
         <input
@@ -244,7 +244,7 @@ export default function UsersTable() {
           </div>
         )}
 
-        {users.length === 0 && (
+        {!loading && users.length === 0 && (
           <div className="flex items-center justify-center gap-1 h-[150px] text-gray-800 animate-pulse">
             <BsDatabaseFillX className="w-12 h-12" />
             <span className="text-[20px]">
