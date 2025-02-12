@@ -11,6 +11,7 @@ import { BsDatabaseFillX } from "react-icons/bs";
 import { IoFilterSharp } from "react-icons/io5";
 import { TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
+import { redirect } from "next/navigation";
 
 export default function UsersTable() {
   const [users, setUsers] = useState<User[]>([]);
@@ -47,6 +48,7 @@ export default function UsersTable() {
     // else params.set("page", currentPage.toString());
 
     params.set("page", currentPage.toString());
+    params.set("ordering", "id");
 
     if (pagesSize > 0) params.set("page_size", pagesSize.toString());
     else {
@@ -74,7 +76,7 @@ export default function UsersTable() {
       if (data) {
         console.log("---------------------------------");
         console.log(data);
-        setUsers(data.results);
+        setUsers(data.results.reverse());
         if (!pagesSize) setTotalPages(Math.ceil(data.count / 10));
         else setTotalPages(Math.ceil(data.count / pagesSize));
       }
@@ -125,7 +127,7 @@ export default function UsersTable() {
 
         {/* Adicionar */}
         <div className="mb-5">
-          <button className="btn1">
+          <button className="btn1" onClick={() => redirect("users/add")}>
             <TbPlaylistAdd className="w-7 h-7 text-gray-200" />
             <span>Adicionar</span>
           </button>
@@ -142,7 +144,7 @@ export default function UsersTable() {
         <input
           type="text"
           placeholder="Buscar por email"
-          className="p-2 border rounded"
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
             handleFilterChange("email__contains", e.target.value)
           }
@@ -150,7 +152,7 @@ export default function UsersTable() {
         <input
           type="text"
           placeholder="Buscar por nombre"
-          className="p-2 border rounded"
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
             handleFilterChange("first_name__contains", e.target.value)
           }
@@ -158,7 +160,7 @@ export default function UsersTable() {
         <input
           type="text"
           placeholder="Buscar por apellido"
-          className="p-2 border rounded"
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
             handleFilterChange("last_name__contains", e.target.value)
           }
@@ -166,13 +168,13 @@ export default function UsersTable() {
         <input
           type="text"
           placeholder="Buscar por grupo"
-          className="p-2 border rounded"
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
             handleFilterChange("groups__name__contains", e.target.value)
           }
         />
         <select
-          className="p-2 border rounded bg-no-repeat bg-[length:22px]"
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("is_active", e.target.value)}
         >
           <option value="">Todos los estados</option>

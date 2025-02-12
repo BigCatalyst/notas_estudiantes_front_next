@@ -108,7 +108,7 @@ export function ProfileForm() {
           </p>
           <div className="absolute right-10 top-3">
             <button
-              className="btn"
+              className="btn1"
               onClick={() => redirect("/dashboard/profile")}
             >
               <FaUser className="w-4 h-4" />
@@ -132,7 +132,7 @@ export function ProfileForm() {
                 id="first_name"
                 type="text"
                 disabled={isLoading}
-                className={`w-full px-4 py-2 border rounded-md focus:ring-2 ${
+                className={`w-full px-4 py-2 border rounded-md shadow-sm ${
                   errors.first_name
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
@@ -158,7 +158,7 @@ export function ProfileForm() {
                 id="last_name"
                 type="text"
                 disabled={isLoading}
-                className={`w-full px-4 py-2 border rounded-md focus:ring-2 ${
+                className={`w-full px-4 py-2 border rounded-md shadow-sm ${
                   errors.last_name
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
@@ -184,7 +184,7 @@ export function ProfileForm() {
                 id="email"
                 type="email"
                 disabled={isLoading}
-                className={`w-full px-4 py-2 border rounded-md focus:ring-2 ${
+                className={`w-full px-4 py-2 border rounded-md shadow-sm ${
                   errors.email
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
@@ -214,7 +214,7 @@ export function ProfileForm() {
           )}
 
           {/* Botón de enviar */}
-          <button type="submit" disabled={isLoading} className="btn">
+          <button type="submit" disabled={isLoading} className="btn1">
             {isLoading ? (
               <span className="flex items-center justify-center">
                 <TbLoader2 className="animate-spin mr-2 h-4 w-4" />
