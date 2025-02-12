@@ -4,9 +4,10 @@ import { FaUserCog } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 
-enum Rols {
+export enum Rols {
   admin = "admin",
   user = "user",
+  student = "student",
 }
 
 interface NavItem {

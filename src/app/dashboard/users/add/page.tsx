@@ -1,5 +1,11 @@
-const AddUser = () => {
-  return <div>AddUser</div>;
+import AddUser from "@/components/dashboard/users/AddUser";
+
+const Add = () => {
+  return (
+    <div>
+      <AddUser />
+    </div>
+  );
 };
 
-export default AddUser;
+export default Add;
