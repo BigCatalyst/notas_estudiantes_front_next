@@ -3,7 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Group, User } from "./Types";
+import { User } from "./Types";
 import ApiService from "@/services/ApiService";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiLoaderLine } from "react-icons/ri";
@@ -207,7 +207,9 @@ export default function UsersTable() {
                   <td className="p-3">{user.first_name}</td>
                   <td className="p-3">{user.last_name}</td>
                   <td className="p-3">
-                    {user.groups.map((group: Group) => group.name).join(", ")}
+                    {user &&
+                      user.groups &&
+                      user.groups.map((group: any) => group.name).join(", ")}
                   </td>
                   <td className="p-3">
                     <span
@@ -231,7 +233,9 @@ export default function UsersTable() {
                       </span>
                     </button>
                     <button
-                      onClick={() => handleDelete(user.id)}
+                      onClick={() => {
+                        if (user.id) handleDelete(user.id);
+                      }}
                       className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg"
                     >
                       <span className="inline-flex items-center gap-1">

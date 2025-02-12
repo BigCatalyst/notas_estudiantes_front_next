@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UsersDashboardResponse } from "@/components/dashboard/users/Types";
+import {
+  User,
+  UsersDashboardResponse,
+} from "@/components/dashboard/users/Types";
 import { apiAuth } from "../api";
 
-export const update = async (user: any): Promise<ResUsers | undefined> => {
+export const update = async (user: User): Promise<User | undefined> => {
   try {
     const response = await apiAuth.patch(`users/${user?.id}/`, user);
 
-    const data: ResUsers = response.data;
+    const data: User = response.data;
 
     return data;
   } catch (error) {
@@ -29,18 +32,14 @@ export const users = async (
   }
 };
 
-export interface ResUsers {
-  id: number;
-  username: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  is_active: boolean;
-  groups: Group[];
-  is_superuser: boolean;
-}
+export const addUser = async (user: User): Promise<User | undefined> => {
+  try {
+    const response = await apiAuth.post(`users/`, user);
 
-export interface Group {
-  id: number;
-  name: string;
-}
+    const data: User = response.data;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

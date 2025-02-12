@@ -6,17 +6,18 @@ export interface UsersDashboardResponse {
 }
 
 export interface User {
-  id: number;
-  username: string;
+  id?: number | null;
+  username?: string;
   email: string;
   first_name: string;
   last_name: string;
-  is_active: boolean;
-  groups: Group[];
-  is_superuser: boolean;
+  password?: string;
+  is_active?: boolean;
+  groups?: Group[] | string[];
+  is_superuser?: boolean;
 }
 
 export interface Group {
-  id: number;
+  id?: number;
   name: string;
 }
