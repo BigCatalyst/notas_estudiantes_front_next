@@ -8,7 +8,9 @@ import { useState } from "react";
 import { TbLoader2 } from "react-icons/tb";
 import { LuCircleFadingPlus } from "react-icons/lu";
 import ApiService from "@/services/ApiService";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { FaUser } from "react-icons/fa";
+import { IoIosArrowBack } from "react-icons/io";
 
 // Esquema de validación Zod
 const userSchema = z.object({
@@ -82,10 +84,17 @@ const AddUser = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b-2 pb-2 border-b-gray-400">
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
+      <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
         Crear Nuevo Usuario
       </h2>
+
+      <div className="absolute right-10 top-7">
+        <button className="btn1" onClick={() => redirect("/dashboard/users")}>
+          <IoIosArrowBack className="w-4 h-4" />
+          Usuarios
+        </button>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Mensaje de error del servidor */}

@@ -48,7 +48,6 @@ export default function UsersTable() {
     // else params.set("page", currentPage.toString());
 
     params.set("page", currentPage.toString());
-    params.set("ordering", "id");
 
     if (pagesSize > 0) params.set("page_size", pagesSize.toString());
     else {
