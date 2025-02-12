@@ -9,7 +9,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiLoaderLine } from "react-icons/ri";
 import { BsDatabaseFillX } from "react-icons/bs";
 import { IoFilterSharp } from "react-icons/io5";
-import { TbTableExport } from "react-icons/tb";
+import { TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 
 export default function UsersTable() {
@@ -120,6 +120,14 @@ export default function UsersTable() {
           <button className="btn1">
             <TbTableExport className="w-7 h-7 text-gray-200" />
             <span>Exportar</span>
+          </button>
+        </div>
+
+        {/* Adicionar */}
+        <div className="mb-5">
+          <button className="btn1">
+            <TbPlaylistAdd className="w-7 h-7 text-gray-200" />
+            <span>Adicionar</span>
           </button>
         </div>
       </div>
@@ -281,7 +289,7 @@ export default function UsersTable() {
 
         <div className="relative">
           <span className="text-center text-gray-800 pt-2">
-            <b>Página:</b>
+            <b>Página: </b>
             {users.length > 0 ? `${currentPage} de ${totalPages}` : " --- "}
           </span>
         </div>
