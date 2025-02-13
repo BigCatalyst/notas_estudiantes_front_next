@@ -42,6 +42,8 @@ const AddUser = () => {
     formState: { errors },
     setValue,
     watch,
+    setError,
+    clearErrors,
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -55,8 +57,14 @@ const AddUser = () => {
 
   const addGroup = () => {
     if (currentGroup.trim()) {
-      setValue("groups", [...groups, currentGroup.trim()]);
-      setCurrentGroup("");
+      const index = groups.findIndex((val) => val === currentGroup);
+      if (index === -1) {
+        setValue("groups", [...groups, currentGroup.trim()]);
+        setCurrentGroup("");
+        clearErrors();
+      } else {
+        setError("groups", { message: "Ya se ha añadido ese rol." });
+      }
     }
   };
 
@@ -204,11 +212,22 @@ const AddUser = () => {
             Grupos
           </label>
           <div className="flex gap-2 mt-1">
-            <input
+            {/* <input
               value={currentGroup}
               onChange={(e) => setCurrentGroup(e.target.value)}
               className="flex-1  p-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+            /> */}
+
+            <select
+              value={currentGroup}
+              onChange={(e) => setCurrentGroup(e.target.value)}
+              className="flex-1  p-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            >
+              <option>Seleccione un Rol</option>
+              <option value="admin">admin</option>
+              <option value="user">user</option>
+            </select>
+
             <button type="button" onClick={addGroup} className="btn1">
               Agregar Grupo
             </button>
