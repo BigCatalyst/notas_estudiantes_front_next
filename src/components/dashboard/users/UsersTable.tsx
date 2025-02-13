@@ -33,6 +33,8 @@ export default function UsersTable() {
   const handleEdit = (user: User) => {
     // Lógica para editar
     console.log(user);
+    const userParam = JSON.stringify(user);
+    redirect(`dashboard/users/${userParam}`);
   };
 
   const handleDelete = (userId: number) => {
