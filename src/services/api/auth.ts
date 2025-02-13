@@ -26,7 +26,7 @@ export const loguin = async (
   if (response.status == 200) {
     localStorage.setItem(DJANGO_AUTH_TOKEN, response.data.access);
     localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, response.data.refresh);
-    localStorage.setItem("current_user_id", response.data.user.pk);
+    // localStorage.setItem("current_user_id", response.data.user.id);
   }
   return response.data;
 };
@@ -56,7 +56,7 @@ export async function logout(
     localStorage.removeItem(DJANGO_AUTH_REFRESH_TOKEN);
 
     if (redirectToLogin) {
-      window.location.href = "/login";
+      window.location.href = "/logout";
     }
   } catch (error) {
     console.error("Error al hacer logout:", error);

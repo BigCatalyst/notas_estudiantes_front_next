@@ -20,6 +20,7 @@ export default function UsersTable() {
   const [pagesSize, setPagesSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [initLoadData, setInitLoadData] = useState(true);
   const [filters, setFilters] = useState<{
     email__contains?: string;
     first_name__contains?: string;
@@ -33,6 +34,8 @@ export default function UsersTable() {
   const handleEdit = (user: User) => {
     // Lógica para editar
     console.log(user);
+    const userParam = JSON.stringify(user);
+    redirect(`dashboard/users/${userParam}`);
   };
 
   const handleDelete = (userId: number) => {
@@ -73,6 +76,7 @@ export default function UsersTable() {
       console.log(query);
 
       if (data) {
+        if (initLoadData) setInitLoadData(false);
         console.log("---------------------------------");
         console.log(data);
         setUsers(data.results.reverse());
@@ -257,7 +261,7 @@ export default function UsersTable() {
           </div>
         )}
 
-        {!loading && users.length === 0 && (
+        {!loading && !initLoadData && users.length === 0 && (
           <div className="flex items-center justify-center gap-1 h-[150px] text-gray-800 animate-pulse">
             <BsDatabaseFillX className="w-12 h-12" />
             <span className="text-[20px]">

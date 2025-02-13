@@ -143,7 +143,7 @@ const LoginForm = () => {
           {isLoading ? (
             <span className="flex items-center justify-center">
               <TbLoader2 className="animate-spin mr-2 h-4 w-4" />
-              Registrándose...
+              Iniciando Sesión...
             </span>
           ) : (
             <span className="inline-flex items-center gap-2">LogIn</span>

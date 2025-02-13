@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { API_URL } from "@/config";
 import axios from "axios";
 import { logout } from "./api/auth";
+import { error } from "console";
 
 export const DJANGO_AUTH_TOKEN = "django_auth_token";
 export const DJANGO_AUTH_REFRESH_TOKEN = "django_refresh_token";
@@ -52,44 +54,93 @@ apiAuth.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response) {
-      if (error.response.status === 401) {
-        // const retry=localStorage.getItem("retry_token")
-        if (!originalRequest._retry) {
-          originalRequest._retry = true;
-          // localStorage.setItem("retry_token", "true");
 
-          try {
-            // Intenta refrescar el token de acceso
-            callRefreshToken();
-            // localStorage.removeItem("retry_token");
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
 
-            // Reintenta la solicitud original con el nuevo token
-            originalRequest.headers.Authorization = `Bearer ${getToken()}`;
-            return apiAuth(originalRequest);
-          } catch (refreshError) {
-            // Si el refresco del token falla, haz logout
-            logout({
-              redirectToLogin: true,
-              msg: "No estas logueado",
-              callLogout: false,
-            });
+      try {
+        console.log("Intentando refrescar el token...");
 
-            return Promise.reject(refreshError);
-          }
-        } else {
-          logout({
-            redirectToLogin: true,
-            msg: "No estas logueado",
-            callLogout: false,
-          });
-        }
+        // Llama a la función para refrescar el token
+        await callRefreshToken();
+
+        // Obtén el nuevo token de acceso
+        const newToken = getToken(); // Asegúrate de que esta función devuelva el token actualizado
+
+        // Actualiza el header de la solicitud original con el nuevo token
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+        // Reintenta la solicitud original con el nuevo token
+        return apiAuth(originalRequest);
+      } catch (refreshError) {
+        console.error("Error 1 al refrescar el token:", refreshError);
+
+        //Si el refresco del token falla, haz logout
+        logout({
+          redirectToLogin: true,
+          msg: "No estás logueado",
+          callLogout: false,
+        });
+
+        return Promise.reject(refreshError);
       }
     }
-
+    // Si no es un error 401 o ya se intentó refrescar el token, rechaza la promesa
     return Promise.reject(error);
   }
 );
+
+// apiAuth.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+//     if (error.response) {
+//       if (error.response.status === 401) {
+//         // const retry=localStorage.getItem("retry_token")
+//         if (!originalRequest._retry) {
+//           originalRequest._retry = true;
+//           // localStorage.setItem("retry_token", "true");
+
+//           try {
+//             console.log("intento refrescar.");
+//             // Intenta refrescar el token de acceso
+//             callRefreshToken();
+//             // localStorage.removeItem("retry_token");
+
+//             // Reintenta la solicitud original con el nuevo token
+//             originalRequest.headers.Authorization = `Bearer ${getToken()}`;
+//             return apiAuth(originalRequest);
+//           } catch (refreshError) {
+//             console.log("Siguiente error");
+//             console.log(refreshError);
+//             // Si el refresco del token falla, haz logout
+//             // logout({
+//             //   redirectToLogin: true,
+//             //   msg: "No estas logueado",
+//             //   callLogout: false,
+//             // });
+
+//             return Promise.reject(refreshError);
+//           }
+//         }
+//         //else {
+//         //   console.log("Siguiente error1");
+//         // logout({
+//         //   redirectToLogin: true,
+//         //   msg: "No estas logueado",
+//         //   callLogout: false,
+//         // });
+//         // }
+//       }
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );
 
 // export async function loguin(username: string, password: string) {
 //   const response = await api.post(`${TOKEN_URL}/`, {
@@ -140,12 +191,21 @@ apiAuth.interceptors.response.use(
 
 export async function callRefreshToken() {
   const refreshToken = localStorage.getItem(DJANGO_AUTH_REFRESH_TOKEN);
-  const response = await api.post(`token/refresh/`, {
-    refresh: refreshToken,
-  });
+  const res = await api
+    .post(`token/refresh/`, {
+      refresh: refreshToken,
+    })
+    .then((response) => {
+      console.log("respuesta al intertar refrescar");
+      console.log(response);
 
-  const newAccessToken = response.data.access;
+      const newAccessToken = response.data.access;
+      const accessToken = response.data.refresh;
 
-  // Actualiza el token de acceso en el almacenamiento local
-  localStorage.setItem("access_token", newAccessToken);
+      // Actualiza el token de acceso en el almacenamiento local
+      localStorage.setItem("django_auth_token", newAccessToken);
+      localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, accessToken);
+    });
+
+  return res;
 }
