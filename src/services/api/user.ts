@@ -4,6 +4,7 @@ import {
   UsersDashboardResponse,
 } from "@/components/dashboard/users/Types";
 import { apiAuth } from "../api";
+import { GroupRes } from "../Types";
 
 export const update = async (user: User): Promise<User | undefined> => {
   try {
@@ -40,6 +41,20 @@ export const addUser = async (user: User): Promise<User | undefined> => {
 
     return data;
   } catch (error) {
-    console.log(error);
+    return Promise.reject(error);
+  }
+};
+
+export const getRoles = async (): Promise<string[] | undefined> => {
+  try {
+    const response = await apiAuth.get(`groups/`);
+
+    const data: GroupRes = response.data;
+
+    const roles = data.results.map((item) => item.name);
+
+    return roles;
+  } catch (error) {
+    return Promise.reject(error);
   }
 };
