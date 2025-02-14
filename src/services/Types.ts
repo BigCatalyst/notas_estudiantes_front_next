@@ -29,3 +29,15 @@ export interface User {
   last_name?: string;
   roles: string[];
 }
+
+export interface GroupRes {
+  count: number;
+  next: null;
+  previous: null;
+  results: Rol[];
+}
+
+export interface Rol {
+  id: number;
+  name: string;
+}

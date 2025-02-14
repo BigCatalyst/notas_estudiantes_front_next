@@ -4,13 +4,13 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
-import { TbLoader2 } from "react-icons/tb";
+import { useEffect, useState } from "react";
 import { LuCircleFadingPlus } from "react-icons/lu";
 import ApiService from "@/services/ApiService";
-import { redirect, useRouter } from "next/navigation";
-import { FaUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
+import Buttom from "@/components/ui/buttom/Buttom";
+import MessageForm from "@/components/ui/messageForm/MessageForm";
 
 // Esquema de validación Zod
 const userSchema = z.object({
@@ -33,6 +33,22 @@ const AddUser = () => {
   const [currentGroup, setCurrentGroup] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [roles, setRoles] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    const roles = async () => {
+      try {
+        const res = await ApiService.getRoles();
+        if (res) {
+          console.log(res);
+          setRoles(res);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    roles();
+  }, []);
 
   const router = useRouter();
 
@@ -77,15 +93,26 @@ const AddUser = () => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
-      console.log(data);
+      setServerError("");
       const res = await ApiService.addUser(data);
-      console.log(res);
-      setIsSuccess(true);
-      router.push("/dashboard/users");
-    } catch (error) {
-      setServerError(
-        "Error al crear el usuario. Por favor intente nuevamente."
-      );
+      if (res) {
+        console.log(res);
+        setIsSuccess(true);
+        router.push("/dashboard/users");
+      }
+    } catch (error: any) {
+      console.log(error);
+      // setServerError(
+      //   "Error al crear el usuario. Por favor intente nuevamente."
+      // );
+      const errorData = error.response.data;
+      let formattedErrorData = "";
+      if (Object.keys(errorData).length > 0) {
+        formattedErrorData = Object.entries(errorData)
+          .map(([key, value]) => ` -${key}: ${JSON.stringify(value)}`)
+          .join("\n");
+      }
+      setServerError(formattedErrorData);
     } finally {
       setIsLoading(false);
     }
@@ -98,19 +125,16 @@ const AddUser = () => {
       </h2>
 
       <div className="absolute right-10 top-7">
-        <button className="btn1" onClick={() => redirect("/dashboard/users")}>
-          <IoIosArrowBack className="w-4 h-4" />
-          Usuarios
-        </button>
+        <Buttom
+          title="Usuarios"
+          icon={IoIosArrowBack}
+          to="/dashboard/users"
+          className="btn1"
+        />
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Mensaje de error del servidor */}
-        {serverError && (
-          <div className="p-3 bg-red-100 text-red-700 rounded-md">
-            {serverError}
-          </div>
-        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Username */}
@@ -224,8 +248,12 @@ const AddUser = () => {
               className="flex-1  p-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
               <option>Seleccione un Rol</option>
-              <option value="admin">admin</option>
-              <option value="user">user</option>
+              {roles &&
+                roles.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
             </select>
 
             <button type="button" onClick={addGroup} className="btn1">
@@ -266,7 +294,7 @@ const AddUser = () => {
           <label className="ml-2 text-sm text-gray-700">Usuario activo</label>
         </div>
 
-        {isSuccess && (
+        {/* {isSuccess && (
           <div className="p-4 bg-green-50 rounded-lg">
             <p className="text-green-700 text-sm">
               ¡Cambios guardados exitosamente!
@@ -274,8 +302,30 @@ const AddUser = () => {
           </div>
         )}
 
+        {!isSuccess && (
+          <div className="p-4 bg-red-50 rounded-lg">
+            <p className="text-red-700 text-sm">Ha ocurrido un Error</p>
+          </div>
+        )} */}
+
+        <MessageForm
+          isSuccess={isSuccess}
+          error={serverError.length > 0}
+          errorMessage={serverError}
+        />
+
         {/* Botón de envío */}
-        <button
+
+        <Buttom
+          title="Crear Usuario"
+          type="submit"
+          isLoading={isLoading}
+          className="btn1"
+          icon={LuCircleFadingPlus}
+          textLoading="Guardando"
+        />
+
+        {/* <button
           type="submit"
           className="btn1 w-full justify-center"
           disabled={isLoading}
@@ -290,7 +340,7 @@ const AddUser = () => {
               <LuCircleFadingPlus className="h-5 w-5" /> Crear Usuario
             </span>
           )}
-        </button>
+        </button> */}
       </form>
     </div>
   );

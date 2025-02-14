@@ -12,6 +12,7 @@ import { IoFilterSharp } from "react-icons/io5";
 import { TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { redirect } from "next/navigation";
+import Buttom from "@/components/ui/buttom/Buttom";
 
 export default function UsersTable() {
   const [users, setUsers] = useState<User[]>([]);
@@ -110,7 +111,7 @@ export default function UsersTable() {
         <div className="relative inline-block group z-10">
           <div className="mb-5">
             <button className="btn1" onClick={() => setOpenFilter(!openFilter)}>
-              <IoFilterSharp className="w-7 h-7 text-gray-200" />
+              <IoFilterSharp className="w-6 h-6 text-gray-200" />
             </button>
           </div>
 
@@ -122,18 +123,22 @@ export default function UsersTable() {
 
         {/* Exportar */}
         <div className="mb-5">
-          <button className="btn1">
+          {/* <button className="btn1">
             <TbTableExport className="w-7 h-7 text-gray-200" />
             <span>Exportar</span>
-          </button>
+          </button> */}
+
+          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
         </div>
 
         {/* Adicionar */}
         <div className="mb-5">
-          <button className="btn1" onClick={() => redirect("users/add")}>
-            <TbPlaylistAdd className="w-7 h-7 text-gray-200" />
-            <span>Adicionar</span>
-          </button>
+          <Buttom
+            title="Adicionar"
+            icon={TbPlaylistAdd}
+            className="btn1"
+            to="users/add"
+          />
         </div>
       </div>
 
@@ -191,7 +196,7 @@ export default function UsersTable() {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
-              <th className="p-3 text-left">ID</th>
+              {/* <th className="p-3 text-left">ID</th> */}
               <th className="p-3 text-left">Usuario</th>
               <th className="p-3 text-left">Email</th>
               <th className="p-3 text-left">Nombre</th>
@@ -206,7 +211,7 @@ export default function UsersTable() {
               users &&
               users.map((user) => (
                 <tr key={user.id} className="border-b border-b-gray-300">
-                  <td className="p-3">{user.id}</td>
+                  {/* <td className="p-3">{user.id}</td> */}
                   <td className="p-3">{user.username}</td>
                   <td className="p-3">{user.email}</td>
                   <td className="p-3">{user.first_name}</td>
