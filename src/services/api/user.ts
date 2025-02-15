@@ -45,6 +45,34 @@ export const addUser = async (user: User): Promise<User | undefined> => {
   }
 };
 
+export const updUser = async (
+  id: any,
+  user: User
+): Promise<User | undefined> => {
+  try {
+    console.log(user);
+    const response = await apiAuth.patch(`users/${id}/`, user);
+
+    const data: User = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getUser = async (id: string): Promise<User | undefined> => {
+  try {
+    const response = await apiAuth.get(`users/${id}/`);
+
+    const data: User = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getRoles = async (): Promise<string[] | undefined> => {
   try {
     const response = await apiAuth.get(`groups/`);
