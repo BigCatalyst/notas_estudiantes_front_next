@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { redirect } from "next/navigation";
 import { FC, useState } from "react";
@@ -12,6 +13,7 @@ interface ButtomProps {
   isLoading?: boolean;
   type?: "submit" | "reset" | "button";
   to?: string;
+  onClick?: (value: any) => void;
 }
 
 const Buttom: FC<ButtomProps> = ({
@@ -22,6 +24,7 @@ const Buttom: FC<ButtomProps> = ({
   textLoading,
   to,
   type,
+  onClick,
 }) => {
   const [loading, setLoading] = useState(false);
   const [classNameSubmit, setclassNameSubmit] = useState("");
@@ -36,7 +39,12 @@ const Buttom: FC<ButtomProps> = ({
   return (
     <>
       {isLoading !== undefined && (
-        <button disabled={isLoading} className={className} type={type}>
+        <button
+          disabled={isLoading}
+          className={className}
+          type={type}
+          onClick={onClick}
+        >
           {isLoading ? (
             <span className="flex items-center justify-center">
               <TbLoader2 className="animate-spin mr-2 h-5 w-5" />

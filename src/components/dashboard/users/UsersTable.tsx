@@ -9,7 +9,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiLoaderLine } from "react-icons/ri";
 import { BsDatabaseFillX } from "react-icons/bs";
 import { IoFilterSharp } from "react-icons/io5";
-import { TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { redirect } from "next/navigation";
 import Buttom from "@/components/ui/buttom/Buttom";
@@ -235,21 +235,24 @@ export default function UsersTable() {
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => handleEdit(user)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg"
+                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg group focus:bg-blue-400"
                     >
                       <span className="inline-flex items-center gap-1">
-                        <MdEdit />
+                        <MdEdit className="group-focus:hidden" />
+                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
                         Editar
                       </span>
                     </button>
+
                     <button
                       onClick={() => {
                         if (user.id) handleDelete(user.id);
                       }}
-                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg"
+                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg group focus:bg-red-400"
                     >
                       <span className="inline-flex items-center gap-1">
-                        <MdDeleteForever />
+                        <MdDeleteForever className="group-focus:hidden" />
+                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
                         Eliminar
                       </span>
                     </button>
