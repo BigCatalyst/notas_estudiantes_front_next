@@ -74,6 +74,7 @@ const AddUser = () => {
   const addGroup = () => {
     if (currentGroup.trim()) {
       const index = groups.findIndex((val) => val === currentGroup);
+
       if (index === -1) {
         setValue("groups", [...groups, currentGroup.trim()]);
         setCurrentGroup("");
@@ -236,18 +237,12 @@ const AddUser = () => {
             Grupos
           </label>
           <div className="flex gap-2 mt-1">
-            {/* <input
-              value={currentGroup}
-              onChange={(e) => setCurrentGroup(e.target.value)}
-              className="flex-1  p-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            /> */}
-
             <select
               value={currentGroup}
               onChange={(e) => setCurrentGroup(e.target.value)}
               className="flex-1  p-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
-              <option>Seleccione un Rol</option>
+              <option value="">Seleccione un Rol</option>
               {roles &&
                 roles.map((name) => (
                   <option key={name} value={name}>
