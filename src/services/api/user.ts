@@ -6,18 +6,6 @@ import {
 import { apiAuth } from "../api";
 import { GroupRes } from "../Types";
 
-export const update = async (user: User): Promise<User | undefined> => {
-  try {
-    const response = await apiAuth.patch(`users/${user?.id}/`, user);
-
-    const data: User = response.data;
-
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const users = async (
   query: string
 ): Promise<UsersDashboardResponse | undefined> => {
@@ -29,7 +17,7 @@ export const users = async (
 
     return data;
   } catch (error) {
-    console.log(error);
+    return Promise.reject(error);
   }
 };
 
