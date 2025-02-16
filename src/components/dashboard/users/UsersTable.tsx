@@ -13,6 +13,7 @@ import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { redirect } from "next/navigation";
 import Buttom from "@/components/ui/buttom/Buttom";
+import Modal from "@/components/ui/modal/Modal";
 
 export default function UsersTable() {
   const [users, setUsers] = useState<User[]>([]);
@@ -22,6 +23,9 @@ export default function UsersTable() {
   const [loading, setLoading] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [userIdDel, setUserIdDel] = useState(-1);
+
   const [filters, setFilters] = useState<{
     email__contains?: string;
     first_name__contains?: string;
@@ -41,7 +45,18 @@ export default function UsersTable() {
 
   const handleDelete = (userId: number) => {
     // Lógica para eliminar
-    console.log(userId);
+    setShowModal(true);
+    setUserIdDel(userId);
+  };
+
+  const deleteUser = async () => {
+    try {
+      if (userIdDel !== -1) {
+        await ApiService.delUser(userIdDel).then(() => fetchUsers());
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const buildQueryString = () => {
@@ -190,6 +205,13 @@ export default function UsersTable() {
           <option value="false">Inactivo</option>
         </select>
       </div>
+
+      {/* Modal */}
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        action={deleteUser}
+      />
 
       {/* Tabla */}
       <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
