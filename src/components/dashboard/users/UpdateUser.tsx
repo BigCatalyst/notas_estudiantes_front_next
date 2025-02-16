@@ -364,30 +364,37 @@ const UpdateUser = () => {
           </div>
         </div>
 
-        {/* Activo */}
-        <div className="flex items-center">
-          <input
-            id="is_active"
-            type="checkbox"
-            {...register("is_active")}
-            className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label htmlFor="is_active" className="ml-2 text-sm text-gray-700">
-            Usuario activo
-          </label>
-        </div>
+        <div className="flex items-center my-5">
+          <div className="inline-flex gap-7">
+            {/* Activo */}
+            <div className="flex items-center">
+              <input
+                id="is_active"
+                type="checkbox"
+                {...register("is_active")}
+                className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label htmlFor="is_active" className="ml-2 text-sm text-gray-700">
+                Usuario activo
+              </label>
+            </div>
 
-        {/* Activo */}
-        <div className="flex items-center">
-          <input
-            id="is_superuser"
-            type="checkbox"
-            {...register("is_superuser")}
-            className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label htmlFor="is_superuser" className="ml-2 text-sm text-gray-700">
-            Superususario
-          </label>
+            {/* Superuser */}
+            <div className="flex items-center">
+              <input
+                id="is_superuser"
+                type="checkbox"
+                {...register("is_superuser")}
+                className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="is_superuser"
+                className="ml-2 text-sm text-gray-700"
+              >
+                Superususario
+              </label>
+            </div>
+          </div>
         </div>
 
         {/* {isSuccess && (

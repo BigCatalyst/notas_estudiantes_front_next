@@ -61,6 +61,18 @@ export const updUser = async (
   }
 };
 
+export const delUser = async (id: any) => {
+  try {
+    const response = await apiAuth.delete(`users/${id}/`);
+
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getUser = async (id: string): Promise<User | undefined> => {
   try {
     const response = await apiAuth.get(`users/${id}/`);
