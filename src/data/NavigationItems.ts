@@ -1,8 +1,11 @@
 import { IconType } from "react-icons";
 import { HiUsers } from "react-icons/hi2";
-import { FaUserCog } from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
+import { FaUserCog, FaUsers } from "react-icons/fa";
+import { MdBallot, MdLogout } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
+import { ImBooks } from "react-icons/im";
+import { PiUserListBold } from "react-icons/pi";
+import { GrUserWorker } from "react-icons/gr";
 
 export enum Rols {
   admin = "admin",
@@ -28,6 +31,36 @@ export const navigationItemsDashboard: NavItem[] = [
     path: "/dashboard",
     rols: [Rols.admin, Rols.user],
     Icon: TbLayoutDashboardFilled,
+  },
+  {
+    name: "Students",
+    path: "/dashboard/students",
+    rols: [Rols.admin],
+    Icon: FaUsers,
+  },
+  {
+    name: "Subjects",
+    path: "/dashboard/subjects",
+    rols: [Rols.admin],
+    Icon: ImBooks,
+  },
+  {
+    name: "Student Note",
+    path: "/dashboard/student_note",
+    rols: [Rols.admin],
+    Icon: PiUserListBold,
+  },
+  {
+    name: "Careers",
+    path: "/dashboard/careers",
+    rols: [Rols.admin],
+    Icon: GrUserWorker,
+  },
+  {
+    name: "Students Ballot",
+    path: "/dashboard/students_ballot",
+    rols: [Rols.admin],
+    Icon: MdBallot,
   },
   {
     name: "Users",
