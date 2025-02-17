@@ -9,8 +9,8 @@ export interface SchoolYearRes {
 
 export interface SchoolYear {
   id: number;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date: string;
   name: string;
 }
 
@@ -51,7 +51,7 @@ export const updateSchoolYear = async (
   }
 };
 
-export const deleteCareer = async (id: number) => {
+export const deleteSchoolYear = async (id: number) => {
   try {
     const response = await apiAuth.delete(`school_year/${id}/`);
 

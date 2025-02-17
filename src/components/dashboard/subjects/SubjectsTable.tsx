@@ -74,11 +74,6 @@ const SubjectsTable = () => {
 
     Object.entries(filters).forEach(([key, value]) => {
       if (value && value !== "") {
-        if (key === "tcp2_required") {
-          console.log(key);
-          console.log(value);
-        }
-
         params.set(key, value + "");
       }
     });
@@ -155,7 +150,7 @@ const SubjectsTable = () => {
             title="Adicionar"
             icon={TbPlaylistAdd}
             className="btn1"
-            to="students/add"
+            to="subject/add"
           />
         </div>
       </div>
