@@ -9,7 +9,7 @@ export interface StudentsRes {
 }
 
 export interface Student {
-  id: number;
+  id?: number;
   is_approved: boolean;
   ci: string;
   address: string;

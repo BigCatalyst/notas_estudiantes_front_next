@@ -9,7 +9,7 @@ export interface CareersRes {
 }
 
 export interface Career {
-  id: number;
+  id?: number;
   amount: number;
   name: string;
 }
