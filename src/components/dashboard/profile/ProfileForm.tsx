@@ -8,13 +8,14 @@ import * as z from "zod";
 import { useState } from "react";
 import { State, updateProfileSuccess } from "@/redux/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { update } from "@/services/api/user";
+import { updUser } from "@/services/api/user";
 import { User } from "@/services/Types";
 import { redirect, useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
 import Buttom from "@/components/ui/buttom/Buttom";
 import { TbEdit } from "react-icons/tb";
+import ApiService from "@/services/ApiService";
 
 // Esquema de validación
 const formSchema = z.object({
@@ -64,7 +65,7 @@ export function ProfileForm() {
       // Simular llamada API
       //   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const res = await update({
+      const res = await ApiService.updUser(user?.id, {
         id: user && user.id,
         first_name: data.first_name,
         last_name: data.last_name,

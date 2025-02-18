@@ -15,10 +15,12 @@ export interface Subject {
   tcp2_required: boolean;
 }
 
-export const subjects = async (query: string): Promise<Subject | undefined> => {
+export const subjects = async (
+  query: string
+): Promise<SubjectsRes | undefined> => {
   try {
     const response = await apiAuth.get(`subjects/?${query}`);
-    const data: Subject = response.data;
+    const data: SubjectsRes = response.data;
     return data;
   } catch (error) {
     return Promise.reject(error);

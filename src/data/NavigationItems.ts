@@ -6,6 +6,7 @@ import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { ImBooks } from "react-icons/im";
 import { PiUserListBold } from "react-icons/pi";
 import { GrUserWorker } from "react-icons/gr";
+import { FaSchoolFlag } from "react-icons/fa6";
 
 export enum Rols {
   admin = "admin",
@@ -61,6 +62,12 @@ export const navigationItemsDashboard: NavItem[] = [
     path: "/dashboard/students_ballot",
     rols: [Rols.admin],
     Icon: MdBallot,
+  },
+  {
+    name: "School Year",
+    path: "/dashboard/school_year",
+    rols: [Rols.admin],
+    Icon: FaSchoolFlag,
   },
   {
     name: "Users",
