@@ -168,8 +168,8 @@ const SchoolYearTable = () => {
           onChange={(e) => handleFilterChange("name__contains", e.target.value)}
         />
 
-        <div className="mt-1 p-2 flex items-center justify-center w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 gap-7">
-          <label htmlFor="start_date" className="font-bold">
+        <div className="mt-1 p-2 flex items-center justify-start w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 gap-7">
+          <label htmlFor="start_date" className="text-gray-500">
             Fecha Inicial:
           </label>
           <input
@@ -178,6 +178,9 @@ const SchoolYearTable = () => {
             onChange={(e) =>
               handleFilterChange("start_date__gte", e.target.value)
             }
+            className={`${
+              !filters.start_date__gte ? "text-transparent" : "text-gray-800"
+            }`}
           />
         </div>
 

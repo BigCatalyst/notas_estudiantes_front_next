@@ -56,7 +56,7 @@ export const updateStudentNote = async (
   }
 };
 
-export const deleteCareer = async (id: number) => {
+export const deleteStudentNote = async (id: number) => {
   try {
     const response = await apiAuth.delete(`student_note/${id}/`);
 
