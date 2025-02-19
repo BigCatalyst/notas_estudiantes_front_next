@@ -150,7 +150,7 @@ const SubjectsTable = () => {
             title="Adicionar"
             icon={TbPlaylistAdd}
             className="btn1"
-            to="subject/add"
+            to="subjects/add"
           />
         </div>
       </div>

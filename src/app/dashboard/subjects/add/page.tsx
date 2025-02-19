@@ -1,5 +1,11 @@
+import AddSubjects from "@/components/dashboard/subjects/AddSubjects";
+
 const Add = () => {
-  return <div>Add</div>;
+  return (
+    <div>
+      <AddSubjects />
+    </div>
+  );
 };
 
 export default Add;

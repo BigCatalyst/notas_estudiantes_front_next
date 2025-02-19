@@ -1,5 +1,11 @@
+import AddCareer from "@/components/dashboard/careers/AddCareer";
+
 const Add = () => {
-  return <div>Add</div>;
+  return (
+    <div>
+      <AddCareer />
+    </div>
+  );
 };
 
 export default Add;

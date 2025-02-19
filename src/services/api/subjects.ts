@@ -10,7 +10,7 @@ export interface SubjectsRes {
 
 export interface Subject {
   id?: number;
-  grade: number;
+  grade: string;
   name: string;
   tcp2_required: boolean;
 }
