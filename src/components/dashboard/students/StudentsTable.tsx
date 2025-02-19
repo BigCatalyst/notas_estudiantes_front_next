@@ -283,7 +283,7 @@ const StudentsTable = () => {
                   <td className="p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
-                        item.sex
+                        item.sex === "M"
                           ? "bg-green-100 text-green-800"
                           : "bg-red-100 text-red-800"
                       }`}
@@ -300,7 +300,7 @@ const StudentsTable = () => {
                     {item.is_dropped_out === true ? (
                       <BiCheckCircle className="w-5 h-5 text-green-700" />
                     ) : (
-                      <ImRadioUnchecked className="w-5 h-5 text-red-700" />
+                      <ImRadioUnchecked className="w-4 h-4 text-red-700" />
                     )}
                   </td>
 
