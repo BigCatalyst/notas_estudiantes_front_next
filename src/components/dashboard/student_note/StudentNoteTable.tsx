@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
@@ -25,6 +26,9 @@ const StudentNoteTable = () => {
   const [initLoadData, setInitLoadData] = useState(true);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [IdDel, setIdDel] = useState(-1);
+
+  // const [stident, setStident] = useState("");
+  // const [subject, setSubject] = useState("");
 
   const [filters, setFilters] = useState<{
     asc__gte?: number;
@@ -98,7 +102,33 @@ const StudentNoteTable = () => {
         if (initLoadData) setInitLoadData(false);
         console.log("---------------------------------");
         console.log(data);
+
+        // let listResolver: StudentNote[];
+        // listResolver = [];
+
+        // const listPromiseRes = data.results.map((val) => {
+        //   const estudiante_asignatura = async () => {
+        //     let studentName = "";
+        //     let subjectName = "";
+        //     apiAuth.get("students/" + val.student).then((res) => {
+        //       studentName = res.data.first_name;
+        //       apiAuth.get("subjects/" + val.subject).then((res) => {
+        //         subjectName = res.data.name;
+        //       });
+        //     });
+        //     const rowStudentNote: StudentNote = {
+        //       ...val,
+        //       student: studentName,
+        //       subject: subjectName,
+        //     };
+
+        //     return rowStudentNote;
+        //   };
+        //   estudiante_asignatura().then((val) => listResolver.push(val));
+        // });
+
         setList(data.results.reverse());
+        // if (listPromiseRes) setList(listResolver.reverse());
         if (!pagesSize) setTotalPages(Math.ceil(data.count / 10));
         else setTotalPages(Math.ceil(data.count / pagesSize));
       }
