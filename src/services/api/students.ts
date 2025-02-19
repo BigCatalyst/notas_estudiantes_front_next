@@ -13,7 +13,7 @@ export interface Student {
   is_approved: boolean;
   ci: string;
   address: string;
-  grade: number;
+  grade: string;
   last_name: string;
   first_name: string;
   registration_number: string;
