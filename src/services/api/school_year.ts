@@ -8,7 +8,7 @@ export interface SchoolYearRes {
 }
 
 export interface SchoolYear {
-  id: number;
+  id?: number;
   start_date: string;
   end_date: string;
   name: string;

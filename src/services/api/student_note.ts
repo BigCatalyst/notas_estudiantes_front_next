@@ -16,7 +16,7 @@ export interface StudentNote {
   tcp2: number;
   student: string;
   subject: string;
-  school_year: number;
+  school_year: string;
 }
 
 export const studentsNote = async (
