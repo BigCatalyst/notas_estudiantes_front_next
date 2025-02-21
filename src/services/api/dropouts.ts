@@ -4,13 +4,13 @@ export interface DropoutsRes {
   count: number;
   next: string;
   previous: string;
-  results: Result[];
+  results: Dropout[];
 }
 
-export interface Result {
+export interface Dropout {
   id: number;
   student: StudentDropouts;
-  date: Date;
+  date: string;
   municipality: string;
   province: string;
   school: string;
@@ -47,15 +47,15 @@ export interface AddDropoutData {
   municipality: string;
   province: string;
   school: string;
-  student: number;
+  student: string;
 }
 
 export const addDropout = async (
   value: AddDropoutData
-): Promise<Result | undefined> => {
+): Promise<Dropout | undefined> => {
   try {
     const response = await apiAuth.post(`dropouts/`, value);
-    const data: Result = response.data;
+    const data: Dropout = response.data;
     return data;
   } catch (error) {
     return Promise.reject(error);
@@ -65,10 +65,10 @@ export const addDropout = async (
 export const updateDropout = async (
   id: string,
   value: AddDropoutData
-): Promise<Result | undefined> => {
+): Promise<Dropout | undefined> => {
   try {
     const response = await apiAuth.patch(`dropouts/${id}/`, value);
-    const data: Result = response.data;
+    const data: Dropout = response.data;
     return data;
   } catch (error) {
     return Promise.reject(error);

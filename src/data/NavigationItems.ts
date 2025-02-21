@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
 import { HiUsers } from "react-icons/hi2";
-import { FaUserCog, FaUsers } from "react-icons/fa";
+import { FaGraduationCap, FaUserCog, FaUsers } from "react-icons/fa";
 import { MdBallot, MdLogout } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { ImBooks } from "react-icons/im";
@@ -69,6 +69,12 @@ export const navigationItemsDashboard: NavItem[] = [
     path: "/dashboard/school_year",
     rols: [Rols.admin],
     Icon: FaSchoolFlag,
+  },
+  {
+    name: "Dropouts",
+    path: "/dashboard/dropouts",
+    rols: [Rols.admin],
+    Icon: FaGraduationCap,
   },
   {
     name: "Users",

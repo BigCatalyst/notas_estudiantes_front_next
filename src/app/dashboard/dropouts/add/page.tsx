@@ -1,5 +1,12 @@
+import AddDropout from "@/components/dashboard/dropouts/AddDropout";
 import React from "react";
 
-export const AddDropout = () => {
-  return <div>AddDropout</div>;
+const Add = () => {
+  return (
+    <div>
+      <AddDropout />
+    </div>
+  );
 };
+
+export default Add;

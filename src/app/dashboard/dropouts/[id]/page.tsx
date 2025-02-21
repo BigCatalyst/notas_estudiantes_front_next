@@ -1,5 +1,12 @@
+import UpdateDropout from "@/components/dashboard/dropouts/UpdateDropout";
 import React from "react";
 
-export const UpdateDropout = () => {
-  return <div>UpdateDropout</div>;
+const Update = () => {
+  return (
+    <div>
+      <UpdateDropout />
+    </div>
+  );
 };
+
+export default Update;
