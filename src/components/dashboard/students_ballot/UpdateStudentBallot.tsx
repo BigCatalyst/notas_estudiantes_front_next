@@ -77,6 +77,7 @@ const UpdateStudentBallot = () => {
   useEffect(() => {
     const updateEntity = async () => {
       const res = await ApiService.getBallot(id);
+      console.log(res);
       if (res) {
         setValue("career1", res[0]);
         setValue("career2", res[1]);

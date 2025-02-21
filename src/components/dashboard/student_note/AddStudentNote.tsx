@@ -68,14 +68,26 @@ const AddStudentNote = () => {
           setStudents(
             studentsData.results.map((student: any) => ({
               id: student.id,
-              name: `${student.first_name} ${student.last_name}`,
+              name: `${student.first_name} ${student.last_name} | Grado: ${
+                student.grade === 9
+                  ? "9no"
+                  : student.grade === 8
+                  ? "8vo"
+                  : "7mo"
+              }`,
             }))
           );
         if (subjectsData)
           setSubjects(
             subjectsData.results.map((subject: any) => ({
               id: subject.id,
-              name: subject.name,
+              name: `${subject.name} | Grado: ${
+                subject.grade === 9
+                  ? "9no"
+                  : subject.grade === 8
+                  ? "8vo"
+                  : "7mo"
+              }`,
             }))
           );
         if (schoolYearsData)
