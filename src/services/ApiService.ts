@@ -7,6 +7,7 @@ import * as school_yearService from "./api/school_year";
 import * as student_noteService from "./api/student_note";
 import * as students_ballotService from "./api/students_ballot";
 import * as subjectsService from "./api/subjects";
+import * as dropoutsService from "./api/dropouts";
 
 export default {
   ...authService,
@@ -17,4 +18,5 @@ export default {
   ...student_noteService,
   ...students_ballotService,
   ...subjectsService,
+  ...dropoutsService,
 };
