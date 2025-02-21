@@ -86,23 +86,10 @@ export const deleteDropout = async (id: number) => {
 export interface DropoutsGetRes {
   id: number;
   student: Student;
-  approved_school_course: ApprovedSchoolCourse;
-  career: Career;
-}
-
-export interface ApprovedSchoolCourse {
-  id: number;
-  student: Student;
-  school_year: SchoolYear;
-  date: Date;
-  grade: number;
-}
-
-export interface SchoolYear {
-  id: number;
-  start_date: Date;
-  end_date: Date;
-  name: string;
+  date: string;
+  municipality: string;
+  province: string;
+  school: string;
 }
 
 export interface Student {
