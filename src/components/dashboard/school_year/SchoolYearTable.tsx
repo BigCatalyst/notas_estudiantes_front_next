@@ -36,7 +36,7 @@ const SchoolYearTable = () => {
     // Lógica para editar
     console.log(value);
 
-    redirect(`/dashboard/subjects/${value.id}`);
+    redirect(`/dashboard/school_year/${value.id}`);
   };
 
   const handleDelete = (id: number) => {

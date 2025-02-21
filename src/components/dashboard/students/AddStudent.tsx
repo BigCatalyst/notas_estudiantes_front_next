@@ -27,9 +27,9 @@ const studentSchema = z.object({
   first_name: z.string().min(1, "Nombre es requerido"),
   registration_number: z.string().min(1, "Número de matrícula es requerido"),
   sex: z.string().min(1, "Sexo es requerido"),
-  is_approved: z.boolean().default(false),
-  is_graduated: z.boolean().default(false),
-  is_dropped_out: z.boolean().default(false),
+  // is_approved: z.boolean().default(false),
+  // is_graduated: z.boolean().default(false),
+  // is_dropped_out: z.boolean().default(false),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -48,9 +48,9 @@ const AddStudent = () => {
   } = useForm<StudentFormData>({
     resolver: zodResolver(studentSchema),
     defaultValues: {
-      is_approved: false,
-      is_graduated: false,
-      is_dropped_out: false,
+      // is_approved: false,
+      // is_graduated: false,
+      // is_dropped_out: false,
     },
     mode: "onChange",
   });
@@ -235,7 +235,8 @@ const AddStudent = () => {
         </div>
 
         {/* Checkboxes para estado del estudiante */}
-        <div className="flex flex-col space-y-2">
+
+        {/*  <div className="flex flex-col space-y-2">
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -262,7 +263,7 @@ const AddStudent = () => {
             />
             <label className="ml-2 text-sm text-gray-700">Abandonó</label>
           </div>
-        </div>
+        </div> */}
 
         {/* Mensajes de éxito o error */}
         <MessageForm

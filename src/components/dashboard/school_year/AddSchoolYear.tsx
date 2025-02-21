@@ -50,7 +50,7 @@ const AddSchoolYear = () => {
       if (res) {
         console.log(res);
         setIsSuccess(true);
-        router.push("/dashboard/school-years");
+        router.push("/dashboard/school_year");
       }
     } catch (error: any) {
       console.log(error);
@@ -110,7 +110,7 @@ const AddSchoolYear = () => {
           {/* Fecha de Fin */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Fecha de Fin${!start_date && " text-transparent"}
+              Fecha de Fin
             </label>
             <input
               type="date"

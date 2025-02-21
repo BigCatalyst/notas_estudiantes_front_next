@@ -10,8 +10,9 @@ import { FaSchoolFlag } from "react-icons/fa6";
 
 export enum Rols {
   admin = "admin",
-  user = "user",
   student = "student",
+  profesor = "profesor",
+  secretary = "secretary",
 }
 
 interface NavItem {
@@ -30,7 +31,7 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Dashboard",
     path: "/dashboard",
-    rols: [Rols.admin, Rols.user],
+    rols: [Rols.admin],
     Icon: TbLayoutDashboardFilled,
   },
   {
@@ -78,13 +79,13 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Profile",
     path: "/dashboard/profile",
-    rols: [Rols.admin, Rols.user],
+    rols: [Rols.admin],
     Icon: FaUserCog,
   },
   {
     name: "Logout",
     path: "/logout",
-    rols: [Rols.admin, Rols.user],
+    rols: [Rols.admin],
     Icon: MdLogout,
   },
 ];

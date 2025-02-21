@@ -331,9 +331,9 @@ const StudentNoteTable = () => {
                   <td className="p-3">{item.final_exam}</td>
                   <td className="p-3">{item.tcp1}</td>
                   <td className="p-3">{item.tcp2}</td>
-                  <td className="p-3">{item.student}</td>
-                  <td className="p-3">{item.subject}</td>
-                  <td className="p-3">{item.school_year}</td>
+                  <td className="p-3">{item.student.first_name}</td>
+                  <td className="p-3">{item.subject.name}</td>
+                  <td className="p-3">{item.school_year.name}</td>
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => handleEdit(item)}

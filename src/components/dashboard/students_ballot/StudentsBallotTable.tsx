@@ -3,7 +3,7 @@
 "use client";
 
 import Buttom from "@/components/ui/buttom/Buttom";
-import Modal from "@/components/ui/modal/Modal";
+// import Modal from "@/components/ui/modal/Modal";
 import { Ballot } from "@/services/api/students_ballot";
 import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";
@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { BsDatabaseFillX } from "react-icons/bs";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
-import { MdDeleteForever, MdEdit } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 
@@ -23,8 +23,8 @@ const StudentsBallotTable = () => {
   const [loading, setLoading] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [IdDel, setIdDel] = useState(-1);
+  // const [showModal, setShowModal] = useState<boolean>(false);
+  // const [IdDel, setIdDel] = useState(-1);
 
   const [filters, setFilters] = useState<{
     address__contains?: string;
@@ -44,21 +44,21 @@ const StudentsBallotTable = () => {
     redirect(`/dashboard/students_ballot/${value.id}`);
   };
 
-  const handleDelete = (id: number) => {
-    // Lógica para eliminar
-    setShowModal(true);
-    setIdDel(id);
-  };
+  // const handleDelete = (id: number) => {
+  //   // Lógica para eliminar
+  //   setShowModal(true);
+  //   setIdDel(id);
+  // };
 
-  const deleteEntity = async () => {
-    try {
-      if (IdDel !== -1) {
-        await ApiService.deleteStudent(IdDel).then(() => fetchEntity());
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const deleteEntity = async () => {
+  //   try {
+  //     if (IdDel !== -1) {
+  //       await ApiService.deleteStudent(IdDel).then(() => fetchEntity());
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
@@ -238,25 +238,26 @@ const StudentsBallotTable = () => {
         </select>
       </div>
       {/* Modal */}
-      <Modal
+      {/* <Modal
         showModal={showModal}
         setShowModal={setShowModal}
         action={deleteEntity}
-      />
+      /> */}
       {/* Tabla */}
       <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
-              <th className="p-3 text-left">Aprobado</th>
+              {/* <th className="p-3 text-left">Aprobado</th> */}
               <th className="p-3 text-left">Boleta</th>
               <th className="p-3 text-left">CI</th>
-              <th className="p-3 text-left">Grado</th>
+              {/* <th className="p-3 text-left">Grado</th> */}
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">Apllido</th>
-              <th className="p-3 text-left">Registro</th>
+              {/* <th className="p-3 text-left">Registro</th>
               <th className="p-3 text-left">Sexo</th>
-              <th className="p-3 text-left">Graduado</th>
+              <th className="p-3 text-left">Graduado</th> */}
+              <th className="p-3 text-left">Acciones</th>
             </tr>
           </thead>
           <tbody className="*:focus-within:bg-gray-200 ">
@@ -265,7 +266,7 @@ const StudentsBallotTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
-                  <td className="p-3">
+                  {/* <td className="p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
                         item.is_approved
@@ -275,24 +276,37 @@ const StudentsBallotTable = () => {
                     >
                       {item.is_approved ? "Aprobado" : "Desaprobado"}
                     </span>
-                  </td>
+                  </td> */}
 
-                  <td className="p-3">
+                  <td className="p-3 flex flex-col gap-1.5">
+                    {/* {item.ballot &&
+                      item.ballot.map((val: any) => val).join(", ")} */}
                     {item.ballot &&
-                      item.ballot.map((val: any) => val).join(", ")}
+                      item.ballot.map((val, index) => (
+                        <span
+                          className={`${
+                            index + 1 !== item.ballot.length &&
+                            "border-b border-b-gray-300"
+                          } `}
+                          key={index}
+                        >
+                          {`${index + 1}. `}
+                          {val}
+                        </span>
+                      ))}
                   </td>
 
                   <td className="p-3">{item.ci}</td>
 
-                  <td className="p-3">{item.grade}</td>
+                  {/* <td className="p-3">{item.grade}</td> */}
 
                   <td className="p-3">{item.first_name}</td>
 
                   <td className="p-3">{item.last_name}</td>
 
-                  <td className="p-3">{item.registration_number}</td>
+                  {/* <td className="p-3">{item.registration_number}</td> */}
 
-                  <td className="p-3">
+                  {/* <td className="p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
                         item.sex
@@ -302,11 +316,11 @@ const StudentsBallotTable = () => {
                     >
                       {item.sex === "M" ? "Masculino" : "Femenino"}
                     </span>
-                  </td>
+                  </td> */}
 
-                  <td className="p-3">
+                  {/* <td className="p-3">
                     {item.is_graduated === true ? "Graduado" : "No Graduado"}
-                  </td>
+                  </td> */}
 
                   <td className="p-3 flex gap-2">
                     <button
@@ -320,7 +334,7 @@ const StudentsBallotTable = () => {
                       </span>
                     </button>
 
-                    <button
+                    {/* <button
                       onClick={() => {
                         if (item.id) handleDelete(item.id);
                       }}
@@ -331,7 +345,7 @@ const StudentsBallotTable = () => {
                         <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
                         Eliminar
                       </span>
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

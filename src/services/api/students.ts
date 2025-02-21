@@ -10,7 +10,7 @@ export interface StudentsRes {
 
 export interface Student {
   id?: number;
-  is_approved: boolean;
+  is_approved?: boolean;
   ci: string;
   address: string;
   grade: string;
@@ -18,8 +18,8 @@ export interface Student {
   first_name: string;
   registration_number: string;
   sex: string;
-  is_graduated: boolean;
-  is_dropped_out: boolean;
+  is_graduated?: boolean;
+  is_dropped_out?: boolean;
 }
 
 export const students = async (
@@ -47,7 +47,7 @@ export const addStudent = async (
 };
 
 export const updateStudent = async (
-  id: number,
+  id: string,
   value: Student
 ): Promise<Student | undefined> => {
   try {
@@ -63,6 +63,18 @@ export const deleteStudent = async (id: number) => {
   try {
     const response = await apiAuth.delete(`students/${id}/`);
     const data = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getStudent = async (id: string): Promise<Student | undefined> => {
+  try {
+    const response = await apiAuth.get(`students/${id}/`);
+
+    const data: Student = response.data;
+
     return data;
   } catch (error) {
     return Promise.reject(error);

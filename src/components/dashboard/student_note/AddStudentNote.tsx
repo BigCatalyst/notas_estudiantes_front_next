@@ -14,11 +14,27 @@ import MessageForm from "@/components/ui/messageForm/MessageForm";
 
 // Esquema de validación Zod
 const studentNoteSchema = z.object({
-  asc: z.number().min(0, "ASC debe ser al menos 0"),
-  final_grade: z.number().min(0, "Nota final debe ser al menos 0"),
-  final_exam: z.number().min(0, "Examen final debe ser al menos 0"),
-  tcp1: z.number().min(0, "TCP1 debe ser al menos 0"),
-  tcp2: z.number().min(0, "TCP2 debe ser al menos 0"),
+  asc: z
+    .number({ message: "Asc no puede estar vacío" })
+    .min(0, "ASC debe ser al menos 0")
+    .max(10, "ASC debe ser maximo 10"),
+  // final_grade: z
+  //   .number({ message: "La Nota Final no puede estar vacía" })
+  //   .min(0, "La Nota Final debe ser al menos 0")
+  //   .max(100, "La Nota Final debe ser maximo 100"),
+  final_exam: z
+    .number({ message: "El Examen Final no puede estar vacío" })
+    .min(0, "El Examen Final debe ser al menos 0")
+    .max(100, "El Examen Final debe ser maximo 100"),
+  tcp1: z
+    .number({ message: "El TCP1 no puede estar vacío" })
+    .min(0, "El TCP1 debe ser al menos 0")
+    .max(100, "El TCP1 debe ser maximo 100"),
+  tcp2: z
+    .number()
+    .min(0, "El TCP2 debe ser al menos 0")
+    .max(100, "El TCP2 debe ser maximo 100")
+    .optional(),
   student: z.string().min(1, "Estudiante es requerido"),
   subject: z.string().min(1, "Materia es requerida"),
   school_year: z.string().min(1, "Año escolar es requerido"),
@@ -84,6 +100,7 @@ const AddStudentNote = () => {
     setValue,
   } = useForm<StudentNoteFormData>({
     resolver: zodResolver(studentNoteSchema),
+    defaultValues: { tcp2: 0, final_exam: 0 },
     mode: "onChange",
   });
 
@@ -146,25 +163,6 @@ const AddStudentNote = () => {
             />
             {errors.asc && (
               <p className="text-red-500 text-sm mt-1">{errors.asc.message}</p>
-            )}
-          </div>
-
-          {/* Final Grade */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Nota Final
-            </label>
-            <input
-              type="number"
-              {...register("final_grade", { valueAsNumber: true })}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.final_grade ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.final_grade && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.final_grade.message}
-              </p>
             )}
           </div>
 

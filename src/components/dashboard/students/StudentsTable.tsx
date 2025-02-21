@@ -10,8 +10,11 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
 import { BsDatabaseFillX } from "react-icons/bs";
-import { ImRadioUnchecked } from "react-icons/im";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import {
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoMdCloseCircle,
+} from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
@@ -43,7 +46,7 @@ const StudentsTable = () => {
     // Lógica para editar
     console.log(value);
 
-    redirect(`/dashboard/users/${value.id}`);
+    redirect(`/dashboard/students/${value.id}`);
   };
 
   const handleDelete = (id: number) => {
@@ -300,7 +303,7 @@ const StudentsTable = () => {
                     {item.is_dropped_out === true ? (
                       <BiCheckCircle className="w-5 h-5 text-green-700" />
                     ) : (
-                      <ImRadioUnchecked className="w-4 h-4 text-red-700" />
+                      <IoMdCloseCircle className="w-5 h-5 text-red-700" />
                     )}
                   </td>
 

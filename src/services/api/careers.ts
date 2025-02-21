@@ -37,7 +37,7 @@ export const addCareer = async (value: Career): Promise<Career | undefined> => {
 };
 
 export const updateCareer = async (
-  id: number,
+  id: string,
   value: Career
 ): Promise<Career | undefined> => {
   try {
@@ -54,6 +54,18 @@ export const deleteCareer = async (id: number) => {
     const response = await apiAuth.delete(`careers/${id}/`);
 
     const data = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getCareer = async (id: string): Promise<Career | undefined> => {
+  try {
+    const response = await apiAuth.get(`careers/${id}/`);
+
+    const data: Career = response.data;
 
     return data;
   } catch (error) {

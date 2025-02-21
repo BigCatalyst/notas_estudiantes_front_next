@@ -47,7 +47,7 @@ const CareersTable = () => {
   const deleteEntity = async () => {
     try {
       if (IdDel !== -1) {
-        await ApiService.deleteSubject(IdDel).then(() => fetchEntity());
+        await ApiService.deleteCareer(IdDel).then(() => fetchEntity());
       }
     } catch (error) {
       console.log(error);

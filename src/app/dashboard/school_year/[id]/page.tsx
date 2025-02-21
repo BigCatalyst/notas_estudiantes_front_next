@@ -1,5 +1,11 @@
+import UpdateSchoolYear from "@/components/dashboard/school_year/UpdateSchoolYear";
+
 const Update = () => {
-  return <div>Update</div>;
+  return (
+    <div>
+      <UpdateSchoolYear />
+    </div>
+  );
 };
 
 export default Update;

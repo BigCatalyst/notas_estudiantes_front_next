@@ -39,7 +39,7 @@ export const addSchoolYear = async (
 };
 
 export const updateSchoolYear = async (
-  id: number,
+  id: string,
   value: SchoolYear
 ): Promise<SchoolYear | undefined> => {
   try {
@@ -56,6 +56,18 @@ export const deleteSchoolYear = async (id: number) => {
     const response = await apiAuth.delete(`school_year/${id}/`);
 
     const data = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getSchoolYear = async (id: string): Promise<SchoolYear | undefined> => {
+  try {
+    const response = await apiAuth.get(`school_year/${id}/`);
+
+    const data: SchoolYear = response.data;
 
     return data;
   } catch (error) {
