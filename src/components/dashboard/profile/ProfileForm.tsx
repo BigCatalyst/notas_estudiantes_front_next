@@ -6,13 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
-import { TbEdit, TbLoader2 } from "react-icons/tb";
 import { State, updateProfileSuccess } from "@/redux/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { update } from "@/services/api/user";
+import { updUser } from "@/services/api/user";
 import { User } from "@/services/Types";
 import { redirect, useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";
+import MessageForm from "@/components/ui/messageForm/MessageForm";
+import Buttom from "@/components/ui/buttom/Buttom";
+import { TbEdit } from "react-icons/tb";
+import ApiService from "@/services/ApiService";
 
 // Esquema de validación
 const formSchema = z.object({
@@ -62,7 +65,7 @@ export function ProfileForm() {
       // Simular llamada API
       //   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const res = await update({
+      const res = await ApiService.updUser(user?.id, {
         id: user && user.id,
         first_name: data.first_name,
         last_name: data.last_name,
@@ -106,14 +109,21 @@ export function ProfileForm() {
           <p className="text-gray-600 mt-1">
             Actualiza tu información personal
           </p>
-          <div className="absolute right-10 top-3">
-            <button
+          <div className="absolute right-3 top-3">
+            {/* <button
               className="btn1"
               onClick={() => redirect("/dashboard/profile")}
             >
               <FaUser className="w-4 h-4" />
               Profile
-            </button>
+            </button> */}
+
+            <Buttom
+              title="Profile"
+              className="btn1"
+              icon={FaUser}
+              to="/dashboard/profile"
+            />
           </div>
         </div>
 
@@ -198,34 +208,16 @@ export function ProfileForm() {
             </div>
           </div>
 
-          {/* Mensajes de estado */}
-          {error1 && (
-            <div className="p-4 bg-red-50 rounded-lg">
-              <p className="text-red-700 text-sm">Ha ocurrido un Error</p>
-            </div>
-          )}
-
-          {isSuccess && (
-            <div className="p-4 bg-green-50 rounded-lg">
-              <p className="text-green-700 text-sm">
-                ¡Cambios guardados exitosamente!
-              </p>
-            </div>
-          )}
+          <MessageForm isSuccess={isSuccess} error={error1} />
 
           {/* Botón de enviar */}
-          <button type="submit" disabled={isLoading} className="btn1">
-            {isLoading ? (
-              <span className="flex items-center justify-center">
-                <TbLoader2 className="animate-spin mr-2 h-4 w-4" />
-                Guardando...
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-2">
-                <TbEdit className="h-5 w-5" /> Guardar cambios
-              </span>
-            )}
-          </button>
+          <Buttom
+            type="submit"
+            isLoading={isLoading}
+            title="Guardar cambios"
+            className="btn1"
+            icon={TbEdit}
+          />
         </form>
       </div>
     </div>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import Buttom from "@/components/ui/buttom/Buttom";
 import { State } from "@/redux/features/authSlice";
-import { redirect } from "next/navigation";
 import { FaUserEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
@@ -13,13 +13,20 @@ function Profile() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900">User Profile</h1>
-        <button
+        {/* <button
           className="btn"
           onClick={() => redirect("/dashboard/profile/update")}
         >
           <FaUserEdit className="w-5.5 h-5.5" />
           Edit Profile
-        </button>
+        </button> */}
+
+        <Buttom
+          title="Edit Profile"
+          className="btn1"
+          icon={FaUserEdit}
+          to="/dashboard/profile/update"
+        />
       </div>
 
       {/* Contenido principal */}

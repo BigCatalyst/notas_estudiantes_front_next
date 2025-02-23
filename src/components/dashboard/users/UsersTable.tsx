@@ -9,9 +9,11 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiLoaderLine } from "react-icons/ri";
 import { BsDatabaseFillX } from "react-icons/bs";
 import { IoFilterSharp } from "react-icons/io5";
-import { TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { redirect } from "next/navigation";
+import Buttom from "@/components/ui/buttom/Buttom";
+import Modal from "@/components/ui/modal/Modal";
 
 export default function UsersTable() {
   const [users, setUsers] = useState<User[]>([]);
@@ -21,6 +23,9 @@ export default function UsersTable() {
   const [loading, setLoading] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [userIdDel, setUserIdDel] = useState(-1);
+
   const [filters, setFilters] = useState<{
     email__contains?: string;
     first_name__contains?: string;
@@ -34,13 +39,24 @@ export default function UsersTable() {
   const handleEdit = (user: User) => {
     // Lógica para editar
     console.log(user);
-    const userParam = JSON.stringify(user);
-    redirect(`dashboard/users/${userParam}`);
+
+    redirect(`/dashboard/users/${user.id}`);
   };
 
   const handleDelete = (userId: number) => {
     // Lógica para eliminar
-    console.log(userId);
+    setShowModal(true);
+    setUserIdDel(userId);
+  };
+
+  const deleteUser = async () => {
+    try {
+      if (userIdDel !== -1) {
+        await ApiService.delUser(userIdDel).then(() => fetchUsers());
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const buildQueryString = () => {
@@ -110,7 +126,7 @@ export default function UsersTable() {
         <div className="relative inline-block group z-10">
           <div className="mb-5">
             <button className="btn1" onClick={() => setOpenFilter(!openFilter)}>
-              <IoFilterSharp className="w-7 h-7 text-gray-200" />
+              <IoFilterSharp className="w-6 h-6 text-gray-200" />
             </button>
           </div>
 
@@ -122,18 +138,22 @@ export default function UsersTable() {
 
         {/* Exportar */}
         <div className="mb-5">
-          <button className="btn1">
+          {/* <button className="btn1">
             <TbTableExport className="w-7 h-7 text-gray-200" />
             <span>Exportar</span>
-          </button>
+          </button> */}
+
+          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
         </div>
 
         {/* Adicionar */}
         <div className="mb-5">
-          <button className="btn1" onClick={() => redirect("users/add")}>
-            <TbPlaylistAdd className="w-7 h-7 text-gray-200" />
-            <span>Adicionar</span>
-          </button>
+          <Buttom
+            title="Adicionar"
+            icon={TbPlaylistAdd}
+            className="btn1"
+            to="users/add"
+          />
         </div>
       </div>
 
@@ -186,12 +206,19 @@ export default function UsersTable() {
         </select>
       </div>
 
+      {/* Modal */}
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        action={deleteUser}
+      />
+
       {/* Tabla */}
       <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
-              <th className="p-3 text-left">ID</th>
+              {/* <th className="p-3 text-left">ID</th> */}
               <th className="p-3 text-left">Usuario</th>
               <th className="p-3 text-left">Email</th>
               <th className="p-3 text-left">Nombre</th>
@@ -206,7 +233,7 @@ export default function UsersTable() {
               users &&
               users.map((user) => (
                 <tr key={user.id} className="border-b border-b-gray-300">
-                  <td className="p-3">{user.id}</td>
+                  {/* <td className="p-3">{user.id}</td> */}
                   <td className="p-3">{user.username}</td>
                   <td className="p-3">{user.email}</td>
                   <td className="p-3">{user.first_name}</td>
@@ -230,21 +257,24 @@ export default function UsersTable() {
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => handleEdit(user)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg"
+                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg group focus:bg-blue-400"
                     >
                       <span className="inline-flex items-center gap-1">
-                        <MdEdit />
+                        <MdEdit className="group-focus:hidden" />
+                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
                         Editar
                       </span>
                     </button>
+
                     <button
                       onClick={() => {
                         if (user.id) handleDelete(user.id);
                       }}
-                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg"
+                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg group focus:bg-red-400"
                     >
                       <span className="inline-flex items-center gap-1">
-                        <MdDeleteForever />
+                        <MdDeleteForever className="group-focus:hidden" />
+                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
                         Eliminar
                       </span>
                     </button>

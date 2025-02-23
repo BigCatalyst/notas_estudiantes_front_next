@@ -2,12 +2,16 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import "./style.css";
-import { redirect, usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { State } from "@/redux/features/authSlice";
 import { IoIosArrowDown } from "react-icons/io";
-import { navigationItemsDashboard } from "@/data/NavigationItems";
+import { navigationItemsDashboard, Rols } from "@/data/NavigationItems";
+import { PiWarning } from "react-icons/pi";
+import { GiCancel, GiConfirmed } from "react-icons/gi";
+import Buttom from "@/components/ui/buttom/Buttom";
+import ApiService from "@/services/ApiService";
 
 interface NavigationDashboardProps {
   children: React.ReactNode;
@@ -21,7 +25,45 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
 
   const pathname = usePathname();
 
+  const router = useRouter();
+
   const userAuth: State = useSelector((state: any) => state.auth);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleNo = () => {
+    redirect("/logout");
+  };
+
+  const handleSi = () => {
+    setShowModal(false);
+    redirect("dashboard/school_year/add");
+  };
+
+  useEffect(() => {
+    const verifySchoolYear = async () => {
+      try {
+        const res = await ApiService.schoolYears("");
+        if (
+          res?.results &&
+          res?.results.length > 0 &&
+          userAuth.user?.roles.find(
+            (rol) => rol === Rols.admin || rol === Rols.secretary
+          )
+        ) {
+          setShowModal(false);
+          router.push("/dashboard/school_year/add");
+        } else {
+          setShowModal(true);
+          router.push("/dashboard");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    verifySchoolYear();
+  }, []);
 
   useEffect(() => {
     if (!userAuth.isAuthenticated) redirect("/logout");
@@ -48,7 +90,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
   return (
     <>
       {userAuth.isAuthenticated ? (
-        <>
+        <div>
           <nav className="fixed top-0 z-50 w-full border-b border-gray-200 bg-gray-800 dark:border-gray-700">
             <div className="px-3 py-3 lg:px-5 lg:pl-3">
               <div className="flex items-center justify-between">
@@ -243,7 +285,55 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
               {children}
             </div>
           </div>
-        </>
+
+          {/* Modal */}
+          {showModal && (
+            <div className="fixed z-50 top-0 left-0 w-full h-full bg-gray-400/30 flex items-center justify-center">
+              <div className="bg-red-50 w-70 sm:w-100 py-7 px-3 shadow-lg rounded-md border-t-4 border-t-red-700 flex items-center justify-center flex-col gap-7">
+                <span className="inline-flex items-center gap-2 border-b-1 pb-1 border-b-red-200 w-full">
+                  <PiWarning className="text-red-700 w-12 h-12 animate-pulse" />
+                  <span className="text-red-900">
+                    {userAuth.user?.roles.find(
+                      (rol) => rol === Rols.admin || rol === Rols.secretary
+                    )
+                      ? "Debe crear un año escolar"
+                      : "No existe un Año Escolar"}
+                  </span>
+                </span>
+
+                <span className="inline-flex justify-center gap-7">
+                  {userAuth.user?.roles.find(
+                    (rol) => rol === Rols.admin || rol === Rols.secretary
+                  ) ? (
+                    <>
+                      <Buttom
+                        title="Si"
+                        className="btn1"
+                        icon={GiConfirmed}
+                        onClick={handleSi}
+                      />
+                      <Buttom
+                        title="No"
+                        className="btn1"
+                        icon={GiCancel}
+                        onClick={handleNo}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Buttom
+                        title="ok"
+                        className="btn1"
+                        icon={GiCancel}
+                        onClick={handleNo}
+                      />
+                    </>
+                  )}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
       ) : (
         <div></div>
       )}
