@@ -89,6 +89,12 @@ export const navigationItemsDashboard: NavItem[] = [
     Icon: FaGraduationCap,
   },
   {
+    name: "Aula Virtual",
+    path: "/dashboard/virtual_classroom_edition",
+    rols: [Rols.admin, Rols.profesor],
+    Icon: FaGraduationCap,
+  },
+  {
     name: "Usuarios",
     path: "/dashboard/users",
     rols: [Rols.admin],
