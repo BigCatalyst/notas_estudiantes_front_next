@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { redirect } from "next/navigation";
@@ -14,6 +15,7 @@ interface ButtomProps {
   type?: "submit" | "reset" | "button";
   to?: string;
   onClick?: (value: any) => void;
+  disable?: boolean;
 }
 
 const Buttom: FC<ButtomProps> = ({
@@ -25,22 +27,24 @@ const Buttom: FC<ButtomProps> = ({
   to,
   type,
   onClick,
+  disable,
 }) => {
   const [loading, setLoading] = useState(false);
   const [classNameSubmit, setclassNameSubmit] = useState("");
   const Icon = icon;
 
-  const handdleClick = () => {
+  const handdleClick = (e: any) => {
     setLoading(true);
     setclassNameSubmit("bg-slate-500");
     if (to) redirect(to);
+    if (onClick) onClick(e);
   };
 
   return (
     <>
       {isLoading !== undefined && (
         <button
-          disabled={isLoading}
+          disabled={isLoading || disable}
           className={className}
           type={type}
           onClick={onClick}
@@ -59,7 +63,7 @@ const Buttom: FC<ButtomProps> = ({
       )}
       {isLoading === undefined && (
         <button
-          disabled={loading}
+          disabled={loading || disable}
           className={className}
           onClick={handdleClick}
           style={{ backgroundColor: `${classNameSubmit && "#62748e"}` }}

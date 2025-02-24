@@ -1,5 +1,11 @@
+import UpdateSubjects from "@/components/dashboard/subjects/UpdateSubjects";
+
 const Update = () => {
-  return <div>Update</div>;
+  return (
+    <div>
+      <UpdateSubjects />
+    </div>
+  );
 };
 
 export default Update;

@@ -10,12 +10,20 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
 import { BsDatabaseFillX } from "react-icons/bs";
-import { ImRadioUnchecked } from "react-icons/im";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import {
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoMdCloseCircle,
+} from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import {
+  TbLoader2,
+  TbPlaylistAdd,
+  TbTableExport,
+  TbUserPlus,
+} from "react-icons/tb";
 
 const StudentsTable = () => {
   const [list, setList] = useState<Student[]>([]);
@@ -43,7 +51,7 @@ const StudentsTable = () => {
     // Lógica para editar
     console.log(value);
 
-    redirect(`/dashboard/users/${value.id}`);
+    redirect(`/dashboard/students/${value.id}`);
   };
 
   const handleDelete = (id: number) => {
@@ -158,6 +166,18 @@ const StudentsTable = () => {
             to="students/add"
           />
         </div>
+
+        {/* Subir de Grado */}
+        <div className="mb-5">
+          {list.length > 0 && (
+            <Buttom
+              title="Subir de Grado"
+              icon={TbUserPlus}
+              className="btn1"
+              to="students/verify"
+            />
+          )}
+        </div>
       </div>
 
       {/* Filters */}
@@ -248,7 +268,7 @@ const StudentsTable = () => {
               {/* <th className="p-3 text-left">ID</th> */}
               <th className="p-3 text-left">Aprobado</th>
               <th className="p-3 text-left">CI</th>
-              {/* <th className="p-3 text-left">Dirección</th> */}
+              <th className="p-3 text-left">Dirección</th>
               <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">Registro</th>
               <th className="p-3 text-left">Sexo</th>
@@ -278,12 +298,13 @@ const StudentsTable = () => {
                   </td>
 
                   <td className="p-3">{item.ci}</td>
+                  <td className="p-3 w-[100px]">{item.address}</td>
                   <td className="p-3">{item.grade}</td>
                   <td className="p-3">{item.registration_number}</td>
                   <td className="p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
-                        item.sex
+                        item.sex === "M"
                           ? "bg-green-100 text-green-800"
                           : "bg-red-100 text-red-800"
                       }`}
@@ -300,7 +321,7 @@ const StudentsTable = () => {
                     {item.is_dropped_out === true ? (
                       <BiCheckCircle className="w-5 h-5 text-green-700" />
                     ) : (
-                      <ImRadioUnchecked className="w-5 h-5 text-red-700" />
+                      <IoMdCloseCircle className="w-5 h-5 text-red-700" />
                     )}
                   </td>
 

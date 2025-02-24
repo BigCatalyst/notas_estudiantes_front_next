@@ -1,5 +1,11 @@
+import AddStudent from "@/components/dashboard/students/AddStudent";
+
 const Add = () => {
-  return <div>Add</div>;
+  return (
+    <div>
+      <AddStudent />
+    </div>
+  );
 };
 
 export default Add;

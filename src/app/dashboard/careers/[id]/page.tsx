@@ -1,5 +1,11 @@
+import UpdateCareer from "@/components/dashboard/careers/UpdateCareer";
+
 const Update = () => {
-  return <div>Update</div>;
+  return (
+    <div>
+      <UpdateCareer />
+    </div>
+  );
 };
 
 export default Update;

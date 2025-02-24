@@ -10,7 +10,7 @@ export interface SubjectsRes {
 
 export interface Subject {
   id?: number;
-  grade: number;
+  grade: string;
   name: string;
   tcp2_required: boolean;
 }
@@ -21,6 +21,18 @@ export const subjects = async (
   try {
     const response = await apiAuth.get(`subjects/?${query}`);
     const data: SubjectsRes = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const subjectsAll = async (
+  query: string
+): Promise<Subject[] | undefined> => {
+  try {
+    const response = await apiAuth.get(`subjects/?paginate=false&${query}`);
+    const data: Subject[] = response.data;
     return data;
   } catch (error) {
     return Promise.reject(error);
@@ -40,7 +52,7 @@ export const addSubject = async (
 };
 
 export const updateSubject = async (
-  id: number,
+  id: string,
   value: Subject
 ): Promise<Subject | undefined> => {
   try {
@@ -54,9 +66,23 @@ export const updateSubject = async (
 
 export const deleteSubject = async (id: number) => {
   try {
-    const response = await apiAuth.delete(`careers/${id}/`);
+    const response = await apiAuth.delete(`subjects/${id}/`);
 
     const data = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getSubject = async (id: string): Promise<Subject | undefined> => {
+  try {
+    const response = await apiAuth.get(`subjects/${id}/`);
+
+    const data: Subject = response.data;
+
+    // data.grade=Number(data.grade);
 
     return data;
   } catch (error) {

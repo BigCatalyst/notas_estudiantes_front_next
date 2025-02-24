@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
 import { HiUsers } from "react-icons/hi2";
-import { FaUserCog, FaUsers } from "react-icons/fa";
+import { FaGraduationCap, FaUserCog, FaUsers } from "react-icons/fa";
 import { MdBallot, MdLogout } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { ImBooks } from "react-icons/im";
@@ -10,8 +10,9 @@ import { FaSchoolFlag } from "react-icons/fa6";
 
 export enum Rols {
   admin = "admin",
-  user = "user",
   student = "student",
+  profesor = "profesor",
+  secretary = "secretary",
 }
 
 interface NavItem {
@@ -30,61 +31,85 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Dashboard",
     path: "/dashboard",
-    rols: [Rols.admin, Rols.user],
+    rols: [Rols.admin],
     Icon: TbLayoutDashboardFilled,
   },
   {
-    name: "Students",
+    name: "Estudiantes",
     path: "/dashboard/students",
     rols: [Rols.admin],
     Icon: FaUsers,
   },
   {
-    name: "Subjects",
+    name: "Asignaturas",
     path: "/dashboard/subjects",
     rols: [Rols.admin],
     Icon: ImBooks,
   },
   {
-    name: "Student Note",
+    name: "Estudiante Nota",
     path: "/dashboard/student_note",
     rols: [Rols.admin],
     Icon: PiUserListBold,
   },
   {
-    name: "Careers",
+    name: "Carreras",
     path: "/dashboard/careers",
     rols: [Rols.admin],
     Icon: GrUserWorker,
   },
   {
-    name: "Students Ballot",
+    name: "Estudiante Boleta",
     path: "/dashboard/students_ballot",
     rols: [Rols.admin],
     Icon: MdBallot,
   },
   {
-    name: "School Year",
+    name: "Año Escolar",
     path: "/dashboard/school_year",
     rols: [Rols.admin],
     Icon: FaSchoolFlag,
   },
   {
-    name: "Users",
+    name: "Bajas",
+    path: "/dashboard/dropouts",
+    rols: [Rols.admin],
+    Icon: FaGraduationCap,
+  },
+  {
+    name: "Carreras Otorgadas",
+    path: "/dashboard/grant_career",
+    rols: [Rols.admin],
+    Icon: FaGraduationCap,
+  },
+  {
+    name: "Escalafón",
+    path: "/dashboard/degree_scale",
+    rols: [Rols.admin],
+    Icon: FaGraduationCap,
+  },
+  {
+    name: "Aula Virtual",
+    path: "/dashboard/virtual_classroom_edition",
+    rols: [Rols.admin, Rols.profesor],
+    Icon: FaGraduationCap,
+  },
+  {
+    name: "Usuarios",
     path: "/dashboard/users",
     rols: [Rols.admin],
     Icon: HiUsers,
   },
   {
-    name: "Profile",
+    name: "Perfil",
     path: "/dashboard/profile",
-    rols: [Rols.admin, Rols.user],
+    rols: [Rols.admin],
     Icon: FaUserCog,
   },
   {
     name: "Logout",
     path: "/logout",
-    rols: [Rols.admin, Rols.user],
+    rols: [Rols.admin],
     Icon: MdLogout,
   },
 ];

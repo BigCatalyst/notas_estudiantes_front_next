@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiAuth } from "../api";
 
 export interface StudentNoteRes {
@@ -9,14 +10,14 @@ export interface StudentNoteRes {
 
 export interface StudentNote {
   id?: number;
-  asc: number;
-  final_grade: number;
-  final_exam: number;
-  tcp1: number;
-  tcp2: number;
-  student: number;
-  subject: number;
-  school_year: number;
+  asc?: number;
+  final_grade?: number;
+  final_exam?: number;
+  tcp1?: number;
+  tcp2?: number;
+  student: any;
+  subject: any;
+  school_year: any;
 }
 
 export const studentsNote = async (
@@ -44,7 +45,7 @@ export const addStudentNote = async (
 };
 
 export const updateStudentNote = async (
-  id: number,
+  id: string,
   value: StudentNote
 ): Promise<StudentNote | undefined> => {
   try {
@@ -56,11 +57,23 @@ export const updateStudentNote = async (
   }
 };
 
-export const deleteCareer = async (id: number) => {
+export const deleteStudentNote = async (id: number) => {
   try {
     const response = await apiAuth.delete(`student_note/${id}/`);
 
     const data = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getStudentNote = async (id: string): Promise<StudentNote | undefined> => {
+  try {
+    const response = await apiAuth.get(`student_note/${id}/`);
+
+    const data: StudentNote = response.data;
 
     return data;
   } catch (error) {

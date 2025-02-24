@@ -10,9 +10,15 @@ interface ModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   action: () => Promise<any>;
+  message?: string;
 }
 
-const Modal: FC<ModalProps> = ({ showModal, setShowModal, action }) => {
+const Modal: FC<ModalProps> = ({
+  showModal,
+  setShowModal,
+  action,
+  message,
+}) => {
   const [closeModal, setCloseModal] = useState(showModal);
   const [hiddenModal, setHiddenModal] = useState(showModal);
 
@@ -51,7 +57,7 @@ const Modal: FC<ModalProps> = ({ showModal, setShowModal, action }) => {
   return (
     <div
       className={
-        "w-full h-full bg-gray-400/50 absolute top-0 left-0 z-20  " +
+        "w-full h-full bg-gray-400/50 absolute top-0 left-0 z-60  " +
         `${
           showModal && !hiddenModal
             ? "flex items-center justify-center"
@@ -68,7 +74,7 @@ const Modal: FC<ModalProps> = ({ showModal, setShowModal, action }) => {
         <span className="inline-flex items-center gap-2 border-b-1 pb-1 border-b-red-200 w-full">
           <PiWarning className="text-red-700 w-12 h-12 animate-pulse" />
           <span className="text-red-900">
-            ¿Está seguro que desea eliminar esta fila?
+            {message ? message : "¿Está seguro que desea eliminar esta fila?"}
           </span>
         </span>
 

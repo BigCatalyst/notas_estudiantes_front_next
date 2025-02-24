@@ -1,5 +1,11 @@
+import UpdateStudent from "@/components/dashboard/students/UpdateStudent";
+
 const Update = () => {
-  return <div>Update</div>;
+  return (
+    <div>
+      <UpdateStudent />
+    </div>
+  );
 };
 
 export default Update;
