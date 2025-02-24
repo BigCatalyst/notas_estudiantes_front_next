@@ -34,10 +34,10 @@ const AddDropout = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const studentsData = await ApiService.students("grade=9");
+        const studentsData = await ApiService.studentsAll("grade=9");
         if (studentsData)
           setStudents(
-            studentsData.results.map((student: any) => ({
+            studentsData.map((student: any) => ({
               id: student.id,
               name: `${student.first_name} ${student.last_name}`,
             }))

@@ -59,14 +59,16 @@ const AddStudentNote = () => {
       try {
         const [studentsData, subjectsData, schoolYearsData] = await Promise.all(
           [
-            ApiService.students(""),
-            ApiService.subjects(""),
-            ApiService.schoolYears(""),
+            ApiService.studentsAll(
+              "is_dropped_out=false&is_graduated=false&ordering=grade,first_name"
+            ),
+            ApiService.subjectsAll(""),
+            ApiService.schoolYearsAll(""),
           ]
         );
         if (studentsData)
           setStudents(
-            studentsData.results.map((student: any) => ({
+            studentsData.map((student: any) => ({
               id: student.id,
               name: `${student.first_name} ${student.last_name} | Grado: ${
                 student.grade === 9
@@ -79,7 +81,7 @@ const AddStudentNote = () => {
           );
         if (subjectsData)
           setSubjects(
-            subjectsData.results.map((subject: any) => ({
+            subjectsData.map((subject: any) => ({
               id: subject.id,
               name: `${subject.name} | Grado: ${
                 subject.grade === 9
@@ -92,9 +94,9 @@ const AddStudentNote = () => {
           );
         if (schoolYearsData)
           setSchoolYears(
-            schoolYearsData.results.map((year: any) => ({
+            schoolYearsData.map((year: any) => ({
               id: year.id,
-              name: year.name,
+              name: `${year.name} | Fecha: ${year.start_date}`,
             }))
           );
       } catch (error) {

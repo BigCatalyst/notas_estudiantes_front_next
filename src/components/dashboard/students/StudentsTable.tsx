@@ -18,7 +18,12 @@ import {
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import {
+  TbLoader2,
+  TbPlaylistAdd,
+  TbTableExport,
+  TbUserPlus,
+} from "react-icons/tb";
 
 const StudentsTable = () => {
   const [list, setList] = useState<Student[]>([]);
@@ -161,6 +166,18 @@ const StudentsTable = () => {
             to="students/add"
           />
         </div>
+
+        {/* Subir de Grado */}
+        <div className="mb-5">
+          {list.length > 0 && (
+            <Buttom
+              title="Subir de Grado"
+              icon={TbUserPlus}
+              className="btn1"
+              to="students/verify"
+            />
+          )}
+        </div>
       </div>
 
       {/* Filters */}
@@ -251,7 +268,7 @@ const StudentsTable = () => {
               {/* <th className="p-3 text-left">ID</th> */}
               <th className="p-3 text-left">Aprobado</th>
               <th className="p-3 text-left">CI</th>
-              {/* <th className="p-3 text-left">Dirección</th> */}
+              <th className="p-3 text-left">Dirección</th>
               <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">Registro</th>
               <th className="p-3 text-left">Sexo</th>
@@ -281,6 +298,7 @@ const StudentsTable = () => {
                   </td>
 
                   <td className="p-3">{item.ci}</td>
+                  <td className="p-3 w-[100px]">{item.address}</td>
                   <td className="p-3">{item.grade}</td>
                   <td className="p-3">{item.registration_number}</td>
                   <td className="p-3">

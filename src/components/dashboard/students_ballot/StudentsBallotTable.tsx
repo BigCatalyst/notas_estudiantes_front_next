@@ -3,7 +3,7 @@
 "use client";
 
 import Buttom from "@/components/ui/buttom/Buttom";
-// import Modal from "@/components/ui/modal/Modal";
+import Modal from "@/components/ui/modal/Modal";
 import { Ballot } from "@/services/api/students_ballot";
 import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";
@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { BsDatabaseFillX } from "react-icons/bs";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
+import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
 
@@ -23,8 +23,8 @@ const StudentsBallotTable = () => {
   const [loading, setLoading] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
-  // const [showModal, setShowModal] = useState<boolean>(false);
-  // const [IdDel, setIdDel] = useState(-1);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [IdDel, setIdDel] = useState(-1);
 
   const [filters, setFilters] = useState<{
     address__contains?: string;
@@ -44,21 +44,21 @@ const StudentsBallotTable = () => {
     redirect(`/dashboard/students_ballot/${value.id}`);
   };
 
-  // const handleDelete = (id: number) => {
-  //   // Lógica para eliminar
-  //   setShowModal(true);
-  //   setIdDel(id);
-  // };
+  const handleDelete = (id: number) => {
+    // Lógica para eliminar
+    setShowModal(true);
+    setIdDel(id);
+  };
 
-  // const deleteEntity = async () => {
-  //   try {
-  //     if (IdDel !== -1) {
-  //       await ApiService.deleteStudent(IdDel).then(() => fetchEntity());
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const deleteEntity = async () => {
+    try {
+      if (IdDel !== -1) {
+        await ApiService.deleteStudent(IdDel).then(() => fetchEntity());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
@@ -238,11 +238,11 @@ const StudentsBallotTable = () => {
         </select>
       </div>
       {/* Modal */}
-      {/* <Modal
+      <Modal
         showModal={showModal}
         setShowModal={setShowModal}
         action={deleteEntity}
-      /> */}
+      />
       {/* Tabla */}
       <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
         <table className="w-full table-auto">
@@ -334,7 +334,7 @@ const StudentsBallotTable = () => {
                       </span>
                     </button>
 
-                    {/* <button
+                    <button
                       onClick={() => {
                         if (item.id) handleDelete(item.id);
                       }}
@@ -345,7 +345,7 @@ const StudentsBallotTable = () => {
                         <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
                         Eliminar
                       </span>
-                    </button> */}
+                    </button>
                   </td>
                 </tr>
               ))}

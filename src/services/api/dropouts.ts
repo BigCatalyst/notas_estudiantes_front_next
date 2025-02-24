@@ -47,7 +47,7 @@ export interface AddDropoutData {
   municipality: string;
   province: string;
   school: string;
-  student: string;
+  student?: string;
 }
 
 export const addDropout = async (

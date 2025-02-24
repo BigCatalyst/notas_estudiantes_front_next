@@ -27,6 +27,18 @@ export const subjects = async (
   }
 };
 
+export const subjectsAll = async (
+  query: string
+): Promise<Subject[] | undefined> => {
+  try {
+    const response = await apiAuth.get(`subjects/?paginate=false&${query}`);
+    const data: Subject[] = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const addSubject = async (
   value: Subject
 ): Promise<Subject | undefined> => {

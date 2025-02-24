@@ -18,7 +18,7 @@ const dropoutSchema = z.object({
   municipality: z.string().min(1, "El municipio es requerido"),
   province: z.string().min(1, "La provincia es requerido"),
   school: z.string().min(1, "La escuela es requerida"),
-  student: z.string().min(1, "El estudiante es requerido"),
+  //student: z.string().min(1, "El estudiante es requerido"),
 });
 
 type DropoutFormData = z.infer<typeof dropoutSchema>;
@@ -80,7 +80,7 @@ const UpdateDropout = () => {
         setValue("municipality", res.municipality);
         setValue("province", res.province);
         setValue("school", res.school);
-        setValue("student", res.student.id + "");
+        //setValue("student", res.student.id + "");
       }
     };
     entityUpdate();
@@ -116,7 +116,7 @@ const UpdateDropout = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Actualizar Graduado
+        Actualizar Baja
       </h2>
 
       <div className="absolute right-10 top-7">
@@ -220,7 +220,7 @@ const UpdateDropout = () => {
           </div>
 
           {/* Student */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante
             </label>
@@ -242,7 +242,7 @@ const UpdateDropout = () => {
                 {errors.student.message}
               </p>
             )}
-          </div>
+          </div> */}
         </div>
 
         <MessageForm

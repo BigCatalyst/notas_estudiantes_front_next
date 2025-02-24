@@ -48,21 +48,21 @@ const AddStudentBallot = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const studentsData = await ApiService.students(
+        const studentsData = await ApiService.studentsAll(
           "grade=9&ordering=first_name&is_dropped_out=false&is_graduated=false"
         );
         console.log(studentsData);
         if (studentsData)
           setStudents(
-            studentsData.results.map((student: any) => ({
+            studentsData.map((student: any) => ({
               id: student.id,
               name: `${student.first_name}`,
             }))
           );
 
-        const fetchCarreers = await ApiService.careers("");
+        const fetchCarreers = await ApiService.careersAll("");
         if (fetchCarreers) {
-          setCareers(fetchCarreers.results);
+          setCareers(fetchCarreers);
         }
       } catch (error) {
         console.error("Error fetching students:", error);

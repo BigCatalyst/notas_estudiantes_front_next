@@ -26,6 +26,18 @@ export const schoolYears = async (
   }
 };
 
+export const schoolYearsAll = async (
+  query: string
+): Promise<SchoolYear[] | undefined> => {
+  try {
+    const response = await apiAuth.get(`school_year/?paginate=false&${query}`);
+    const data: SchoolYear[] = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const addSchoolYear = async (
   value: SchoolYear
 ): Promise<SchoolYear | undefined> => {
