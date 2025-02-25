@@ -59,7 +59,7 @@ const Section: React.FC<SectionProps> = ({
   };
 
   return (
-    <div className="w-full mx-auto py-12 px-6 bg-white rounded-lg shadow-md relative mt-7 space-y-4">
+    <div className="w-full mx-auto py-12 px-6 bg-white rounded-lg shadow-md relative mt-7 space-y-4 animate-fade-in">
       <div>
         <label className="block text-sm font-medium text-gray-700">
           Nombre Sección
@@ -92,22 +92,22 @@ const Section: React.FC<SectionProps> = ({
       </button>
 
       <div className="inline-flex items-center justify-center gap-2 absolute top-3 right-20">
-        <button disabled={indice - 1 === -1}>
+        <button disabled={indice + 1 === totalSections ? true : false}>
           <IoIosArrowUp
             className={
-              indice - 1 === -1
+              indice + 1 === totalSections
                 ? "w-4 h-4 bg-gray-300 p-1 rounded-full"
-                : "w-5 h-5"
+                : "w-5 h-5 shadow-md rounded-full p-1"
             }
           />
         </button>
         <span>{indice}</span>
-        <button disabled={indice + 1 === totalSections ? true : false}>
+        <button disabled={indice - 1 === -1}>
           <IoIosArrowDown
             className={
-              indice + 1 === totalSections
+              indice - 1 === -1
                 ? "w-4 h-4 bg-gray-300 p-1 rounded-full"
-                : "w-5 h-5"
+                : "w-5 h-5 shadow-md rounded-full p-1"
             }
           />
         </button>
