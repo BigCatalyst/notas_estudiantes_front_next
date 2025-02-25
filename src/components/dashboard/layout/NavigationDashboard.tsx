@@ -52,7 +52,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
           )
         ) {
           setShowModal(false);
-          router.push("/dashboard");
+          router.push("/dashboard/");
         } else {
           setShowModal(true);
           router.push("/dashboard");

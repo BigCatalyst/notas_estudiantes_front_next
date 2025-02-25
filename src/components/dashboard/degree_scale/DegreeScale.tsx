@@ -2,17 +2,22 @@
 "use client";
 
 import Buttom from "@/components/ui/buttom/Buttom";
+import { Rols } from "@/data/NavigationItems";
+import { State } from "@/redux/features/authSlice";
 import ApiService from "@/services/ApiService";
 import { useEffect, useState } from "react";
 import { BsDatabaseFillX } from "react-icons/bs";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbPlaylistAdd } from "react-icons/tb";
+import { useSelector } from "react-redux";
 
 const DegreeScale = () => {
   const [list, setList] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
   const [loadingCalculate, setLoadingCalculate] = useState(false);
+
+  const userAuth: State = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     console.log("ok");
@@ -54,17 +59,24 @@ const DegreeScale = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <div className="inline-flex w-full gap-3">
-        <div className="mb-5">
-          <Buttom
-            title="Calcular"
-            icon={TbPlaylistAdd}
-            className="btn1"
-            isLoading={loadingCalculate}
-            onClick={handleCalcular}
-          />
-        </div>
-      </div>
+      {userAuth.user?.roles.map(
+        (rol) =>
+          rol === Rols.admin ||
+          (rol === Rols.secretary && (
+            <div className="inline-flex w-full gap-3">
+              <div className="mb-5">
+                <Buttom
+                  title="Calcular"
+                  icon={TbPlaylistAdd}
+                  className="btn1"
+                  isLoading={loadingCalculate}
+                  onClick={handleCalcular}
+                />
+              </div>
+            </div>
+          ))
+      )}
+
       {/* Tabla */}
       <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
         <table className="w-full table-auto">
