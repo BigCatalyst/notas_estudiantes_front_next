@@ -5,8 +5,9 @@ import Folder from "./Folder";
 import Task from "./Task";
 import { SectionType } from "./EdicionAulaVirtual";
 import { CgClose } from "react-icons/cg";
-import { BiDownArrow, BiUpArrow } from "react-icons/bi";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { LuCircleFadingPlus } from "react-icons/lu";
+import { MdDeleteForever, MdEdit } from "react-icons/md";
 
 interface SectionProps extends SectionType {
   onDelete: () => void;
@@ -85,7 +86,7 @@ const Section: React.FC<SectionProps> = ({
 
       <button
         onClick={onDelete}
-        className="text-gray-700 rounded-full p-1 shadow-md absolute top-3 right-3  hover:text-red-700"
+        className="text-gray-700 rounded-full p-1 shadow-md absolute top-3 right-3  hover:text-gray-500"
       >
         <CgClose className="w-5 h-5" />
       </button>
@@ -112,32 +113,36 @@ const Section: React.FC<SectionProps> = ({
         </button>
       </div>
 
-      <button
-        onClick={updateSectionDetails}
-        className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
-      >
-        Update
-      </button>
+      <div className="inline-flex gap-1">
+        <button
+          onClick={updateSectionDetails}
+          className="bg-blue-800 hover:bg-blue-700 btn2"
+        >
+          <MdEdit />
+          Actualizar
+        </button>
 
-      <button
-        onClick={onDelete}
-        className="bg-red-500 text-white px-2 py-1 rounded"
-      >
-        Delete
-      </button>
+        <button onClick={onDelete} className="bg-red-800 hover:bg-red-700 btn2">
+          <MdDeleteForever />
+          Eliminar
+        </button>
 
-      <button
-        onClick={addFolder}
-        className="bg-green-500 text-white px-2 py-1 rounded mr-2"
-      >
-        Add Folder
-      </button>
-      <button
-        onClick={addTask}
-        className="bg-yellow-500 text-white px-2 py-1 rounded"
-      >
-        Add Task
-      </button>
+        <button
+          onClick={addFolder}
+          className="bg-green-800 hover:bg-green-700 btn2"
+        >
+          <LuCircleFadingPlus />
+          Carpeta
+        </button>
+        <button
+          onClick={addTask}
+          className="bg-orange-800 hover:bg-orange-700 btn2"
+        >
+          <LuCircleFadingPlus />
+          Tarea
+        </button>
+      </div>
+
       {folders.map((folder, index) => (
         <Folder key={index} {...folder} onDelete={() => deleteFolder(index)} />
       ))}

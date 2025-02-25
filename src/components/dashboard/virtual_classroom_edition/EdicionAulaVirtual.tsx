@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Section from "./Section";
-import { BiPlusCircle } from "react-icons/bi";
 import { useEffect } from "react";
+import { LuCircleFadingPlus } from "react-icons/lu";
 
 export interface SectionType {
   title: string;
@@ -41,7 +41,7 @@ const EdicionAulaVirtual: React.FC = () => {
     // setSections(sections.filter((_, i) => i !== index));
     let cont = 0;
     let res: SectionType[] = [];
-    sections.reverse().map((val, i) => {
+    sections.reverse().map((val) => {
       if (val.indice !== index) {
         res.push({ ...val, indice: cont++ });
       }
@@ -62,7 +62,7 @@ const EdicionAulaVirtual: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Virtual Classroom Edition</h1>
       <button onClick={addSection} className="btn1">
         <span className="inline-flex items-center justify-center gap-1">
-          <BiPlusCircle className="w-5 h-5" /> Adicionar Sección
+          <LuCircleFadingPlus className="w-5 h-5" /> Adicionar Sección
         </span>
       </button>
 
