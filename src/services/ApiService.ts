@@ -8,6 +8,9 @@ import * as student_noteService from "./api/student_note";
 import * as students_ballotService from "./api/students_ballot";
 import * as subjectsService from "./api/subjects";
 import * as dropoutsService from "./api/dropouts";
+import * as professorService from "./api/professor";
+import * as eventService from "./api/events";
+import * as subjectsectionsubjectsService from "./api/virtual_classroom_edition";
 
 export default {
   ...authService,
@@ -19,4 +22,7 @@ export default {
   ...students_ballotService,
   ...subjectsService,
   ...dropoutsService,
+  ...professorService,
+  ...eventService,
+  ...subjectsectionsubjectsService,
 };

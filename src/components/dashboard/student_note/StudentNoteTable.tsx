@@ -41,6 +41,8 @@ const StudentNoteTable = () => {
     student__grade?: string;
     student__sex?: string;
     subject__name__contains?: string;
+    student__is_dropped_out?: string;
+    student__is_graduated?: string;
   }>({});
 
   const handleEdit = (value: StudentNote) => {
@@ -292,9 +294,31 @@ const StudentNoteTable = () => {
           placeholder="Nombre de la Asignatura"
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
-            handleFilterChange("subject__name__contains", e.target.value)
+            handleFilterChange("student__is_dropped_out", e.target.value)
           }
         />
+
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) =>
+            handleFilterChange("student__is_dropped_out", e.target.value)
+          }
+        >
+          <option value="">Es Baja?</option>
+          <option value="true">Baja</option>
+          <option value="false">No Baja</option>
+        </select>
+
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) =>
+            handleFilterChange("student__is_graduated", e.target.value)
+          }
+        >
+          <option value="">Es Graduado?</option>
+          <option value="true">Graduado</option>
+          <option value="false">No es Graduado</option>
+        </select>
       </div>
 
       {/* Modal */}

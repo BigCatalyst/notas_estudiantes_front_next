@@ -9,7 +9,7 @@ import "./style.css";
 interface ModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
-  action: () => Promise<any>;
+  action: () => Promise<any> | void;
   message?: string;
 }
 

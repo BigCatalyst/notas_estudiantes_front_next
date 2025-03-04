@@ -1,4 +1,5 @@
 import { apiAuth } from "../api";
+import { ProfessorType } from "./professor";
 
 //subjects
 export interface SubjectsRes {
@@ -13,6 +14,15 @@ export interface Subject {
   grade: string;
   name: string;
   tcp2_required: boolean;
+  professor: number[];
+}
+
+export interface SubjectGet {
+  id: number;
+  grade: string;
+  name: string;
+  tcp2_required: boolean;
+  professor: ProfessorType[];
 }
 
 export const subjects = async (
@@ -76,11 +86,13 @@ export const deleteSubject = async (id: number) => {
   }
 };
 
-export const getSubject = async (id: string): Promise<Subject | undefined> => {
+export const getSubject = async (
+  id: string
+): Promise<SubjectGet | undefined> => {
   try {
     const response = await apiAuth.get(`subjects/${id}/`);
 
-    const data: Subject = response.data;
+    const data: SubjectGet = response.data;
 
     // data.grade=Number(data.grade);
 

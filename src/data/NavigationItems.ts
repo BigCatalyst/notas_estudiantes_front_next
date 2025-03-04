@@ -1,17 +1,25 @@
 import { IconType } from "react-icons";
 import { HiUsers } from "react-icons/hi2";
-import { FaGraduationCap, FaUserCog, FaUsers } from "react-icons/fa";
-import { MdBallot, MdLogout } from "react-icons/md";
+import {
+  FaCalendarAlt,
+  FaChalkboardTeacher,
+  FaTrophy,
+  FaUserCog,
+  FaUserMinus,
+  FaUsers,
+} from "react-icons/fa";
+import { MdBallot, MdLogout, MdOutlineSchool } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { ImBooks } from "react-icons/im";
 import { PiUserListBold } from "react-icons/pi";
 import { GrUserWorker } from "react-icons/gr";
 import { FaSchoolFlag } from "react-icons/fa6";
+import { GiBookCover } from "react-icons/gi";
 
 export enum Rols {
   admin = "admin",
   student = "student",
-  profesor = "profesor",
+  profesor = "professor",
   secretary = "secretary",
 }
 
@@ -31,8 +39,14 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Dashboard",
     path: "/dashboard",
-    rols: [Rols.admin, Rols.profesor,Rols.secretary,Rols.student],
+    rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
     Icon: TbLayoutDashboardFilled,
+  },
+  {
+    name: "Profesores",
+    path: "/dashboard/professor",
+    rols: [Rols.admin, Rols.profesor],
+    Icon: MdOutlineSchool,
   },
   {
     name: "Estudiantes",
@@ -52,12 +66,7 @@ export const navigationItemsDashboard: NavItem[] = [
     rols: [Rols.admin, Rols.secretary],
     Icon: PiUserListBold,
   },
-  {
-    name: "Carreras",
-    path: "/dashboard/careers",
-    rols: [Rols.admin, Rols.secretary],
-    Icon: GrUserWorker,
-  },
+
   {
     name: "Estudiante Boleta",
     path: "/dashboard/students_ballot",
@@ -74,25 +83,43 @@ export const navigationItemsDashboard: NavItem[] = [
     name: "Bajas",
     path: "/dashboard/dropouts",
     rols: [Rols.admin, Rols.secretary],
-    Icon: FaGraduationCap,
+    Icon: FaUserMinus,
+  },
+  {
+    name: "Carreras",
+    path: "/dashboard/careers",
+    rols: [Rols.admin, Rols.secretary],
+    Icon: GrUserWorker,
   },
   {
     name: "Carreras Otorgadas",
     path: "/dashboard/grant_career",
     rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
-    Icon: FaGraduationCap,
+    Icon: GiBookCover,
   },
   {
     name: "Escalafón",
     path: "/dashboard/degree_scale",
     rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
-    Icon: FaGraduationCap,
+    Icon: FaTrophy,
   },
   {
     name: "Aula Virtual",
-    path: "/dashboard/virtual_classroom_edition",
+    path: "/dashboard/virtual_classroom",
     rols: [Rols.admin, Rols.profesor],
-    Icon: FaGraduationCap,
+    Icon: FaChalkboardTeacher,
+  },
+  {
+    name: "Eventos Escolares",
+    path: "/dashboard/school_event",
+    rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
+    Icon: FaCalendarAlt,
+  },
+  {
+    name: "Calendario Eventos",
+    path: "/dashboard/calendar_school_event",
+    rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
+    Icon: FaCalendarAlt,
   },
   {
     name: "Usuarios",
@@ -103,7 +130,7 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Perfil",
     path: "/dashboard/profile",
-    rols: [Rols.admin],
+    rols: [Rols.admin, Rols.profesor, Rols.student, Rols.secretary],
     Icon: FaUserCog,
   },
   {

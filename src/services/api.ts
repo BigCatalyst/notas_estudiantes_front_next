@@ -57,7 +57,7 @@ apiAuth.interceptors.response.use(
 
     if (
       error.response &&
-      error.response.status === 401 &&
+      (error.response.status === 401 || (error.response.status > 405 && error.response.status<500)) &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
@@ -205,6 +205,8 @@ export async function callRefreshToken() {
       // Actualiza el token de acceso en el almacenamiento local
       localStorage.setItem("django_auth_token", newAccessToken);
       localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, accessToken);
+
+      console.log("refrescoooooooooooooo")
     });
 
   return res;

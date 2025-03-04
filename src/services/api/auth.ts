@@ -23,6 +23,7 @@ export const loguin = async (
     username: username,
     password: password,
   });
+
   if (response.status == 200) {
     localStorage.setItem(DJANGO_AUTH_TOKEN, response.data.access);
     localStorage.setItem(DJANGO_AUTH_REFRESH_TOKEN, response.data.refresh);
