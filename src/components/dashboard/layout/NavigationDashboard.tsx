@@ -44,15 +44,20 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
     const verifySchoolYear = async () => {
       try {
         const res = await ApiService.schoolYears("");
+
         if (
           res?.results &&
           res?.results.length > 0 &&
           userAuth.user?.roles.find(
-            (rol) => rol === Rols.admin || rol === Rols.secretary
+            (rol) =>
+              rol === Rols.admin ||
+              rol === Rols.secretary ||
+              rol === Rols.profesor ||
+              rol === Rols.student
           )
         ) {
           setShowModal(false);
-          router.push("/dashboard");
+          //router.push("/dashboard/");
         } else {
           setShowModal(true);
           router.push("/dashboard");

@@ -62,6 +62,9 @@ const LoginForm = () => {
       const me = await ApiService.me();
 
       if (me) {
+        console.log("meeeeeeeeeeeeeeeeeeeeeeeeee");
+        console.log(me.groups);
+
         const user: User = {
           id: me.id,
           roles: me.groups.map(({ name }) => name),

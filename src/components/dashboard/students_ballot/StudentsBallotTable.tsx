@@ -35,6 +35,7 @@ const StudentsBallotTable = () => {
     is_graduated?: string;
     registration_number__contains?: string;
     sex?: string;
+    student__is_dropped_out?: string;
   }>({});
 
   const handleEdit = (value: Ballot) => {
@@ -235,6 +236,17 @@ const StudentsBallotTable = () => {
           <option value="">Sexo</option>
           <option value="F">Fememino</option>
           <option value="M">Masculino</option>
+        </select>
+
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) =>
+            handleFilterChange("student__is_dropped_out", e.target.value)
+          }
+        >
+          <option value="">Es Baja</option>
+          <option value="true">Baja</option>
+          <option value="false">No Baja</option>
         </select>
       </div>
       {/* Modal */}

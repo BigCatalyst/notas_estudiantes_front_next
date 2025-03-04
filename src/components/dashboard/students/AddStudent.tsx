@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
+import { Student } from "@/services/api/students";
 
 // Opciones para el campo "grade"
 const gradeOptions = [
@@ -27,9 +28,12 @@ const studentSchema = z.object({
   first_name: z.string().min(1, "Nombre es requerido"),
   registration_number: z.string().min(1, "Número de matrícula es requerido"),
   sex: z.string().min(1, "Sexo es requerido"),
-  // is_approved: z.boolean().default(false),
-  // is_graduated: z.boolean().default(false),
-  // is_dropped_out: z.boolean().default(false),
+  username: z
+    .string()
+    .min(3, "Username debe tener al menos 3 caracteres")
+    .max(50),
+  password: z.string().min(6, "Contraseña debe tener al menos 6 caracteres"),
+  email: z.string().email("Email inválido"),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -60,7 +64,17 @@ const AddStudent = () => {
       setIsLoading(true);
       setIsSuccess(false);
       setServerError("");
-      const res = await ApiService.addStudent(data);
+
+      const dataStudent: Student = {
+        ...data,
+        account: {
+          email: data.email,
+          password: data.password,
+          username: data.username,
+        },
+      };
+
+      const res = await ApiService.addStudent(dataStudent);
       if (res) {
         console.log(res);
         setIsSuccess(true);
@@ -232,38 +246,63 @@ const AddStudent = () => {
               <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
             )}
           </div>
+
+          {/* Username */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              {...register("username")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.username ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.username && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.username.message}
+              </p>
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              {...register("email")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          {/* Contraseña */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              {...register("password")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
         </div>
-
-        {/* Checkboxes para estado del estudiante */}
-
-        {/*  <div className="flex flex-col space-y-2">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              {...register("is_approved")}
-              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label className="ml-2 text-sm text-gray-700">Aprobado</label>
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              {...register("is_graduated")}
-              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label className="ml-2 text-sm text-gray-700">Graduado</label>
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              {...register("is_dropped_out")}
-              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label className="ml-2 text-sm text-gray-700">Abandonó</label>
-          </div>
-        </div> */}
 
         {/* Mensajes de éxito o error */}
         <MessageForm

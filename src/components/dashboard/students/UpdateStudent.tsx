@@ -20,9 +20,12 @@ const studentSchema = z.object({
   first_name: z.string().min(1, "Nombre es requerido"),
   registration_number: z.string().min(1, "Número de matrícula es requerido"),
   sex: z.string().min(1, "Sexo es requerido"),
-  // is_approved: z.boolean().default(false),
-  // is_graduated: z.boolean().default(false),
-  // is_dropped_out: z.boolean().default(false),
+  username: z
+    .string()
+    .min(3, "Username debe tener al menos 3 caracteres")
+    .max(50),
+  password: z.string().optional(),
+  email: z.string().email("Email inválido"),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -63,6 +66,15 @@ const UpdateStudent = () => {
         setValue("first_name", res.first_name);
         setValue("registration_number", res.registration_number);
         setValue("sex", res.sex);
+
+        if (res.user) {
+          const resUser = await ApiService.getUser(res.user);
+
+          if (resUser) {
+            setValue("username", resUser.username ? resUser.username : "");
+            setValue("email", resUser.email ? resUser.email : "");
+          }
+        }
       }
     };
 
@@ -242,6 +254,62 @@ const UpdateStudent = () => {
             </select>
             {errors.sex && (
               <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
+            )}
+          </div>
+
+          {/* Username */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              {...register("username")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.username ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.username && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.username.message}
+              </p>
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              {...register("email")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          {/* Contraseña */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              {...register("password")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
         </div>

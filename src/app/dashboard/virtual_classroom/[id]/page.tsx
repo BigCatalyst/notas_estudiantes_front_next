@@ -1,7 +1,7 @@
 import EdicionAulaVirtual from "@/components/dashboard/virtual_classroom_edition/EdicionAulaVirtual";
 import React from "react";
 
-const VirtualClassroomEdition = () => {
+const EdicionAulaVirtualView = () => {
   return (
     <div>
       <EdicionAulaVirtual />
@@ -9,4 +9,4 @@ const VirtualClassroomEdition = () => {
   );
 };
 
-export default VirtualClassroomEdition;
+export default EdicionAulaVirtualView;

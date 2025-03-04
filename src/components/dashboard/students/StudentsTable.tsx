@@ -45,6 +45,8 @@ const StudentsTable = () => {
     last_name__contains?: string;
     registration_number__contains?: string;
     sex?: string;
+    is_dropped_out?: string;
+    is_graduated?: string;
   }>({});
 
   const handleEdit = (value: Student) => {
@@ -248,6 +250,24 @@ const StudentsTable = () => {
           <option value="7">7mo</option>
           <option value="8">8vo</option>
           <option value="9">9no</option>
+        </select>
+
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) => handleFilterChange("is_graduated", e.target.value)}
+        >
+          <option value="">Es Graduado</option>
+          <option value="true">Graduado</option>
+          <option value="false">No Graduado</option>
+        </select>
+
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) => handleFilterChange("is_dropped_out", e.target.value)}
+        >
+          <option value="">Es Baja</option>
+          <option value="true">Baja</option>
+          <option value="false">No Baja</option>
         </select>
       </div>
 
