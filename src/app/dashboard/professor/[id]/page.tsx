@@ -1,10 +1,10 @@
-import { UpdateProfessor } from "@/components/professor/UpdateProfessor";
+import ValidateRolProfessor from "@/components/dashboard/professor/ValidateRolProfessor";
 import React from "react";
 
 const Update = () => {
   return (
     <div>
-      <UpdateProfessor />
+      <ValidateRolProfessor isAdd={false} />
     </div>
   );
 };

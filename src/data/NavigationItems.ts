@@ -45,7 +45,7 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Profesores",
     path: "/dashboard/professor",
-    rols: [Rols.admin, Rols.profesor],
+    rols: [Rols.admin, Rols.profesor, Rols.secretary],
     Icon: MdOutlineSchool,
   },
   {
