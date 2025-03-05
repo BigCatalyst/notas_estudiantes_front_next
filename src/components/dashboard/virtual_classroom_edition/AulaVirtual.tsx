@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-
 import { SubjectSectionSubjectsRes } from "@/services/api/virtual_classroom_edition";
 import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";

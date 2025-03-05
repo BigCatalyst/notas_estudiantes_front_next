@@ -1,4 +1,4 @@
-import { ProfessorsTable } from "@/components/professor/ProfessorsTable";
+import { ProfessorsTable } from "@/components/dashboard/professor/ProfessorsTable";
 import React from "react";
 
 const Professor = () => {

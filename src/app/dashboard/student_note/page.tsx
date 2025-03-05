@@ -3,7 +3,9 @@ import StudentNoteTable from "@/components/dashboard/student_note/StudentNoteTab
 const StudentNote = () => {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Gestión de Estudiante Nota</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        Gestión de Notas de Estudiantes
+      </h1>
       <StudentNoteTable />
     </div>
   );

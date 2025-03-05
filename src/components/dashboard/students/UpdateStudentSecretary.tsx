@@ -7,18 +7,10 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import { LuCircleFadingPlus } from "react-icons/lu";
 import ApiService from "@/services/ApiService";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
-import { Student } from "@/services/api/students";
-
-// Opciones para el campo "grade"
-const gradeOptions = [
-  { value: 7, label: "7mo" },
-  { value: 8, label: "8vo" },
-  { value: 9, label: "9no" },
-];
 
 const studentSchema = z.object({
   ci: z.string().min(1, "CI es requerido"),
@@ -28,26 +20,23 @@ const studentSchema = z.object({
   first_name: z.string().min(1, "Nombre es requerido"),
   registration_number: z.string().min(1, "Número de matrícula es requerido"),
   sex: z.string().min(1, "Sexo es requerido"),
-  username: z
-    .string()
-    .min(3, "Username debe tener al menos 3 caracteres")
-    .max(50),
-  password: z.string().min(6, "Contraseña debe tener al menos 6 caracteres"),
-  email: z.string().email("Email inválido"),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
 
-const AddStudent = () => {
+const UpdateStudentSecretary = () => {
   const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const { id } = useParams<{ id: string }>();
 
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<StudentFormData>({
     resolver: zodResolver(studentSchema),
@@ -59,22 +48,30 @@ const AddStudent = () => {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    const studentUpdate = async () => {
+      const res = await ApiService.getStudent(id);
+      console.log(res);
+      if (res) {
+        setValue("ci", res.ci);
+        setValue("address", res.address);
+        setValue("grade", res.grade + "");
+        setValue("last_name", res.last_name);
+        setValue("first_name", res.first_name);
+        setValue("registration_number", res.registration_number);
+        setValue("sex", res.sex);
+      }
+    };
+
+    studentUpdate();
+  }, []);
+
   const onSubmit = async (data: StudentFormData) => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
       setServerError("");
-
-      const dataStudent: Student = {
-        ...data,
-        account: {
-          email: data.email,
-          password: data.password,
-          username: data.username,
-        },
-      };
-
-      const res = await ApiService.addStudent(dataStudent);
+      const res = await ApiService.updateStudent(id, data);
       if (res) {
         console.log(res);
         setIsSuccess(true);
@@ -98,7 +95,7 @@ const AddStudent = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Crear Nuevo Estudiante
+        Actualizar Estudiante
       </h2>
 
       <div className="absolute right-10 top-7">
@@ -158,11 +155,9 @@ const AddStudent = () => {
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
             >
               <option value="">Seleccione un grado</option>
-              {gradeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+              <option value="7">7mp</option>
+              <option value="8">8vo</option>
+              <option value="9">9no</option>
             </select>
             {errors.grade && (
               <p className="text-red-500 text-sm mt-1">
@@ -246,60 +241,6 @@ const AddStudent = () => {
               <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
             )}
           </div>
-
-          {/* Username */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Username
-            </label>
-            <input
-              {...register("username")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.username ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.username.message}
-              </p>
-            )}
-          </div>
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              {...register("email")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-          {/* Contraseña */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              {...register("password")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Mensajes de éxito o error */}
@@ -311,7 +252,7 @@ const AddStudent = () => {
 
         {/* Botón de envío */}
         <Buttom
-          title="Crear Estudiante"
+          title="Actualizar Estudiante"
           type="submit"
           isLoading={isLoading}
           className="btn1"
@@ -323,4 +264,4 @@ const AddStudent = () => {
   );
 };
 
-export default AddStudent;
+export default UpdateStudentSecretary;

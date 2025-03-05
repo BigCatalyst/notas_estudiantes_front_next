@@ -18,7 +18,7 @@ import { GiBookCover } from "react-icons/gi";
 
 export enum Rols {
   admin = "admin",
-  student = "student",
+  student = "estudiante",
   profesor = "professor",
   secretary = "secretary",
 }
@@ -45,7 +45,7 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Profesores",
     path: "/dashboard/professor",
-    rols: [Rols.admin, Rols.profesor],
+    rols: [Rols.admin, Rols.profesor, Rols.secretary],
     Icon: MdOutlineSchool,
   },
   {
@@ -61,14 +61,14 @@ export const navigationItemsDashboard: NavItem[] = [
     Icon: ImBooks,
   },
   {
-    name: "Estudiante Nota",
+    name: "Notas de Estudiantes",
     path: "/dashboard/student_note",
     rols: [Rols.admin, Rols.secretary],
     Icon: PiUserListBold,
   },
 
   {
-    name: "Estudiante Boleta",
+    name: "Boleta de Estudiantes",
     path: "/dashboard/students_ballot",
     rols: [Rols.admin, Rols.secretary],
     Icon: MdBallot,
@@ -106,7 +106,7 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Aula Virtual",
     path: "/dashboard/virtual_classroom",
-    rols: [Rols.admin, Rols.profesor],
+    rols: [Rols.admin, Rols.profesor, Rols.student],
     Icon: FaChalkboardTeacher,
   },
   {

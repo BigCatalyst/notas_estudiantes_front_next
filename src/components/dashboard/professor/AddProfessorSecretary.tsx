@@ -4,41 +4,26 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LuCircleFadingPlus } from "react-icons/lu";
 import ApiService from "@/services/ApiService";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
-import { Student } from "@/services/api/students";
+import { ProfessorType } from "@/services/api/professor";
 
-// Opciones para el campo "grade"
-const gradeOptions = [
-  { value: 7, label: "7mo" },
-  { value: 8, label: "8vo" },
-  { value: 9, label: "9no" },
-];
-
-const studentSchema = z.object({
+const professorSchema = z.object({
   ci: z.string().min(1, "CI es requerido"),
   address: z.string().min(1, "Dirección es requerida"),
-  grade: z.string().min(1, "Grado es requerido"),
   last_name: z.string().min(1, "Apellido es requerido"),
   first_name: z.string().min(1, "Nombre es requerido"),
-  registration_number: z.string().min(1, "Número de matrícula es requerido"),
   sex: z.string().min(1, "Sexo es requerido"),
-  username: z
-    .string()
-    .min(3, "Username debe tener al menos 3 caracteres")
-    .max(50),
-  password: z.string().min(6, "Contraseña debe tener al menos 6 caracteres"),
-  email: z.string().email("Email inválido"),
 });
 
-type StudentFormData = z.infer<typeof studentSchema>;
+type ProfessorFormData = z.infer<typeof professorSchema>;
 
-const AddStudent = () => {
+const AddProfessorSecretary = () => {
   const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -49,8 +34,8 @@ const AddStudent = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<StudentFormData>({
-    resolver: zodResolver(studentSchema),
+  } = useForm<ProfessorFormData>({
+    resolver: zodResolver(professorSchema),
     defaultValues: {
       // is_approved: false,
       // is_graduated: false,
@@ -59,26 +44,23 @@ const AddStudent = () => {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: StudentFormData) => {
+  const onSubmit = async (data: ProfessorFormData) => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
       setServerError("");
-
-      const dataStudent: Student = {
-        ...data,
-        account: {
-          email: data.email,
-          password: data.password,
-          username: data.username,
-        },
+      const dataProfesor: ProfessorType = {
+        address: data.address,
+        ci: data.ci,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        sex: data.sex,
       };
-
-      const res = await ApiService.addStudent(dataStudent);
+      const res = await ApiService.addProfessor(dataProfesor);
       if (res) {
         console.log(res);
         setIsSuccess(true);
-        router.push("/dashboard/students");
+        router.push("/dashboard/professor");
       }
     } catch (error: any) {
       console.log(error);
@@ -98,14 +80,14 @@ const AddStudent = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Crear Nuevo Estudiante
+        Crear Nuevo Profesor
       </h2>
 
       <div className="absolute right-10 top-7">
         <Buttom
-          title="Estudiantes"
+          title="Profesores"
           icon={IoIosArrowBack}
-          to="/dashboard/students"
+          to="/dashboard/professor"
           className="btn1"
         />
       </div>
@@ -146,31 +128,6 @@ const AddStudent = () => {
             )}
           </div>
 
-          {/* Grado */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Grado
-            </label>
-            <select
-              {...register("grade")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.grade ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            >
-              <option value="">Seleccione un grado</option>
-              {gradeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            {errors.grade && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.grade.message}
-              </p>
-            )}
-          </div>
-
           {/* Apellido */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -207,26 +164,6 @@ const AddStudent = () => {
             )}
           </div>
 
-          {/* Número de matrícula */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Número de matrícula
-            </label>
-            <input
-              {...register("registration_number")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.registration_number
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.registration_number && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.registration_number.message}
-              </p>
-            )}
-          </div>
-
           {/* Sexo */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -246,60 +183,6 @@ const AddStudent = () => {
               <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
             )}
           </div>
-
-          {/* Username */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Username
-            </label>
-            <input
-              {...register("username")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.username ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.username.message}
-              </p>
-            )}
-          </div>
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              {...register("email")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-          {/* Contraseña */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              {...register("password")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Mensajes de éxito o error */}
@@ -311,7 +194,7 @@ const AddStudent = () => {
 
         {/* Botón de envío */}
         <Buttom
-          title="Crear Estudiante"
+          title="Crear Profesor"
           type="submit"
           isLoading={isLoading}
           className="btn1"
@@ -323,4 +206,4 @@ const AddStudent = () => {
   );
 };
 
-export default AddStudent;
+export default AddProfessorSecretary;
