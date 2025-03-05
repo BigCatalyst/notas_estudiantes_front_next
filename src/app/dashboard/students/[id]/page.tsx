@@ -1,9 +1,9 @@
-import UpdateStudent from "@/components/dashboard/students/UpdateStudent";
+import ValidateRolStudent from "@/components/dashboard/students/ValidateRolStudent";
 
 const Update = () => {
   return (
     <div>
-      <UpdateStudent />
+      <ValidateRolStudent isAdd={false} />
     </div>
   );
 };

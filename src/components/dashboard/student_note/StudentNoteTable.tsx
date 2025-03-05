@@ -202,14 +202,14 @@ const StudentNoteTable = () => {
       >
         <input
           type="number"
-          placeholder="Buscar por GTE"
+          placeholder="Buscar por >= GTE"
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("asc__gte", e.target.value)}
         />
 
         <input
           type="number"
-          placeholder="Buscar por Examen Final"
+          placeholder="Buscar por >= Examen Final"
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
             handleFilterChange("final_exam__gte", e.target.value)
@@ -218,7 +218,7 @@ const StudentNoteTable = () => {
 
         <input
           type="number"
-          placeholder="Buscar por Nota Final"
+          placeholder="Buscar por >= Nota Final"
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
             handleFilterChange("final_grade__gte", e.target.value)
@@ -294,7 +294,7 @@ const StudentNoteTable = () => {
           placeholder="Nombre de la Asignatura"
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) =>
-            handleFilterChange("student__is_dropped_out", e.target.value)
+            handleFilterChange("subject__name__contains", e.target.value)
           }
         />
 

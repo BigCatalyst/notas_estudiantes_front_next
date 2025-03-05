@@ -148,7 +148,7 @@ const UpdateStudentNote = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Actualizar Nota de Estudiante
+        Actualizar Nota a Estudiante
       </h2>
 
       <div className="absolute right-10 top-7">
