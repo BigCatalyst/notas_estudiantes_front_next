@@ -23,7 +23,7 @@ export interface Ballot {
 }
 
 export interface BallotData {
- "list_career_name": string[]
+  list_career_name: string[];
 }
 
 export const ballots = async (
@@ -80,7 +80,7 @@ export const getBallot = async (id: string): Promise<string[] | undefined> => {
   try {
     const response = await apiAuth.get(`students/ballot/${id}/`);
 
-    console.log(response)
+    console.log(response);
 
     const data: string[] = response.data;
 

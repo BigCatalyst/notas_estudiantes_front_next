@@ -15,6 +15,7 @@ import { PiUserListBold } from "react-icons/pi";
 import { GrUserWorker } from "react-icons/gr";
 import { FaSchoolFlag } from "react-icons/fa6";
 import { GiBookCover } from "react-icons/gi";
+import { BiEdit } from "react-icons/bi";
 
 export enum Rols {
   admin = "admin",
@@ -41,6 +42,12 @@ export const navigationItemsDashboard: NavItem[] = [
     path: "/dashboard",
     rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
     Icon: TbLayoutDashboardFilled,
+  },
+  {
+    name: "Editar Boleta",
+    path: "/dashboard/students/ballot_edit",
+    rols: [Rols.student],
+    Icon: BiEdit,
   },
   {
     name: "Profesores",
