@@ -48,6 +48,8 @@ const UpdateSubjects = () => {
             (val) =>
               val.id && profesorsData.push({ id: val.id, name: val.first_name })
           );
+          console.log("---------------------");
+          console.log(profesorsData);
           setProfesors(profesorsData);
         }
       } catch (error) {
@@ -73,6 +75,7 @@ const UpdateSubjects = () => {
     resolver: zodResolver(subjectSchema),
     defaultValues: {
       tcp2_required: false,
+      profesorsData: [],
     },
     mode: "onChange",
   });
@@ -85,11 +88,11 @@ const UpdateSubjects = () => {
         setValue("grade", res.grade + "");
         setValue("name", res.name);
         setValue("tcp2_required", res.tcp2_required);
+        console.log("res");
+        console.log(res);
         const arr = res.professor.map((v) => Number(v.id));
-        console.log("arr");
-        console.log(arr);
-
-        setValue("profesorsData", [arr[0], ...arr.slice(1)]);
+        if (res.professor.length > 0)
+          setValue("profesorsData", [arr[0], ...arr.slice(1)]);
       }
     };
 
@@ -132,7 +135,7 @@ const UpdateSubjects = () => {
         professor: data.profesorsData,
       };
 
-      const res = await ApiService.addSubject(subject);
+      const res = await ApiService.updateSubject(id, subject);
       if (res) {
         console.log(res);
         setIsSuccess(true);

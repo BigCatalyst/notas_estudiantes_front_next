@@ -99,6 +99,7 @@ export const UpdateProfessor = () => {
         account: {
           email: data.email,
           username: data.username,
+          password: data.password,
         },
       };
 

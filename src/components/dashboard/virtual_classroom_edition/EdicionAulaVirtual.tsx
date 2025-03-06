@@ -168,7 +168,7 @@ const EdicionAulaVirtual: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Virtual Classroom Edition</h1>
+      <h1 className="text-2xl font-bold mb-4">Edición del Aula Virtual</h1>
       <button onClick={addSection} className="btn1">
         <span className="inline-flex items-center justify-center gap-1">
           <LuCircleFadingPlus className="w-5 h-5" /> Adicionar Sección
