@@ -65,10 +65,7 @@ const StudentResponse = () => {
                         </div>
                         <div className="flex flex-col">
                           <p className="font-bold">Descripción del Archivo:</p>
-                          <span>
-                            {file.description}asdasdasdasdas asdas asd asd asd
-                            asd asd sad dssa asd asd asd asd asd asd asdas d
-                          </span>
+                          <span>{file.description}</span>
                         </div>
                         <a
                           className="mt-2 btn2 bg-green-800 hover:bg-green-700"

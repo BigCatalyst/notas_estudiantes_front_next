@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { SectionType } from "@/components/dashboard/virtual_classroom_edition/Types";
+import {
+  FileType,
+  SectionType,
+} from "@/components/dashboard/virtual_classroom_edition/Types";
 import { apiAuth } from "../api";
 
 export interface SubjectSectionSubjectsRes {
@@ -98,6 +101,56 @@ export const subject_section_responses = async (
     const response = await apiAuth.get(`subject_section/responses/${id}/`);
     const data: SectionResponseRes[] = response.data;
     return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export interface ResponseTastRes {
+  id?: number;
+  student: Student;
+  description: string;
+  school_task: number;
+  files: File[];
+}
+
+export const student_response_task = async (
+  id: string
+): Promise<ResponseTastRes | undefined> => {
+  try {
+    const response = await apiAuth.get(`student_response/of_student/${id}/`);
+    const data: ResponseTastRes = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export interface DataStudentResponseTask {
+  description: string;
+  files: FileType[];
+  school_task?: number;
+  student?: number;
+}
+
+export const update_student_response_task = async (
+  id: string,
+  data: DataStudentResponseTask
+) => {
+  try {
+    const response = await apiAuth.put(`/student_response/${id}/`, data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const add_student_response_task = async (
+  data: DataStudentResponseTask
+) => {
+  try {
+    const response = await apiAuth.post(`/student_response/`, data);
+    return response.data;
   } catch (error) {
     return Promise.reject(error);
   }
