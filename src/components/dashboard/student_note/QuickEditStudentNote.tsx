@@ -3,6 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import MensageError from "@/components/message/MensageError";
 import { StudentNote } from "@/services/api/student_note";
 import { Subject } from "@/services/api/subjects";
 import ApiService from "@/services/ApiService";
@@ -22,21 +23,22 @@ export const QuickEditStudentNote = () => {
   const [initLoadData, setInitLoadData] = useState(true);
 
   const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [idSubject, setIdSubject] = useState(-1);
+  const [idSubject, setIdSubject] = useState(1);
 
   const [error, setError] = useState<{
     asc: { id: number; m: string } | null;
-    final_grade: { id: number; m: string } | null;
     final_exam: { id: number; m: string } | null;
     tcp1: { id: number; m: string } | null;
     tcp2: { id: number; m: string } | null;
   }>({
     asc: null,
-    final_grade: null,
     final_exam: null,
     tcp1: null,
     tcp2: null,
   });
+
+  const [showError, setShowError] = useState(false);
+  const [keyM, setkeyM] = useState(Date.now());
 
   const [editingCell, setEditingCell] = useState<{
     rowId: number | null;
@@ -51,7 +53,39 @@ export const QuickEditStudentNote = () => {
   // }, [editingCell]);
 
   const SalvarCambios = () => {
-    console.log(list);
+    setShowError(false);
+
+    if (validData()) {
+      console.log(list);
+      console.log("si");
+
+      (async () => {
+        try {
+          const res = await ApiService.SaveStudentsNoteEdit(list);
+          if (res) {
+            console.log(res);
+            setList([...list]);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    } else {
+      setShowError(true);
+      console.log("no");
+      setkeyM(Date.now());
+    }
+  };
+
+  const validData = (): boolean => {
+    for (const val of list) {
+      if (val.asc && (val.asc < 0 || val.asc > 10)) return false;
+      if (val.final_exam && (val.final_exam < 0 || val.final_exam > 100))
+        return false;
+      if (val.tcp1 && (val.tcp1 < 0 || val.tcp1 > 100)) return false;
+      if (val.tcp2 && (val.tcp2 < 0 || val.tcp2 > 100)) return false;
+    }
+    return true;
   };
 
   const handleChange = (
@@ -96,7 +130,8 @@ export const QuickEditStudentNote = () => {
     try {
       setLoading(true);
       const query = buildQueryString();
-      const data = await ApiService.studentsNote(`${query}`);
+
+      const data = await ApiService.studentsNoteMultiple("1");
 
       console.log(query);
 
@@ -105,7 +140,7 @@ export const QuickEditStudentNote = () => {
         console.log("---------------------------------");
         console.log(data);
 
-        setList(data.results.reverse());
+        setList(data.reverse());
       }
     } catch (error) {
       console.error("Error fetching:", error);
@@ -160,6 +195,17 @@ export const QuickEditStudentNote = () => {
             Salvar los cambios de la edición
           </div>
         </div>
+
+        {showError && (
+          <div key={keyM} className="relative w-full">
+            <div className="animate-slide-down absolute right-[200px]">
+              <MensageError
+                duration={10000}
+                message="Revise los campos editados y resuelva los errores"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -202,13 +248,9 @@ export const QuickEditStudentNote = () => {
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
               <th className="p-3 text-left">ASC</th>
-              <th className="p-3 text-left">Grado Final</th>
               <th className="p-3 text-left">Examen Final</th>
               <th className="p-3 text-left">TCP1</th>
               <th className="p-3 text-left">TCP2</th>
-              <th className="p-3 text-left">Estudiante</th>
-              <th className="p-3 text-left">Asigntura</th>
-              <th className="p-3 text-left">Año Escolar</th>
             </tr>
           </thead>
           <tbody className="*:focus-within:bg-gray-200">
@@ -281,82 +323,6 @@ export const QuickEditStudentNote = () => {
                             <span className="text-[12px]">{error.asc.m}</span>
                           </span>
                         )}
-                      </div>
-                    )}
-                  </td>
-
-                  {/* Final Grade */}
-                  <td className="p-3">
-                    {editingCell.rowId === item.id &&
-                    editingCell.field === "final_grade" ? (
-                      <input
-                        type="number"
-                        defaultValue={item.final_grade}
-                        onChange={(e) => {
-                          if (e.target.value && Number(e.target.value) >= 0)
-                            handleChange(e, item.id, "final_grade");
-                          else {
-                            console.log("NAN");
-                            item.final_grade = 0;
-                          }
-                        }}
-                        onBlur={() => {
-                          console.log(item.final_grade);
-                          if (
-                            item.id &&
-                            item.final_grade &&
-                            (item.final_grade < 0 || item.final_grade > 100)
-                          ) {
-                            setError({
-                              ...error,
-                              final_grade: {
-                                id: item.id,
-                                m: "Este campo debe tener un valor entre 0 y 100",
-                              },
-                            });
-                          } else {
-                            setError({
-                              ...error,
-                              final_grade: null,
-                            });
-                          }
-                          setEditingCell({ rowId: null, field: null });
-                        }}
-                        autoFocus
-                        className="w-[150px] px-2 py-1 border rounded"
-                        placeholder="Nota Final"
-                      />
-                    ) : (
-                      <div
-                        onClick={() => {
-                          if (item.id)
-                            setEditingCell({
-                              rowId: item.id,
-                              field: "final_grade",
-                            });
-                        }}
-                        className="cursor-pointer flex flex-col"
-                      >
-                        <span
-                          className={
-                            item.final_grade &&
-                            (item.final_grade < 0 || item.final_grade > 100)
-                              ? "text-red-600 font-bold"
-                              : "text-gray-700"
-                          }
-                        >
-                          {item.final_grade}
-                        </span>
-                        {error &&
-                          error.final_grade &&
-                          error.final_grade.id === item.id && (
-                            <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
-                              <BiSolidError className="w-12 h-12 animate-pulse" />
-                              <span className="text-[12px]">
-                                {error.final_grade.m}
-                              </span>
-                            </span>
-                          )}
                       </div>
                     )}
                   </td>
@@ -579,9 +545,9 @@ export const QuickEditStudentNote = () => {
                     )}
                   </td>
 
-                  <td className="p-3">{item.student.first_name}</td>
+                  {/* <td className="p-3">{item.student.first_name}</td>
                   <td className="p-3">{item.subject.name}</td>
-                  <td className="p-3">{item.school_year.name}</td>
+                  <td className="p-3">{item.school_year.name}</td> */}
                 </tr>
               ))}
           </tbody>

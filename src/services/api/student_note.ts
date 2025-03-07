@@ -69,13 +69,36 @@ export const deleteStudentNote = async (id: number) => {
   }
 };
 
-export const getStudentNote = async (id: string): Promise<StudentNote | undefined> => {
+export const getStudentNote = async (
+  id: string
+): Promise<StudentNote | undefined> => {
   try {
     const response = await apiAuth.get(`student_note/${id}/`);
 
     const data: StudentNote = response.data;
 
     return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const studentsNoteMultiple = async (
+  id: string
+): Promise<StudentNote[] | undefined> => {
+  try {
+    const response = await apiAuth.get(`/student_note/multiple/${id}/`);
+    const data: StudentNote[] = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const SaveStudentsNoteEdit = async (data: StudentNote[]) => {
+  try {
+    const response = await apiAuth.post(`/student_note/multiple/`, data);
+    return response.data;
   } catch (error) {
     return Promise.reject(error);
   }
