@@ -4,6 +4,8 @@
 
 import Buttom from "@/components/ui/buttom/Buttom";
 import Modal from "@/components/ui/modal/Modal";
+import { Rols } from "@/data/NavigationItems";
+import { State } from "@/redux/features/authSlice";
 import { EventType } from "@/services/api/events";
 import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";
@@ -15,6 +17,7 @@ import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { useSelector } from "react-redux";
 
 export const EventsTable = () => {
   const [list, setList] = useState<EventType[]>([]);
@@ -26,6 +29,8 @@ export const EventsTable = () => {
   const [initLoadData, setInitLoadData] = useState(true);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [IdDel, setIdDel] = useState(-1);
+
+  const userAuth: State = useSelector((state: any) => state.auth);
 
   const [filters, setFilters] = useState<{
     date__gte?: string;
@@ -132,25 +137,31 @@ export const EventsTable = () => {
           </div>
         </div>
 
-        {/* Exportar */}
-        <div className="mb-5">
-          {/* <button className="btn1">
+        {userAuth.user?.roles.find(
+          (val) => val === Rols.admin || val === Rols.secretary
+        ) && (
+          <div className="inline-flex gap-2">
+            {/* Exportar */}
+            <div className="mb-5">
+              {/* <button className="btn1">
             <TbTableExport className="w-7 h-7 text-gray-200" />
             <span>Exportar</span>
           </button> */}
 
-          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
-        </div>
+              <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
+            </div>
 
-        {/* Adicionar */}
-        <div className="mb-5">
-          <Buttom
-            title="Adicionar"
-            icon={TbPlaylistAdd}
-            className="btn1"
-            to="school_event/add"
-          />
-        </div>
+            {/* Adicionar */}
+            <div className="mb-5">
+              <Buttom
+                title="Adicionar"
+                icon={TbPlaylistAdd}
+                className="btn1"
+                to="school_event/add"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Filters */}

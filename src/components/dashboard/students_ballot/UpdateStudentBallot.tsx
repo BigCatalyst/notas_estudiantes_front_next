@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prefer-const */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
@@ -31,7 +33,7 @@ const ballotSchema = z.object({
 type BallotFormData = z.infer<typeof ballotSchema>;
 
 const UpdateStudentBallot = () => {
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [students, setStudents] = useState<
@@ -50,17 +52,19 @@ const UpdateStudentBallot = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const studentsData = await ApiService.students(
+        //
+        const studentsData = await ApiService.studentsAll(
           "grade=9&ordering=first_name&is_dropped_out=false&is_graduated=false"
         );
         console.log(studentsData);
-        if (studentsData)
+        if (studentsData) {
           setStudents(
-            studentsData.results.map((student: any) => ({
+            studentsData.map((student: any) => ({
               id: student.id,
               name: `${student.first_name}`,
             }))
           );
+        }
 
         const fetchCarreers = await ApiService.careers("");
         if (fetchCarreers) {
@@ -114,7 +118,7 @@ const UpdateStudentBallot = () => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
-      setServerError("");
+      setServerError([]);
       console.log(data);
       const id = Number(selectedStudent);
       const res =
@@ -143,14 +147,16 @@ const UpdateStudentBallot = () => {
       }
     } catch (error: any) {
       console.log(error);
-      // const errorData = error.response && error.response.data;
-      // let formattedErrorData = "";
-      // if (Object.keys(errorData).length > 0) {
-      //   formattedErrorData = Object.entries(errorData)
-      //     .map(([key, value]) => ` -${key}: ${JSON.stringify(value)}`)
-      //     .join("\n");
-      // }
-      setServerError("Error al Adicionar Estudiante Boleta");
+      const errorData: {
+        [key: string]: string[] | { email: string[]; username: string[] };
+      } = error.response.data;
+      let formattedErrorData: string[] = [];
+      if (Object.keys(errorData).length > 0) {
+        Object.entries(errorData).forEach(([key, value]) => {
+          formattedErrorData.push(` ${value}`);
+        });
+      }
+      setServerError(formattedErrorData);
     } finally {
       setIsLoading(false);
     }
@@ -451,11 +457,14 @@ const UpdateStudentBallot = () => {
           </div>
         </div>
 
-        <MessageForm
-          isSuccess={isSuccess}
-          error={serverError.length > 0}
-          errorMessage={serverError}
-        />
+        {serverError.length > 0 && (
+          <div className="bg-red-500 p-3 text-white rounded-lg shadow-lg">
+            <p className="text-[17px] mb-1">Datos inválidos</p>
+            {serverError.map((val, index) => (
+              <div key={index + Date.now()}>{val}</div>
+            ))}
+          </div>
+        )}
         <Buttom
           title="Actualizar Boleta"
           type="submit"

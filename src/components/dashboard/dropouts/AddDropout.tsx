@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
@@ -24,7 +25,7 @@ const dropoutSchema = z.object({
 type DropoutFormData = z.infer<typeof dropoutSchema>;
 
 const AddDropout = () => {
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
@@ -75,7 +76,7 @@ const AddDropout = () => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
-      setServerError("");
+      setServerError([]);
       const res = await ApiService.addDropout(data);
       if (res) {
         console.log(res);
@@ -84,12 +85,14 @@ const AddDropout = () => {
       }
     } catch (error: any) {
       console.log(error);
-      const errorData = error.response.data;
-      let formattedErrorData = "";
+      const errorData: {
+        [key: string]: string[] | { email: string[]; username: string[] };
+      } = error.response.data;
+      let formattedErrorData: string[] = [];
       if (Object.keys(errorData).length > 0) {
-        formattedErrorData = Object.entries(errorData)
-          .map(([key, value]) => ` -${key}: ${JSON.stringify(value)}`)
-          .join("\n");
+        Object.entries(errorData).forEach(([key, value]) => {
+          formattedErrorData.push(`${key}: ${value}`);
+        });
       }
       setServerError(formattedErrorData);
     } finally {
@@ -100,7 +103,7 @@ const AddDropout = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Crear Graduado
+        Crear Baja
       </h2>
 
       <div className="absolute right-10 top-7">
@@ -229,11 +232,14 @@ const AddDropout = () => {
           </div>
         </div>
 
-        <MessageForm
-          isSuccess={isSuccess}
-          error={serverError.length > 0}
-          errorMessage={serverError}
-        />
+        {serverError.length > 0 && (
+          <div className="bg-red-500 p-3 text-white rounded-lg shadow-lg">
+            <p className="text-[17px] mb-1">Datos inválidos</p>
+            {serverError.map((val, index) => (
+              <div key={index + Date.now()}>{val}</div>
+            ))}
+          </div>
+        )}
 
         {/* Botón de envío */}
         <Buttom

@@ -91,8 +91,6 @@ export function ProfileForm() {
 
       setIsSuccess(true);
     } catch (error) {
-      console.log("errorrrrrrrrrrrr");
-      console.log(error);
       setError(true);
     } finally {
       setIsLoading(false);
@@ -147,6 +145,7 @@ export function ProfileForm() {
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
                 }`}
+                readOnly
               />
               {errors.first_name && (
                 <p className="mt-1 text-sm text-red-600">
@@ -173,6 +172,7 @@ export function ProfileForm() {
                     ? "border-red-500 focus:ring-red-200"
                     : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
                 }`}
+                readOnly
               />
               {errors.last_name && (
                 <p className="mt-1 text-sm text-red-600">
