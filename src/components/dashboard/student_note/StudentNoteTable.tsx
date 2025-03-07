@@ -332,11 +332,11 @@ const StudentNoteTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
-                  <td className="p-3">{item.asc}</td>
-                  <td className="p-3">{item.final_grade}</td>
-                  <td className="p-3">{item.final_exam}</td>
-                  <td className="p-3">{item.tcp1}</td>
-                  <td className="p-3">{item.tcp2}</td>
+                  <td className="p-3">{item.asc?.toFixed(2)}</td>
+                  <td className="p-3">{item.final_grade?.toFixed(2)}</td>
+                  <td className="p-3">{item.final_exam?.toFixed(2)}</td>
+                  <td className="p-3">{item.tcp1?.toFixed(2)}</td>
+                  <td className="p-3">{item.tcp2?.toFixed(2)}</td>
                   <td className="p-3">{item.student.first_name}</td>
                   <td className="p-3">{item.subject.name}</td>
                   <td className="p-3">{item.school_year.name}</td>
