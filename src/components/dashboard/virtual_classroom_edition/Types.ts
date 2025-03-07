@@ -37,3 +37,29 @@ export interface FileType {
   fileName?: string;
   file?: string;
 }
+
+export interface ErrorRes {
+  title: string[];
+  folders: Folder[];
+  tasks: Task[];
+}
+
+export interface Folder {
+  title: string[];
+  files: FolderFile[];
+}
+
+export interface FolderFile {
+  title: string[];
+  file: string[];
+}
+
+export interface Task {
+  title: string[];
+  files: TaskFile[];
+}
+
+export interface TaskFile {
+  title: string[];
+  file: string[];
+}

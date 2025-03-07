@@ -119,7 +119,7 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Eventos Escolares",
     path: "/dashboard/school_event",
-    rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
+    rols: [Rols.admin, Rols.secretary],
     Icon: FaCalendarAlt,
   },
   {

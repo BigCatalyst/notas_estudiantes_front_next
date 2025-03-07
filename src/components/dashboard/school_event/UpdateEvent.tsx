@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
@@ -22,7 +23,7 @@ const eventSchema = z.object({
 type EventFormData = z.infer<typeof eventSchema>;
 
 export const UpdateEvent = () => {
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -64,7 +65,7 @@ export const UpdateEvent = () => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
-      setServerError("");
+      setServerError([]);
       const res = await ApiService.updateEvent(id, data);
       if (res) {
         console.log(res);
@@ -73,12 +74,14 @@ export const UpdateEvent = () => {
       }
     } catch (error: any) {
       console.log(error);
-      const errorData = error.response.data;
-      let formattedErrorData = "";
+      const errorData: {
+        [key: string]: string[] | { email: string[]; username: string[] };
+      } = error.response.data;
+      let formattedErrorData: string[] = [];
       if (Object.keys(errorData).length > 0) {
-        formattedErrorData = Object.entries(errorData)
-          .map(([key, value]) => ` -${key}: ${JSON.stringify(value)}`)
-          .join("\n");
+        Object.entries(errorData).forEach(([key, value]) => {
+          formattedErrorData.push(`${key}: ${value}`);
+        });
       }
       setServerError(formattedErrorData);
     } finally {
@@ -156,11 +159,14 @@ export const UpdateEvent = () => {
           </div>
         </div>
 
-        <MessageForm
-          isSuccess={isSuccess}
-          error={serverError.length > 0}
-          errorMessage={serverError}
-        />
+        {serverError.length > 0 && (
+          <div className="bg-red-500 p-3 text-white rounded-lg shadow-lg">
+            <p className="text-[17px] mb-1">Datos inválidos</p>
+            {serverError.map((val, index) => (
+              <div key={index + Date.now()}>{val}</div>
+            ))}
+          </div>
+        )}
 
         {/* Botón de envío */}
         <Buttom
