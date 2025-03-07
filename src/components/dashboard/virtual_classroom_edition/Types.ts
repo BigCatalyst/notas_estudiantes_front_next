@@ -42,6 +42,7 @@ export interface ErrorRes {
   title: string[];
   folders: Folder[];
   tasks: Task[];
+  non_field_errors: string[];
 }
 
 export interface Folder {
