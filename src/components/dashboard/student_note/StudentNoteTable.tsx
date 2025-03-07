@@ -70,10 +70,6 @@ const StudentNoteTable = () => {
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
-    // if (currentPage > totalPages){
-    //   params.set("page", "1");
-    // }
-    // else params.set("page", currentPage.toString());
 
     params.set("page", currentPage.toString());
 
@@ -104,30 +100,6 @@ const StudentNoteTable = () => {
         if (initLoadData) setInitLoadData(false);
         console.log("---------------------------------");
         console.log(data);
-
-        // let listResolver: StudentNote[];
-        // listResolver = [];
-
-        // const listPromiseRes = data.results.map((val) => {
-        //   const estudiante_asignatura = async () => {
-        //     let studentName = "";
-        //     let subjectName = "";
-        //     apiAuth.get("students/" + val.student).then((res) => {
-        //       studentName = res.data.first_name;
-        //       apiAuth.get("subjects/" + val.subject).then((res) => {
-        //         subjectName = res.data.name;
-        //       });
-        //     });
-        //     const rowStudentNote: StudentNote = {
-        //       ...val,
-        //       student: studentName,
-        //       subject: subjectName,
-        //     };
-
-        //     return rowStudentNote;
-        //   };
-        //   estudiante_asignatura().then((val) => listResolver.push(val));
-        // });
 
         setList(data.results.reverse());
         // if (listPromiseRes) setList(listResolver.reverse());
@@ -188,6 +160,16 @@ const StudentNoteTable = () => {
             icon={TbPlaylistAdd}
             className="btn1"
             to="student_note/add"
+          />
+        </div>
+
+        {/* Adicionar */}
+        <div className="mb-5">
+          <Buttom
+            title="Edición Rápida"
+            icon={MdEdit}
+            className="btn1"
+            to="student_note/quick_student_note"
           />
         </div>
       </div>
