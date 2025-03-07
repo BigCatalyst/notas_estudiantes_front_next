@@ -1,10 +1,15 @@
 import { QuickEditStudentNote } from "@/components/dashboard/student_note/QuickEditStudentNote";
 import React from "react";
 
-export const QuickStudentNoteView = () => {
+const QuickStudentNoteView = () => {
   return (
-    <div>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6">
+        Edición Rápida de las Notas de los Estudiantes
+      </h1>
       <QuickEditStudentNote />
     </div>
   );
 };
+
+export default QuickStudentNoteView;
