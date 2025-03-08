@@ -181,7 +181,6 @@ export const StudentGroupTable = () => {
             <tr className="bg-slate-700 text-gray-200">
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">Grado</th>
-              <th className="p-3 text-left">Sexo</th>
               <th className="p-3 text-left">Profesores</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>

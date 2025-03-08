@@ -1,4 +1,5 @@
 import { apiAuth } from "../api";
+import { Group } from "./group";
 
 //students
 export interface StudentsRes {
@@ -22,6 +23,7 @@ export interface Student {
   is_dropped_out?: boolean;
   account?: Account;
   user?: string;
+  group?: Group;
 }
 
 export interface Account {
