@@ -18,7 +18,7 @@ import {
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { TbLoader2, TbPdf, TbPlaylistAdd } from "react-icons/tb";
 
 const SubjectsTable = () => {
   const [list, setList] = useState<Subject[]>([]);
@@ -120,6 +120,27 @@ const SubjectsTable = () => {
     setCurrentPage(1);
   };
 
+  const exportReport = async (id: string) => {
+    try {
+      const res = await ApiService.reportNotasEstudiantesAsignaturas(id);
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "reporte.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -135,16 +156,6 @@ const SubjectsTable = () => {
           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
             Filtros
           </div>
-        </div>
-
-        {/* Exportar */}
-        <div className="mb-5">
-          {/* <button className="btn1">
-            <TbTableExport className="w-7 h-7 text-gray-200" />
-            <span>Exportar</span>
-          </button> */}
-
-          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
         </div>
 
         {/* Adicionar */}
@@ -252,6 +263,27 @@ const SubjectsTable = () => {
                         Eliminar
                       </span>
                     </button>
+
+                    <div className="relative inline-block group z-10">
+                      <div className="">
+                        <button
+                          onClick={() => {
+                            if (item.id) exportReport(item.id + "");
+                          }}
+                          className="btn2 rounded-lg bg-green-700  hover:bg-green-600 "
+                        >
+                          <span className="inline-flex items-center gap-1">
+                            <TbPdf className="group-focus:hidden" />
+                            Notas
+                          </span>
+                        </button>
+                      </div>
+
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
+                        Notas de estudiantes por asignaturas
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}

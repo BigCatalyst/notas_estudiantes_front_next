@@ -13,7 +13,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { TbLoader2, TbPlaylistAdd } from "react-icons/tb";
 
 const StudentsBallotTable = () => {
   const [list, setList] = useState<Ballot[]>([]);
@@ -123,7 +123,6 @@ const StudentsBallotTable = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      {" "}
       <div className="inline-flex w-full gap-3">
         {/* Filtros */}
         <div className="relative inline-block group z-10">
@@ -137,16 +136,6 @@ const StudentsBallotTable = () => {
           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
             Filtros
           </div>
-        </div>
-
-        {/* Exportar */}
-        <div className="mb-5">
-          {/* <button className="btn1">
-            <TbTableExport className="w-7 h-7 text-gray-200" />
-            <span>Exportar</span>
-          </button> */}
-
-          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
         </div>
 
         {/* Adicionar */}
