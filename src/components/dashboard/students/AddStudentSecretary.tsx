@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
-import { Student } from "@/services/api/students";
+import { Student, StudentCreate } from "@/services/api/students";
 
 // Opciones para el campo "grade"
 const gradeOptions = [
@@ -28,6 +28,7 @@ const studentSchema = z.object({
   first_name: z.string().min(1, "Nombre es requerido"),
   registration_number: z.string().min(1, "Número de matrícula es requerido"),
   sex: z.string().min(1, "Sexo es requerido"),
+  group: z.string().optional(),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -36,10 +37,30 @@ const AddStudentSecretary = () => {
   const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [groups, setGroups] = useState<{ id: string; name: string }[]>([]);
 
   console.log("entro");
 
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const groupsData = await ApiService.studentGroupsAll("");
+        if (groupsData)
+          setGroups(
+            groupsData.map(({ id, name }: any) => ({
+              id,
+              name,
+            }))
+          );
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const {
     register,
@@ -61,9 +82,19 @@ const AddStudentSecretary = () => {
       setIsSuccess(false);
       setServerError("");
 
-      const dataStudent: Student = {
-        ...data,
+      const dataStudent: StudentCreate = {
+        ci: data.ci,
+        address: data.address,
+        grade: data.grade,
+        last_name: data.last_name,
+        first_name: data.first_name,
+        registration_number: data.registration_number,
+        sex: data.sex,
       };
+
+      if (data.group) {
+        dataStudent.group = data.group ?? "";
+      }
 
       const res = await ApiService.addStudent(dataStudent);
       if (res) {
@@ -235,6 +266,31 @@ const AddStudentSecretary = () => {
             </select>
             {errors.sex && (
               <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
+            )}
+          </div>
+
+          {/* Group */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Grupo
+            </label>
+            <select
+              {...register("group")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.group ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            >
+              <option value="">Seleccione un Grupo</option>
+              {groups.map((group) => (
+                <option key={group.id} value={group.id}>
+                  {group.name}
+                </option>
+              ))}
+            </select>
+            {errors.group && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.group.message}
+              </p>
             )}
           </div>
         </div>

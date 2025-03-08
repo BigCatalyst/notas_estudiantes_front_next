@@ -33,10 +33,16 @@ const studentSchema = z.object({
   username: z
     .string()
     .min(3, "Username debe tener al menos 3 caracteres")
-    .max(50).optional().or(z.literal('')),
-  password: z.string().min(6, "Contraseña debe tener al menos 6 caracteres").optional().or(z.literal('')),
-  email: z.string().email("Email inválido").optional().or(z.literal('')),
-  group: z.string().optional()
+    .max(50)
+    .optional()
+    .or(z.literal("")),
+  password: z
+    .string()
+    .min(6, "Contraseña debe tener al menos 6 caracteres")
+    .optional()
+    .or(z.literal("")),
+  email: z.string().email("Email inválido").optional().or(z.literal("")),
+  group: z.string().optional(),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -50,24 +56,23 @@ const AddStudent = () => {
   const router = useRouter();
 
   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const groupsData=await ApiService.studentGroupsAll("")
-          if (groupsData)
-            setGroups(
-              groupsData.map(({id,name}: any) => ({
-                id,
-                name,
-              }))
-            );
-          
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-  
-      fetchData();
-    }, []);
+    const fetchData = async () => {
+      try {
+        const groupsData = await ApiService.studentGroupsAll("");
+        if (groupsData)
+          setGroups(
+            groupsData.map(({ id, name }: any) => ({
+              id,
+              name,
+            }))
+          );
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const {
     register,
@@ -88,7 +93,7 @@ const AddStudent = () => {
       setIsLoading(true);
       setIsSuccess(false);
       setServerError([]);
-      
+
       const dataStudent: StudentCreate = {
         ci: data.ci,
         address: data.address,
@@ -98,18 +103,16 @@ const AddStudent = () => {
         registration_number: data.registration_number,
         sex: data.sex,
       };
-      if(data.email||data.password||data.username){
-        dataStudent.account={
-          email: data.email??"",
-          password:data.password ,
-          username: data.username??"",
-        }
+      if (data.email || data.password || data.username) {
+        dataStudent.account = {
+          email: data.email ?? "",
+          password: data.password,
+          username: data.username ?? "",
+        };
       }
-      if(data.group){
-        dataStudent.group=data.group??"";
+      if (data.group) {
+        dataStudent.group = data.group ?? "";
       }
-
-      
 
       const res = await ApiService.addStudent(dataStudent);
       if (res) {
@@ -317,7 +320,6 @@ const AddStudent = () => {
               </p>
             )}
           </div>
-
 
           {/* Username */}
           <div>
