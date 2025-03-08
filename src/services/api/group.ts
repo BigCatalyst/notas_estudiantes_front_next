@@ -10,7 +10,6 @@ export interface StudentGroupRes {
 export interface Group {
   id: number;
   professors: Professor[];
-  school_year: SchoolYear;
   name: string;
   grade: number;
 }
@@ -23,13 +22,6 @@ export interface Professor {
   first_name: string;
   sex: string;
   user: number;
-}
-
-export interface SchoolYear {
-  id: number;
-  start_date: Date;
-  end_date: Date;
-  name: string;
 }
 
 export const studentGroups = async (
@@ -60,8 +52,7 @@ export const studentGroupsAll = async (
 
 export interface AddStudentGroupData {
   name: string;
-  grade: number;
-  school_year: number;
+  grade: string;
   professors: number[];
 }
 
