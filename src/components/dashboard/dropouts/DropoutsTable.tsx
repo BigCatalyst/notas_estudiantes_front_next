@@ -132,6 +132,27 @@ const DropoutsTable = () => {
     setCurrentPage(1);
   };
 
+  const exportReport = async () => {
+    try {
+      const res = await ApiService.reportBajas();
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "reporte.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -157,6 +178,13 @@ const DropoutsTable = () => {
           </button> */}
 
           <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
+        </div>
+
+        {/* Exportar */}
+        <div className="mb-5">
+          <button className="btn1" onClick={exportReport}>
+            <TbTableExport /> Exportar
+          </button>
         </div>
 
         {/* Adicionar */}

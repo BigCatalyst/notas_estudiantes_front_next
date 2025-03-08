@@ -12,6 +12,7 @@ import * as professorService from "./api/professor";
 import * as eventService from "./api/events";
 import * as subjectsectionsubjectsService from "./api/virtual_classroom_edition";
 import * as studentGroup from "./api/group";
+import * as reportsService from "./api/reports";
 
 export default {
   ...authService,
@@ -27,4 +28,5 @@ export default {
   ...eventService,
   ...subjectsectionsubjectsService,
   ...studentGroup,
+  ...reportsService,
 };
