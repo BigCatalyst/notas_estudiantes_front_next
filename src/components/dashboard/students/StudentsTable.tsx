@@ -233,6 +233,15 @@ const StudentsTable = () => {
           }
         />
 
+        <input
+          type="text"
+          placeholder="Buscar por Grupo"
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) =>
+            handleFilterChange("group__name__contains", e.target.value)
+          }
+        />
+
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("sex", e.target.value)}
@@ -288,6 +297,7 @@ const StudentsTable = () => {
               {/* <th className="p-3 text-left">ID</th> */}
               <th className="p-3 text-left">Aprobado</th>
               <th className="p-3 text-left">CI</th>
+              <th className="p-3 text-left">Grupo</th>
               <th className="p-3 text-left">Dirección</th>
               <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">Registro</th>
@@ -318,6 +328,7 @@ const StudentsTable = () => {
                   </td>
 
                   <td className="p-3">{item.ci}</td>
+                  <td className="p-3">{item.group?.name}</td>
                   <td className="p-3 w-[100px]">{item.address}</td>
                   <td className="p-3">{item.grade}</td>
                   <td className="p-3">{item.registration_number}</td>

@@ -38,12 +38,12 @@ export const studentGroups = async (
 
 export const studentGroupsAll = async (
   query: string
-): Promise<StudentGroupRes | undefined> => {
+): Promise<Group[] | undefined> => {
   try {
     const response = await apiAuth.get(
       `student_group/?paginate=false&${query}`
     );
-    const data: StudentGroupRes = response.data;
+    const data: Group[] = response.data;
     return data;
   } catch (error) {
     return Promise.reject(error);
