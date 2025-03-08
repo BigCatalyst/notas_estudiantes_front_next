@@ -26,7 +26,8 @@ export async function uploadFile(formData: FormData) {
 
   return {
     message: "Archivo subido exitosamente",
-    file: formData.get("origin") + `/uploads/${fileName}`,
+    // file: formData.get("origin") + `/uploads/${fileName}`,
+    file: formData.get("origin") + `/api/files/${fileName}`,
     fileName: fileName,
   };
 }
