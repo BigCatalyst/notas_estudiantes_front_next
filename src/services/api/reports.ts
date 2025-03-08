@@ -32,3 +32,31 @@ export const reportNotasEstudiantesAsignaturas = async (id: string) => {
     return Promise.reject(error);
   }
 };
+
+export const reportCertificacionNotas = async (
+  id_estudiante: string,
+  grado: string
+) => {
+  try {
+    const res = await apiAuth.get(
+      `student_note/report/certification/${id_estudiante}/${grado}/`,
+      {
+        responseType: "blob",
+      }
+    );
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const reportStudents = async (query: string) => {
+  try {
+    const res = await apiAuth.get(`students/report/?${query}`, {
+      responseType: "blob",
+    });
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
