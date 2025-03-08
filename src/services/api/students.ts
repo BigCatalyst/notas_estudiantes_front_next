@@ -87,7 +87,7 @@ export const addStudent = async (
 
 export const updateStudent = async (
   id: string,
-  value: Student
+  value: StudentCreate
 ): Promise<Student | undefined> => {
   try {
     const response = await apiAuth.patch(`students/${id}/`, value);
