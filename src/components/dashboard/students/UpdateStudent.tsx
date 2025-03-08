@@ -148,7 +148,7 @@ const UpdateStudent = () => {
       if (Object.keys(errorData).length > 0) {
         Object.entries(errorData).forEach(([key, value]) => {
           if (key !== "account") {
-            formattedErrorData.push(`${key}: ${JSON.stringify(value)}`);
+            formattedErrorData.push(`${key}: ${value}`);
           } else {
             Object.entries(value).forEach(([key, value]) => {
               if (Array.isArray(value))
