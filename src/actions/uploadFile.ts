@@ -5,7 +5,8 @@ import path from "path";
 
 export async function uploadFile(formData: FormData) {
   const file = formData.get("file") as File;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
+  //const uploadDir = path.join(process.cwd(), "public", "uploads");
+  const uploadDir = path.join(process.cwd(), "uploads");
 
   // Verifica si el directorio existe, si no, créalo
   if (!existsSync(uploadDir)) {
