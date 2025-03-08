@@ -21,3 +21,14 @@ export const reportBajas = async () => {
     return Promise.reject(error);
   }
 };
+
+export const reportNotasEstudiantesAsignaturas = async (id: string) => {
+  try {
+    const res = await apiAuth.get(`student_note/report/subject/${id}/`, {
+      responseType: "blob",
+    });
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
