@@ -11,7 +11,7 @@ export interface Group {
   id: number;
   professors: Professor[];
   name: string;
-  grade: number;
+  grade: string;
 }
 
 export interface Professor {
@@ -73,7 +73,7 @@ export const updateStudentGroup = async (
   value: AddStudentGroupData
 ): Promise<Group | undefined> => {
   try {
-    const response = await apiAuth.patch(`/student_group/${id}`, value);
+    const response = await apiAuth.patch(`/student_group/${id}/`, value);
     const data: Group = response.data;
     return data;
   } catch (error) {
