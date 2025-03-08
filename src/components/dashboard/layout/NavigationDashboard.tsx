@@ -23,6 +23,27 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openMenuInit, setOpenMenuInit] = useState(0);
 
+  const [schoolYear, setSchoolYear] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await ApiService.schoolYearsAll("");
+
+        if (res) {
+          const value = res[res.length - 1];
+          setSchoolYear(value.name);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log(schoolYear);
+  }, [schoolYear]);
+
   const pathname = usePathname();
 
   const router = useRouter();
@@ -135,6 +156,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                       <span className="text-orange-500 text-shadow text-shadow-gray-400 text-shadow-blur-1">
                         Estudiantes
                       </span>
+                      <span className="ml-3 text-[17px]">{`Año Escolar ${schoolYear}`}</span>
                     </div>
 
                     <div className="block md:hidden">
