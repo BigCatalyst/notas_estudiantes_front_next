@@ -233,6 +233,15 @@ const StudentsTable = () => {
           }
         />
 
+        <input
+          type="text"
+          placeholder="Buscar por Grupo"
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) =>
+            handleFilterChange("group__name__contains", e.target.value)
+          }
+        />
+
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("sex", e.target.value)}
