@@ -57,7 +57,7 @@ const Modal: FC<ModalProps> = ({
   return (
     <div
       className={
-        "w-full h-full bg-gray-400/50 absolute top-0 left-0 z-60  " +
+        "w-full h-screen bg-gray-400/50 fixed top-0 left-0 z-60  " +
         `${
           showModal && !hiddenModal
             ? "flex items-center justify-center"
