@@ -12,7 +12,7 @@ import { useParams, useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
-import { Student } from "@/services/api/students";
+import { Student, StudentCreate } from "@/services/api/students";
 
 const studentSchema = z.object({
   ci: z.string().min(1, "CI es requerido"),
@@ -25,9 +25,12 @@ const studentSchema = z.object({
   username: z
     .string()
     .min(3, "Username debe tener al menos 3 caracteres")
-    .max(50),
-  password: z.string().optional(),
-  email: z.string().email("Email inválido"),
+    .max(50)
+    .optional()
+    .or(z.literal("")),
+  password: z.string().optional().optional().or(z.literal("")),
+  email: z.string().email("Email inválido").optional().or(z.literal("")),
+  group: z.string().optional(),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -36,6 +39,7 @@ const UpdateStudent = () => {
   const [serverError, setServerError] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [groups, setGroups] = useState<{ id: string; name: string }[]>([]);
 
   const { id } = useParams<{ id: string }>();
 
@@ -58,7 +62,11 @@ const UpdateStudent = () => {
 
   useEffect(() => {
     const studentUpdate = async () => {
-      const res = await ApiService.getStudent(id);
+      const [res, groupsData] = await Promise.all([
+        await ApiService.getStudent(id),
+        await ApiService.studentGroupsAll(""),
+      ]);
+
       console.log(res);
       if (res) {
         setValue("ci", res.ci);
@@ -77,6 +85,18 @@ const UpdateStudent = () => {
             setValue("email", resUser.email ? resUser.email : "");
           }
         }
+
+        if (groupsData) {
+          setGroups(
+            groupsData.map(({ id, name }: any) => ({
+              id,
+              name,
+            }))
+          );
+          if (res.group) {
+            setValue("group", res.group.id + "");
+          }
+        }
       }
     };
 
@@ -89,14 +109,25 @@ const UpdateStudent = () => {
       setIsSuccess(false);
       setServerError([]);
 
-      const dataStudent: Student = {
-        ...data,
-        account: {
-          email: data.email,
-          password: data.password,
-          username: data.username,
-        },
+      const dataStudent: StudentCreate = {
+        ci: data.ci,
+        address: data.address,
+        grade: data.grade,
+        last_name: data.last_name,
+        first_name: data.first_name,
+        registration_number: data.registration_number,
+        sex: data.sex,
       };
+      if (data.email || data.password || data.username) {
+        dataStudent.account = {
+          email: data.email ?? "",
+          password: data.password,
+          username: data.username ?? "",
+        };
+      }
+      if (data.group) {
+        dataStudent.group = data.group ?? "";
+      }
 
       const res = await ApiService.updateStudent(id, dataStudent);
       if (res) {
@@ -275,6 +306,31 @@ const UpdateStudent = () => {
             </select>
             {errors.sex && (
               <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
+            )}
+          </div>
+
+          {/* Group */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Grupo
+            </label>
+            <select
+              {...register("group")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.group ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            >
+              <option value="">Seleccione un Grupo</option>
+              {groups.map((group) => (
+                <option key={group.id} value={group.id}>
+                  {group.name}
+                </option>
+              ))}
+            </select>
+            {errors.group && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.group.message}
+              </p>
             )}
           </div>
 

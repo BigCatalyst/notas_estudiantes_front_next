@@ -26,6 +26,23 @@ export interface Student {
   group?: Group;
 }
 
+export interface StudentCreate {
+  id?: number;
+  is_approved?: boolean;
+  ci: string;
+  address: string;
+  grade: string;
+  last_name: string;
+  first_name: string;
+  registration_number: string;
+  sex: string;
+  is_graduated?: boolean;
+  is_dropped_out?: boolean;
+  account?: Account;
+  user?: string;
+  group?: string;
+}
+
 export interface Account {
   username: string;
   password?: string;
@@ -57,7 +74,7 @@ export const studentsAll = async (
 };
 
 export const addStudent = async (
-  value: Student
+  value: StudentCreate
 ): Promise<Student | undefined> => {
   try {
     const response = await apiAuth.post(`students/`, value);
@@ -70,7 +87,7 @@ export const addStudent = async (
 
 export const updateStudent = async (
   id: string,
-  value: Student
+  value: StudentCreate
 ): Promise<Student | undefined> => {
   try {
     const response = await apiAuth.patch(`students/${id}/`, value);
