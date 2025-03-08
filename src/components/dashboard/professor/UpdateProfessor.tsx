@@ -23,9 +23,11 @@ const professorSchema = z.object({
   username: z
     .string()
     .min(3, "Username debe tener al menos 3 caracteres")
-    .max(50),
-  password: z.string().optional(),
-  email: z.string().email("Email inválido"),
+    .max(50)
+    .optional()
+    .or(z.literal("")),
+  password: z.string().optional().optional().or(z.literal("")),
+  email: z.string().email("Email inválido").optional().or(z.literal("")),
 });
 
 type ProfessorFormData = z.infer<typeof professorSchema>;
@@ -91,21 +93,26 @@ export const UpdateProfessor = () => {
       setIsLoading(true);
       setIsSuccess(false);
       setServerError([]);
+
       const dataProfesor: ProfessorType = {
         address: data.address,
         ci: data.ci,
         first_name: data.first_name,
         last_name: data.last_name,
         sex: data.sex,
-        account: {
-          email: data.email,
-          username: data.username,
-          password: data.password,
-        },
       };
 
-      if (data.password && dataProfesor.account)
-        dataProfesor.account.password = data.password;
+      if (data.email || data.password || data.username) {
+        dataProfesor.account = {};
+
+        if (data.email) {
+          dataProfesor.account.email = data.email;
+        }
+        if (data.username) {
+          dataProfesor.account.username = data.username;
+        }
+        if (data.password) dataProfesor.account.password = data.password;
+      }
 
       const res = await ApiService.updateProfessor(id + "", dataProfesor);
       if (res) {
