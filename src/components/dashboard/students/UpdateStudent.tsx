@@ -119,11 +119,15 @@ const UpdateStudent = () => {
         sex: data.sex,
       };
       if (data.email || data.password || data.username) {
-        dataStudent.account = {
-          email: data.email ?? "",
-          password: data.password,
-          username: data.username ?? "",
-        };
+        dataStudent.account = {};
+
+        if (data.email) {
+          dataStudent.account.email = data.email;
+        }
+        if (data.username) {
+          dataStudent.account.username = data.username;
+        }
+        if (data.password) dataStudent.account.password = data.password;
       }
       if (data.group) {
         dataStudent.group = data.group ?? "";
