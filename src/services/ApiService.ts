@@ -11,6 +11,7 @@ import * as dropoutsService from "./api/dropouts";
 import * as professorService from "./api/professor";
 import * as eventService from "./api/events";
 import * as subjectsectionsubjectsService from "./api/virtual_classroom_edition";
+import * as studentGroup from "./api/group";
 
 export default {
   ...authService,
@@ -25,4 +26,5 @@ export default {
   ...professorService,
   ...eventService,
   ...subjectsectionsubjectsService,
+  ...studentGroup,
 };

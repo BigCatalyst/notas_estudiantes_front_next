@@ -10,6 +10,7 @@ import { LuCircleFadingPlus } from "react-icons/lu";
 import { ErrorRes, SectionType } from "./Types";
 import { useParams, useRouter } from "next/navigation";
 import ApiService from "@/services/ApiService";
+import { error } from "console";
 
 const EdicionAulaVirtual: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,35 +40,6 @@ const EdicionAulaVirtual: React.FC = () => {
     })();
   }, []);
 
-  function extractErrorsWithPath(data: any, path = "", errors: string[] = []) {
-    if (Array.isArray(data)) {
-      data.forEach((item, index) => {
-        const currentPath = path ? `${path}[${index}]` : `[${index}]`;
-        if (Array.isArray(item) || typeof item === "object") {
-          extractErrorsWithPath(item, currentPath, errors);
-        } else if (typeof item === "string") {
-          errors.push(`${currentPath}: ${item}`);
-        }
-      });
-    } else if (typeof data === "object" && data !== null) {
-      Object.entries(data).forEach(([key, value]) => {
-        const currentPath = path ? `${path}.${key}` : key;
-        if (Array.isArray(value)) {
-          if (value.every((msg) => typeof msg === "string")) {
-            value.forEach((msg) => {
-              errors.push(`${currentPath}: ${msg}`);
-            });
-          } else {
-            extractErrorsWithPath(value, currentPath, errors);
-          }
-        } else if (typeof value === "object") {
-          extractErrorsWithPath(value, currentPath, errors);
-        }
-      });
-    }
-    return errors;
-  }
-
   const salvarCambios = () => {
     setError([]);
     if (childRefs.current) {
@@ -92,98 +64,119 @@ const EdicionAulaVirtual: React.FC = () => {
 
           if (res) router.push("/dashboard/virtual_classroom");
         } catch (error: any) {
-          console.log(error);
+          //console.log(error);
 
           const errorRes: ErrorRes[] = error.response.data;
 
+          console.log(errorRes);
+
           const errorData: string[] = [];
 
-          errorRes.forEach((er, index) => {
-            const indexSection = index;
-            if (er && er.title) {
-              errorData.push(
-                `Título de la Sección ${indexSection + 1}: ${er.title.join(
-                  ", "
-                )}`
-              );
+          if (Array.isArray(errorRes)) {
+            errorRes.forEach((er, index) => {
+              const indexSection = index;
+              if (er && er.title) {
+                errorData.push(
+                  `Título de la Sección ${indexSection + 1}: ${er.title.join(
+                    ", "
+                  )}`
+                );
 
-              if (er.folders) {
-                er.folders.forEach((f, index) => {
-                  const indexFolder = index;
-                  if (f && f.title) {
-                    errorData.push(
-                      `Título de la Carpeta ${indexFolder + 1} de la Sección ${
-                        indexSection + 1
-                      }: ${f.title.join(", ")}`
-                    );
+                if (er.folders) {
+                  er.folders.forEach((f, index) => {
+                    const indexFolder = index;
+                    if (f && f.title) {
+                      errorData.push(
+                        `Título de la Carpeta ${
+                          indexFolder + 1
+                        } de la Sección ${indexSection + 1}: ${f.title.join(
+                          ", "
+                        )}`
+                      );
 
-                    if (f.files && f.files.length > 0) {
-                      f.files.forEach((file, index) => {
-                        const indexFileFolder = index;
-                        if (file && file.title) {
-                          errorData.push(
-                            `Título del Fichero ${
-                              indexFileFolder + 1
-                            } de la Carpeta ${indexFolder + 1} de la Sección ${
-                              indexSection + 1
-                            }: ${file.title.join(", ")}`
-                          );
-                        }
+                      if (f.files && f.files.length > 0) {
+                        f.files.forEach((file, index) => {
+                          const indexFileFolder = index;
+                          if (file && file.title) {
+                            errorData.push(
+                              `Título del Fichero ${
+                                indexFileFolder + 1
+                              } de la Carpeta ${
+                                indexFolder + 1
+                              } de la Sección ${
+                                indexSection + 1
+                              }: ${file.title.join(", ")}`
+                            );
+                          }
 
-                        if (file && file.file) {
-                          errorData.push(
-                            `Dirección del Fichero ${
-                              indexFileFolder + 1
-                            } de la Carpeta ${indexFolder + 1} de la Sección ${
-                              indexSection + 1
-                            }: ${file.file.join(", ")}`
-                          );
-                        }
-                      });
+                          if (file && file.file) {
+                            errorData.push(
+                              `Dirección del Fichero ${
+                                indexFileFolder + 1
+                              } de la Carpeta ${
+                                indexFolder + 1
+                              } de la Sección ${
+                                indexSection + 1
+                              }: ${file.file.join(", ")}`
+                            );
+                          }
+                        });
+                      }
                     }
-                  }
-                });
+                  });
+                }
+
+                if (er.tasks) {
+                  er.tasks.forEach((t, index) => {
+                    const indexTasks = index;
+                    if (t && t.title) {
+                      errorData.push(
+                        `Título de la Tarea ${indexTasks + 1} de la Sección ${
+                          indexSection + 1
+                        }: ${t.title.join(", ")}`
+                      );
+
+                      if (t.files && t.files.length > 0) {
+                        t.files.forEach((file, index) => {
+                          const indexFileFolder = index;
+                          if (file && file.title) {
+                            errorData.push(
+                              `Título del Fichero ${
+                                indexFileFolder + 1
+                              } de la Tarea ${indexTasks + 1} de la Sección ${
+                                indexSection + 1
+                              }: ${file.title.join(", ")}`
+                            );
+                          }
+
+                          if (file && file.file) {
+                            errorData.push(
+                              `Dirección del Fichero ${
+                                indexFileFolder + 1
+                              } de la Tarea ${indexTasks + 1} de la Sección ${
+                                indexSection + 1
+                              }: ${file.file.join(", ")}`
+                            );
+                          }
+                        });
+                      }
+                    }
+                  });
+                }
               }
 
-              if (er.tasks) {
-                er.tasks.forEach((t, index) => {
-                  const indexTasks = index;
-                  if (t && t.title) {
-                    errorData.push(
-                      `Título de la Tarea ${indexTasks + 1} de la Sección ${
-                        indexSection + 1
-                      }: ${t.title.join(", ")}`
-                    );
-
-                    if (t.files && t.files.length > 0) {
-                      t.files.forEach((file, index) => {
-                        const indexFileFolder = index;
-                        if (file && file.title) {
-                          errorData.push(
-                            `Título del Fichero ${
-                              indexFileFolder + 1
-                            } de la Tarea ${indexTasks + 1} de la Sección ${
-                              indexSection + 1
-                            }: ${file.title.join(", ")}`
-                          );
-                        }
-
-                        if (file && file.file) {
-                          errorData.push(
-                            `Dirección del Fichero ${
-                              indexFileFolder + 1
-                            } de la Tarea ${indexTasks + 1} de la Sección ${
-                              indexSection + 1
-                            }: ${file.file.join(", ")}`
-                          );
-                        }
-                      });
-                    }
-                  }
-                });
+              if (er && er.non_field_errors) {
+                errorData.push(`${er.non_field_errors.join(", ")}`);
               }
+            });
+          } else {
+            if (error.response.data.error) {
+              console.log(error.response.data.error);
+              errorData.push(error.response.data.error);
             }
-          });
+            // console.log(errorRes);
+            // errorData.push(error);
+          }
 
           setError(errorData);
         }

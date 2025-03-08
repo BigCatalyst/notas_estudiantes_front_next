@@ -1,11 +1,9 @@
-/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import Buttom from "@/components/ui/buttom/Buttom";
 import Modal from "@/components/ui/modal/Modal";
-import { StudentNote } from "@/services/api/student_note";
 import ApiService from "@/services/ApiService";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,10 +12,11 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { TbLoader2, TbPlaylistAdd } from "react-icons/tb";
+import { Group } from "../../../services/api/group";
 
-const StudentNoteTable = () => {
-  const [list, setList] = useState<StudentNote[]>([]);
+export const StudentGroupTable = () => {
+  const [list, setList] = useState<Group[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pagesSize, setPagesSize] = useState(10);
@@ -27,29 +26,15 @@ const StudentNoteTable = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [IdDel, setIdDel] = useState(-1);
 
-  // const [stident, setStident] = useState("");
-  // const [subject, setSubject] = useState("");
-
   const [filters, setFilters] = useState<{
-    asc__gte?: number;
-    final_exam__gte?: number;
-    final_grade__gte?: number;
-    school_year__name__contains?: string;
-    school_year__start_date__gte?: string;
-    student__ci__contains?: string;
-    student__first_name__contains?: string;
-    student__grade?: string;
-    student__sex?: string;
-    subject__name__contains?: string;
-    student__is_dropped_out?: string;
-    student__is_graduated?: string;
+    grade?: string;
+    name__contains?: string;
   }>({});
 
-  const handleEdit = (value: StudentNote) => {
+  const handleEdit = (value: Group) => {
     // Lógica para editar
     console.log(value);
-
-    redirect(`/dashboard/student_note/${value.id}`);
+    redirect(`/dashboard/student_group/${value.id}`);
   };
 
   const handleDelete = (id: number) => {
@@ -61,7 +46,7 @@ const StudentNoteTable = () => {
   const deleteEntity = async () => {
     try {
       if (IdDel !== -1) {
-        await ApiService.deleteStudentNote(IdDel).then(() => fetchEntity());
+        await ApiService.deleteStudentGroup(IdDel).then(() => fetchEntity());
       }
     } catch (error) {
       console.log(error);
@@ -70,6 +55,10 @@ const StudentNoteTable = () => {
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
+    // if (currentPage > totalPages){
+    //   params.set("page", "1");
+    // }
+    // else params.set("page", currentPage.toString());
 
     params.set("page", currentPage.toString());
 
@@ -92,7 +81,7 @@ const StudentNoteTable = () => {
     try {
       setLoading(true);
       const query = buildQueryString();
-      const data = await ApiService.studentsNote(`${query}`);
+      const data = await ApiService.studentGroups(`${query}`);
 
       console.log(query);
 
@@ -100,9 +89,7 @@ const StudentNoteTable = () => {
         if (initLoadData) setInitLoadData(false);
         console.log("---------------------------------");
         console.log(data);
-
         setList(data.results.reverse());
-        // if (listPromiseRes) setList(listResolver.reverse());
         if (!pagesSize) setTotalPages(Math.ceil(data.count / 10));
         else setTotalPages(Math.ceil(data.count / pagesSize));
       }
@@ -143,33 +130,13 @@ const StudentNoteTable = () => {
           </div>
         </div>
 
-        {/* Exportar */}
-        <div className="mb-5">
-          {/* <button className="btn1">
-            <TbTableExport className="w-7 h-7 text-gray-200" />
-            <span>Exportar</span>
-          </button> */}
-
-          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
-        </div>
-
         {/* Adicionar */}
         <div className="mb-5">
           <Buttom
             title="Adicionar"
             icon={TbPlaylistAdd}
             className="btn1"
-            to="student_note/add"
-          />
-        </div>
-
-        {/* Adicionar */}
-        <div className="mb-5">
-          <Buttom
-            title="Edición Rápida"
-            icon={MdEdit}
-            className="btn1"
-            to="student_note/quick_student_note"
+            to="student_group/add"
           />
         </div>
       </div>
@@ -178,128 +145,25 @@ const StudentNoteTable = () => {
       <div
         className={
           !openFilter
-            ? "transition-all h-0 overflow-hidden opacity-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4"
-            : "transition-all h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6 duration-400 shadow-md p-7 shadow-gray-300 rounded-lg"
+            ? "transition-all h-0 overflow-hidden opacity-0 grid grid-cols-1 md:grid-cols-2 gap-4"
+            : "transition-all h-auto grid grid-cols-1 md:grid-cols-2  gap-4 mb-6 duration-400 shadow-md p-7 shadow-gray-300 rounded-lg"
         }
       >
         <input
-          type="number"
-          placeholder="Buscar por >= GTE"
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) => handleFilterChange("asc__gte", e.target.value)}
-        />
-
-        <input
-          type="number"
-          placeholder="Buscar por >= Examen Final"
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("final_exam__gte", e.target.value)
-          }
-        />
-
-        <input
-          type="number"
-          placeholder="Buscar por >= Nota Final"
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("final_grade__gte", e.target.value)
-          }
-        />
-
-        <input
           type="text"
-          placeholder="Nombre de año escolar"
+          placeholder="Buscar por Nombre"
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("school_year__name__contains", e.target.value)
-          }
-        />
-
-        <div className="mt-1 p-2 flex items-center justify-start w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 gap-7">
-          <label htmlFor="start_date" className="text-gray-500">
-            Fecha del año Escolar:
-          </label>
-          <input
-            id="start_date"
-            type="date"
-            onChange={(e) =>
-              handleFilterChange("school_year__start_date__gte", e.target.value)
-            }
-            className={`${
-              !filters.school_year__start_date__gte
-                ? "text-transparent"
-                : "text-gray-800"
-            }`}
-          />
-        </div>
-
-        <input
-          type="text"
-          placeholder="CI del Estudiante"
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("student__ci__contains", e.target.value)
-          }
-        />
-
-        <input
-          type="text"
-          placeholder="Nombre del Estudiante"
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("student__first_name__contains", e.target.value)
-          }
+          onChange={(e) => handleFilterChange("name__contains", e.target.value)}
         />
 
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) => handleFilterChange("student__grade", e.target.value)}
+          onChange={(e) => handleFilterChange("grade", e.target.value)}
         >
-          <option value="">Grados</option>
+          <option value="">Grado</option>
           <option value="7">7mo</option>
           <option value="8">8vo</option>
-          <option value="9">9no</option>
-        </select>
-
-        <select
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) => handleFilterChange("student__sex", e.target.value)}
-        >
-          <option value="">Sexo</option>
-          <option value="F">Fememino</option>
-          <option value="M">Masculino</option>
-        </select>
-
-        <input
-          type="text"
-          placeholder="Nombre de la Asignatura"
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("subject__name__contains", e.target.value)
-          }
-        />
-
-        <select
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("student__is_dropped_out", e.target.value)
-          }
-        >
-          <option value="">Es Baja?</option>
-          <option value="true">Baja</option>
-          <option value="false">No Baja</option>
-        </select>
-
-        <select
-          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) =>
-            handleFilterChange("student__is_graduated", e.target.value)
-          }
-        >
-          <option value="">Es Graduado?</option>
-          <option value="true">Graduado</option>
-          <option value="false">No es Graduado</option>
+          <option value="9">9vo</option>
         </select>
       </div>
 
@@ -315,31 +179,29 @@ const StudentNoteTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
-              <th className="p-3 text-left">ASC</th>
-              <th className="p-3 text-left">Grado Final</th>
-              <th className="p-3 text-left">Examen Final</th>
-              <th className="p-3 text-left">TCP1</th>
-              <th className="p-3 text-left">TCP2</th>
-              <th className="p-3 text-left">Estudiante</th>
-              <th className="p-3 text-left">Asigntura</th>
-              <th className="p-3 text-left">Año Escolar</th>
+              <th className="p-3 text-left">Nombre</th>
+              <th className="p-3 text-left">Grado</th>
+              <th className="p-3 text-left">Profesores</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>
           </thead>
-          <tbody className="*:focus-within:bg-gray-200">
+          <tbody className="*:focus-within:bg-gray-200 ">
             {!loading &&
               list &&
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
-                  <td className="p-3">{item.asc?.toFixed(2)}</td>
-                  <td className="p-3">{item.final_grade?.toFixed(2)}</td>
-                  <td className="p-3">{item.final_exam?.toFixed(2)}</td>
-                  <td className="p-3">{item.tcp1?.toFixed(2)}</td>
-                  <td className="p-3">{item.tcp2?.toFixed(2)}</td>
-                  <td className="p-3">{item.student.first_name}</td>
-                  <td className="p-3">{item.subject.name}</td>
-                  <td className="p-3">{item.school_year.name}</td>
+                  <td className="p-3">{item.name}</td>
+                  <td className="p-3">{item.grade}</td>
+                  <td className="p-3">
+                    <div className="flex flex-col">
+                      {item.professors &&
+                        item.professors.map((p, index) => (
+                          <div key={index}>{p.first_name}</div>
+                        ))}
+                    </div>
+                  </td>
+
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => handleEdit(item)}
@@ -460,5 +322,3 @@ const StudentNoteTable = () => {
     </div>
   );
 };
-
-export default StudentNoteTable;

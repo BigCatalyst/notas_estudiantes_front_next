@@ -61,6 +61,14 @@ export const navigationItemsDashboard: NavItem[] = [
     rols: [Rols.admin, Rols.secretary],
     Icon: FaUsers,
   },
+
+  {
+    name: "Grupos de Estudiantes",
+    path: "/dashboard/student_group",
+    rols: [Rols.admin, Rols.secretary],
+    Icon: FaUsers,
+  },
+
   {
     name: "Asignaturas",
     path: "/dashboard/subjects",
