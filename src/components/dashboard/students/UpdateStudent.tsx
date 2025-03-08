@@ -12,7 +12,7 @@ import { useParams, useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
-import { Student } from "@/services/api/students";
+import { Student, StudentCreate } from "@/services/api/students";
 
 const studentSchema = z.object({
   ci: z.string().min(1, "CI es requerido"),
@@ -109,14 +109,25 @@ const UpdateStudent = () => {
       setIsSuccess(false);
       setServerError([]);
 
-      const dataStudent: Student = {
-        ...data,
-        account: {
-          email: data.email,
-          password: data.password,
-          username: data.username,
-        },
+      const dataStudent: StudentCreate = {
+        ci: data.ci,
+        address: data.address,
+        grade: data.grade,
+        last_name: data.last_name,
+        first_name: data.first_name,
+        registration_number: data.registration_number,
+        sex: data.sex,
       };
+      if (data.email || data.password || data.username) {
+        dataStudent.account = {
+          email: data.email ?? "",
+          password: data.password,
+          username: data.username ?? "",
+        };
+      }
+      if (data.group) {
+        dataStudent.group = data.group ?? "";
+      }
 
       const res = await ApiService.updateStudent(id, dataStudent);
       if (res) {
