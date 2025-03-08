@@ -119,11 +119,15 @@ const UpdateStudent = () => {
         sex: data.sex,
       };
       if (data.email || data.password || data.username) {
-        dataStudent.account = {
-          email: data.email ?? "",
-          password: data.password,
-          username: data.username ?? "",
-        };
+        dataStudent.account = {};
+
+        if (data.email) {
+          dataStudent.account.email = data.email;
+        }
+        if (data.username) {
+          dataStudent.account.username = data.username;
+        }
+        if (data.password) dataStudent.account.password = data.password;
       }
       if (data.group) {
         dataStudent.group = data.group ?? "";
@@ -144,7 +148,7 @@ const UpdateStudent = () => {
       if (Object.keys(errorData).length > 0) {
         Object.entries(errorData).forEach(([key, value]) => {
           if (key !== "account") {
-            formattedErrorData.push(`${key}: ${JSON.stringify(value)}`);
+            formattedErrorData.push(`${key}: ${value}`);
           } else {
             Object.entries(value).forEach(([key, value]) => {
               if (Array.isArray(value))

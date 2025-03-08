@@ -19,9 +19,9 @@ export interface ProfessorType {
 }
 
 export interface Account {
-  username: string;
+  username?: string;
   password?: string;
-  email: string;
+  email?: string;
 }
 
 export const professors = async (
