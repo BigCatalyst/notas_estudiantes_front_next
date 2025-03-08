@@ -20,6 +20,7 @@ import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import {
   TbLoader2,
+  TbPdf,
   TbPlaylistAdd,
   TbTableExport,
   TbUserPlus,
@@ -35,6 +36,8 @@ const StudentsTable = () => {
   const [initLoadData, setInitLoadData] = useState(true);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [IdDel, setIdDel] = useState(-1);
+
+  const [reportLoading, setReportLoading] = useState(false);
 
   const [filters, setFilters] = useState<{
     id?: number;
@@ -132,6 +135,55 @@ const StudentsTable = () => {
     setCurrentPage(1);
   };
 
+  const exportReportAction = async (id_estudiante: string, grado: string) => {
+    try {
+      const res = await ApiService.reportCertificacionNotas(
+        id_estudiante,
+        grado
+      );
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "reporte.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const reportStudent = async () => {
+    try {
+      setReportLoading(true);
+      const query = buildQueryString();
+      const res = await ApiService.reportStudents(query);
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "reporte.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReportLoading(false);
+    }
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -156,7 +208,13 @@ const StudentsTable = () => {
             <span>Exportar</span>
           </button> */}
 
-          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
+          <Buttom
+            title="Exportar"
+            icon={TbTableExport}
+            className="btn1"
+            onClick={reportStudent}
+            isLoading={reportLoading}
+          />
         </div>
 
         {/* Adicionar */}
@@ -380,6 +438,28 @@ const StudentsTable = () => {
                         Eliminar
                       </span>
                     </button>
+
+                    <div className="relative inline-block group z-10">
+                      <div className="">
+                        <button
+                          onClick={() => {
+                            if (item.id)
+                              exportReportAction(item.id + "", item.grade);
+                          }}
+                          className="btn2 rounded-lg bg-green-700  hover:bg-green-600 "
+                        >
+                          <span className="inline-flex items-center gap-1">
+                            <TbPdf className="group-focus:hidden" />
+                            Certificación
+                          </span>
+                        </button>
+                      </div>
+
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
+                        Certificación de Notas
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}
