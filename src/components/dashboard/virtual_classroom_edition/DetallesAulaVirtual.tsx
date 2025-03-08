@@ -39,11 +39,11 @@ const DetallesAulaVirtual = () => {
   return (
     <div className="p-4 text-gray-700">
       <h1 className="text-2xl font-bold mb-4">Detalles del Aula Virtual</h1>
-      <button className="btn1">
+      {/* <button className="btn1">
         <span className="inline-flex items-center justify-center gap-1">
           <LuCircleFadingPlus className="w-5 h-5" /> Salvar Cambios
         </span>
-      </button>
+      </button> */}
 
       <div className="w-full mx-auto py-7 px-7 bg-white rounded-lg shadow-md relative mt-7 space-y-4">
         <h2 className="text-xl font-bold mb-4 text-gray-800  py-1">
