@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import DashboardContent from "@/components/dashboard/dashboard";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
@@ -7,7 +8,7 @@ const Dashboard = () => {
 
   console.log(state);
 
-  return <div>Dashboard</div>;
+  return <DashboardContent />;
 };
 
 export default Dashboard;
