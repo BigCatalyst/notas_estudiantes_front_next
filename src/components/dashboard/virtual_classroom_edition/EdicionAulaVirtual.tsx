@@ -6,11 +6,12 @@
 import React, { useRef, useState } from "react";
 import { SectionRef } from "./Section";
 import { useEffect } from "react";
-import { LuCircleFadingPlus } from "react-icons/lu";
+import { LuBackpack, LuCircleFadingPlus } from "react-icons/lu";
 import { ErrorRes, SectionType } from "./Types";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import ApiService from "@/services/ApiService";
 import { error } from "console";
+import { IoIosArrowBack } from "react-icons/io";
 
 const EdicionAulaVirtual: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -232,6 +233,8 @@ const EdicionAulaVirtual: React.FC = () => {
   };
 
   const onIndexDown = (index: number) => {
+    console.log(index);
+
     let dataupdate: SectionType[] = [];
     if (childRefs.current) {
       Object.keys(childRefs.current).forEach((key) => {
@@ -299,6 +302,15 @@ const EdicionAulaVirtual: React.FC = () => {
         </span>
       </button>
 
+      <button
+        onClick={() => redirect("/dashboard/virtual_classroom")}
+        className="btn1"
+      >
+        <span className="inline-flex items-center justify-center gap-1">
+          <IoIosArrowBack className="w-5 h-5" /> Aula Virtual
+        </span>
+      </button>
+
       {/* {error.length > 0 && (
         <div className="w-full flex flex-col">
           {error.map((val: string[], index) => (
@@ -345,6 +357,7 @@ const EdicionAulaVirtual: React.FC = () => {
             onDelete={() => deleteSection(index)}
             onIndexDown={() => onIndexDown(section.index)}
             onIndexUp={() => onIndexUp(section.index)}
+            index={section.index}
             ref={(el: any) => (childRefs.current[`child-${index}`] = el)}
           />
         ))}

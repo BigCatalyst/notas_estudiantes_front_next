@@ -66,9 +66,28 @@ const UpdateStudentBallot = () => {
           );
         }
 
-        const fetchCarreers = await ApiService.careers("");
+        const fetchCarreers = await ApiService.careersAll("");
         if (fetchCarreers) {
-          setCareers(fetchCarreers.results);
+          setCareers(fetchCarreers);
+
+          const res = await ApiService.getBallot(id);
+          console.log("boletaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+          console.log(res && res[0]);
+          if (res) {
+            setValue("career1", res[0]);
+            setValue("career2", res[1]);
+            setValue("career3", res[2]);
+            setValue("career4", res[3]);
+            setValue("career5", res[4]);
+            setValue("career6", res[5]);
+            setValue("career7", res[6]);
+            setValue("career8", res[7]);
+            setValue("career9", res[8]);
+            setValue("career10", res[9]);
+          }
+
+          const res1 = await ApiService.getStudent(id);
+          if (res1 && res1.id) setValue("student", res1.id + "");
         }
       } catch (error) {
         console.error("Error fetching students:", error);
@@ -76,29 +95,6 @@ const UpdateStudentBallot = () => {
     };
 
     fetchStudents();
-  }, []);
-
-  useEffect(() => {
-    const updateEntity = async () => {
-      const res = await ApiService.getBallot(id);
-      console.log(res);
-      if (res) {
-        setValue("career1", res[0]);
-        setValue("career2", res[1]);
-        setValue("career3", res[2]);
-        setValue("career4", res[3]);
-        setValue("career5", res[4]);
-        setValue("career6", res[5]);
-        setValue("career7", res[6]);
-        setValue("career8", res[7]);
-        setValue("career9", res[8]);
-        setValue("career10", res[9]);
-      }
-
-      const res1 = await ApiService.getStudent(id);
-      if (res1 && res1.id) setValue("student", res1.id + "");
-    };
-    updateEntity();
   }, []);
 
   const {

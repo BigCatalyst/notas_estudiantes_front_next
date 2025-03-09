@@ -12,6 +12,7 @@ import { LuCircleFadingPlus } from "react-icons/lu";
 import { Career } from "@/services/api/careers";
 import { useSelector } from "react-redux";
 import { State } from "@/redux/features/authSlice";
+import { Student } from "@/services/api/students";
 
 // Esquema de validación Zod
 const ballotSchema = z.object({
@@ -36,14 +37,43 @@ const BallotEdit = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const userAuth: State = useSelector((state: any) => state.auth);
   const [careers, setCareers] = useState<Career[]>();
-  const [idStudent, setIdStudent] = useState(-1);
+  const [idStudent, setIdStudent] = useState("");
 
   useEffect(() => {
+    console.log("e1");
     const fetchData = async () => {
       try {
         const fetchCarreers = await ApiService.careers("");
         if (fetchCarreers) {
           setCareers(fetchCarreers.results);
+
+          if (userAuth.user?.id) {
+            const res = await ApiService.students(
+              `user__username=${userAuth.user?.username}`
+            );
+
+            if (res && res.results.length > 0) {
+              const std: Student = res.results[0];
+              setIdStudent(std.id + "");
+              if (std.id) {
+                const res = await ApiService.getBallot(`${std.id}`);
+                if (res) {
+                  if (res) {
+                    setValue("career1", res[0]);
+                    setValue("career2", res[1]);
+                    setValue("career3", res[2]);
+                    setValue("career4", res[3]);
+                    setValue("career5", res[4]);
+                    setValue("career6", res[5]);
+                    setValue("career7", res[6]);
+                    setValue("career8", res[7]);
+                    setValue("career9", res[8]);
+                    setValue("career10", res[9]);
+                  }
+                }
+              }
+            }
+          }
         }
       } catch (error) {
         console.error("Error fetching students:", error);
@@ -53,44 +83,51 @@ const BallotEdit = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const updateEntity = async () => {
-      try {
-        if (userAuth.user?.id) {
-          const res = await ApiService.students(
-            `user__username=${userAuth.user?.username}`
-          );
-          if (res && res.results.length > 0) {
-            const student = res.results[0];
+  // useEffect(() => {
+  //   const updateEntity = async () => {
+  //     try {
+  //       if (userAuth.user?.id) {
+  //         const res = await ApiService.students(
+  //           `user__username=${userAuth.user?.username}`
+  //         );
+  //         if (res && res.results.length > 0) {
+  //           const student = res.results[0];
 
-            const ballots = await ApiService.ballots(
-              `ci__contains=${student.ci}`
-            );
-            if (ballots && ballots.results && ballots.results.length >= 10) {
-              const ballot = ballots.results[0].ballot;
-              setValue("career1", ballot[0]);
-              setValue("career2", ballot[1]);
-              setValue("career3", ballot[2]);
-              setValue("career4", ballot[3]);
-              setValue("career5", ballot[4]);
-              setValue("career6", ballot[5]);
-              setValue("career7", ballot[6]);
-              setValue("career8", ballot[7]);
-              setValue("career9", ballot[8]);
-              setValue("career10", ballot[9]);
+  //           console.log("estudiante");
+  //           console.log(student);
+  //           const ballots = await ApiService.ballots(
+  //             `ci__contains=${student.ci}`
+  //           );
 
-              setValue("student", student.id + "");
+  //           console.log("boletas");
+  //           console.log(ballots);
 
-              if (student.id) setIdStudent(student.id);
-            }
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    updateEntity();
-  }, []);
+  //           if (student.id) {
+  //             setValue("student", student.id + "");
+  //             setIdStudent(student.id + "");
+  //           }
+
+  //           if (ballots && ballots.results.length === 10) {
+  //             const ballot = ballots.results[0].ballot;
+  //             setValue("career1", ballot[0]);
+  //             setValue("career2", ballot[1]);
+  //             setValue("career3", ballot[2]);
+  //             setValue("career4", ballot[3]);
+  //             setValue("career5", ballot[4]);
+  //             setValue("career6", ballot[5]);
+  //             setValue("career7", ballot[6]);
+  //             setValue("career8", ballot[7]);
+  //             setValue("career9", ballot[8]);
+  //             setValue("career10", ballot[9]);
+  //           }
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   updateEntity();
+  // }, [careers]);
 
   const {
     register,
@@ -109,6 +146,7 @@ const BallotEdit = () => {
       setServerError("");
       console.log(data);
       const id = Number(idStudent);
+
       const res =
         data &&
         (await ApiService.addBallot(
@@ -128,10 +166,10 @@ const BallotEdit = () => {
           },
           id + ""
         ));
+
       if (res) {
         console.log(res);
         setIsSuccess(true);
-        // router.push("/dashboard/students_ballot");
       }
     } catch (error: any) {
       console.log(error);

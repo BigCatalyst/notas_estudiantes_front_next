@@ -12,6 +12,7 @@ import { PiWarning } from "react-icons/pi";
 import { GiCancel, GiConfirmed } from "react-icons/gi";
 import Buttom from "@/components/ui/buttom/Buttom";
 import ApiService from "@/services/ApiService";
+import { BiEdit } from "react-icons/bi";
 
 interface NavigationDashboardProps {
   children: React.ReactNode;
@@ -24,6 +25,8 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
   const [openMenuInit, setOpenMenuInit] = useState(0);
 
   const [schoolYear, setSchoolYear] = useState<string | null>(null);
+
+  const [grado, setGrado] = useState("1");
 
   useEffect(() => {
     (async () => {
@@ -101,6 +104,34 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
     } else {
       setOpenMenu(true);
     }
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (
+        userAuth.user &&
+        userAuth.user?.id &&
+        userAuth.user.roles.findIndex((rol) => rol === Rols.student) > -1
+      ) {
+        const res = await ApiService.students(
+          `user__username=${userAuth.user?.username}`
+        );
+
+        console.log(res);
+
+        if (res && res.results.length > 0) {
+          console.log("estudianteeeeeeeeeeeeeeeeeeeee");
+          const g = res.results[0].grade && Number(res.results[0].grade);
+          if (
+            res &&
+            g === 9 &&
+            userAuth.user.roles.findIndex((val) => val === Rols.student) > -1
+          ) {
+            setGrado("9");
+          }
+        }
+      }
+    })();
   }, []);
 
   const handdleClickMenu = () => {
@@ -267,7 +298,8 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                         userAuth?.user?.roles.findIndex(
                           (item) => rol === item
                         ) > -1
-                    ) !== -1 && (
+                    ) !== -1 &&
+                    name !== "Editar Boleta" ? (
                       <li key={index}>
                         <Link
                           href={path}
@@ -293,6 +325,36 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                           )}
                         </Link>
                       </li>
+                    ) : (
+                      grado === "9" &&
+                      name === "Editar Boleta" && (
+                        <li key={index + Date.now()}>
+                          <Link
+                            href={navigationItemsDashboard[1].path}
+                            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white 
+          transition-all duration-150 hover:bg-gray-100 overflow-hidden dark:hover:bg-gray-700 group relative"
+                          >
+                            {pathname === navigationItemsDashboard[1].path && (
+                              <span className="absolute bg-gradient-to-tr from-gray-700 to-gray-500 right-0 z-10 blur-lg w-full h-full"></span>
+                            )}
+
+                            {navigationItemsDashboard[1].Icon && (
+                              <BiEdit className="w-6 h-6 text-gray-500 transition duration-150 dark:text-gray-400 group-hover:text-white z-20" />
+                            )}
+
+                            <span className="flex-1 ms-3 whitespace-nowrap z-20">
+                              {navigationItemsDashboard[1].name}
+                            </span>
+                            {navigationItemsDashboard[1].name ===
+                              "Notifications" && (
+                              <span className="w-3 h-3 p-3 inline-flex items-center justify-center bg-blue-900 text-blue-300 rounded-full relative z-20">
+                                <span className="absolute z-50">4</span>
+                                <span className="absolute z-40 w-3 h-3 p-3 rounded-full bg-blue-900 animate-ping"></span>
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      )
                     )
                 )}
               </ul>

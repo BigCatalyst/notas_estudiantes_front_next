@@ -215,7 +215,7 @@ const Section: React.FC<SectionProps> = ({
           />
         </button>
 
-        <span>{index}</span>
+        <span>{index + 1}</span>
 
         <button disabled={index + 1 === totalSections} onClick={onIndexDown}>
           <IoIosArrowDown

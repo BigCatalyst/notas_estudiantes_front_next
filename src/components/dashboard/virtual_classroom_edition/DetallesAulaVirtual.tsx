@@ -9,6 +9,7 @@ import { LuCircleFadingPlus } from "react-icons/lu";
 import { BiCheckCircle, BiDownload, BiSend } from "react-icons/bi";
 import { IoCloseCircle } from "react-icons/io5";
 import Buttom from "@/components/ui/buttom/Buttom";
+import { IoIosArrowBack } from "react-icons/io";
 
 const DetallesAulaVirtual = () => {
   const { id } = useParams<{ id: string }>();
@@ -49,6 +50,15 @@ const DetallesAulaVirtual = () => {
         <h2 className="text-xl font-bold mb-4 text-gray-800  py-1">
           Detalles de la Asignatura
         </h2>
+
+        <button
+          onClick={() => redirect("/dashboard/virtual_classroom")}
+          className="btn1 absolute right-2 top-2"
+        >
+          <span className="inline-flex items-center justify-center gap-1">
+            <IoIosArrowBack className="w-5 h-5" /> Aula Virtual
+          </span>
+        </button>
 
         <div className="absolute left-0 w-full bg-gray-300 h-1"></div>
 
