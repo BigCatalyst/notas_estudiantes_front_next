@@ -66,7 +66,7 @@ const BallotEdit = () => {
             const ballots = await ApiService.ballots(
               `ci__contains=${student.ci}`
             );
-            if (ballots) {
+            if (ballots && ballots.results && ballots.results.length >= 10) {
               const ballot = ballots.results[0].ballot;
               setValue("career1", ballot[0]);
               setValue("career2", ballot[1]);

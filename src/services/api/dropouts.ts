@@ -90,6 +90,7 @@ export interface DropoutsGetRes {
   municipality: string;
   province: string;
   school: string;
+  is_dropped: string;
 }
 
 export interface Student {

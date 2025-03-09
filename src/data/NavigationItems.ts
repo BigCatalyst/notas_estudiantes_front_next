@@ -95,7 +95,7 @@ export const navigationItemsDashboard: NavItem[] = [
     Icon: FaSchoolFlag,
   },
   {
-    name: "Bajas",
+    name: "Altas y Bajas",
     path: "/dashboard/dropouts",
     rols: [Rols.admin, Rols.secretary],
     Icon: FaUserMinus,
