@@ -103,6 +103,7 @@ const UpdateStudentBallot = () => {
     formState: { errors },
     watch,
     setValue,
+    clearErrors,
   } = useForm<BallotFormData>({
     resolver: zodResolver(ballotSchema),
     mode: "onChange",
