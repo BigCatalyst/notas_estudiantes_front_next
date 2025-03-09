@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
+import Autocomplete from "@/components/ui/autocomplete/Autocomplete";
+import AutoComplete from "@/components/ui/autocomplete/Autocomplete";
 
 // Esquema de validación Zod
 const studentNoteSchema = z.object({
@@ -36,7 +38,9 @@ const studentNoteSchema = z.object({
     .min(0, "El TCP2 debe ser al menos 0")
     .max(100, "El TCP2 debe ser maximo 100")
     .optional(),
-  student: z.string().min(1, "Estudiante es requerido"),
+  student: z
+    .string({ message: "Estudiante es requerido" })
+    .min(1, "Estudiante es requerido"),
   subject: z.string().min(1, "Materia es requerida"),
   school_year: z.string().min(1, "Año escolar es requerido"),
 });
@@ -52,6 +56,12 @@ const AddStudentNote = () => {
   const [schoolYears, setSchoolYears] = useState<
     { id: string; name: string }[]
   >([]);
+
+  const handleSelect = (item: { id: string; name: string }) => {
+    console.log("Elemento seleccionado:", item);
+    setValue("student", item.id);
+    clearErrors("student");
+  };
 
   const router = useRouter();
 
@@ -113,6 +123,7 @@ const AddStudentNote = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    clearErrors,
   } = useForm<StudentNoteFormData>({
     resolver: zodResolver(studentNoteSchema),
     defaultValues: { tcp2: 0, final_exam: 0 },
@@ -237,7 +248,7 @@ const AddStudentNote = () => {
           </div>
 
           {/* Student */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante
             </label>
@@ -254,6 +265,25 @@ const AddStudentNote = () => {
                 </option>
               ))}
             </select>
+            {errors.student && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.student.message}
+              </p>
+            )}
+          </div> */}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Estudiante
+            </label>
+            <AutoComplete
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.student ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              items={students}
+              placeholder="Buscar estudiante..."
+              onSelect={handleSelect}
+            />
             {errors.student && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.student.message}
