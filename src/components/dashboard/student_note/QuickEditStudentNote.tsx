@@ -5,6 +5,7 @@
 
 import MensageError from "@/components/message/MensageError";
 import { StudentNote } from "@/services/api/student_note";
+import { Student } from "@/services/api/students";
 import { Subject } from "@/services/api/subjects";
 import ApiService from "@/services/ApiService";
 import { useEffect, useState } from "react";
@@ -24,6 +25,8 @@ export const QuickEditStudentNote = () => {
 
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [idSubject, setIdSubject] = useState(1);
+
+  const [students, setStudents] = useState<Student[] | null>(null);
 
   const [error, setError] = useState<{
     asc: { id: number; m: string } | null;
@@ -141,6 +144,18 @@ export const QuickEditStudentNote = () => {
         console.log(data);
 
         setList(data.reverse());
+        let studData: Student[] = [];
+        data.forEach((val) => {
+          (async () => {
+            const res = await ApiService.getStudent(val.student);
+            if (res) studData.push(res);
+          })().then(() => {
+            if (data.length === studData.length) {
+              console.log(studData);
+              setStudents(studData);
+            }
+          });
+        });
       }
     } catch (error) {
       console.error("Error fetching:", error);
@@ -247,6 +262,8 @@ export const QuickEditStudentNote = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+              <th className="p-3 text-left">Nombre</th>
+              <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">ASC</th>
               <th className="p-3 text-left">Examen Final</th>
               <th className="p-3 text-left">TCP1</th>
@@ -256,8 +273,14 @@ export const QuickEditStudentNote = () => {
           <tbody className="*:focus-within:bg-gray-200">
             {!loading &&
               list &&
-              list.map((item) => (
+              list.map((item, index) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
+                  {/* Nombre */}
+                  <td className="p-3">
+                    {students && students[index].first_name}
+                  </td>
+                  {/* CI */}
+                  <td className="p-3">{students && students[index].ci}</td>
                   {/* ASC */}
                   <td className="p-3">
                     {editingCell.rowId === item.id &&
@@ -544,10 +567,6 @@ export const QuickEditStudentNote = () => {
                       </div>
                     )}
                   </td>
-
-                  {/* <td className="p-3">{item.student.first_name}</td>
-                  <td className="p-3">{item.subject.name}</td>
-                  <td className="p-3">{item.school_year.name}</td> */}
                 </tr>
               ))}
           </tbody>
