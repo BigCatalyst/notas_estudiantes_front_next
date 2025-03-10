@@ -28,7 +28,7 @@ export const careers = async (
 
 export const careersAll = async (
   query: string
-): Promise<Career[]| undefined> => {
+): Promise<Career[] | undefined> => {
   try {
     const response = await apiAuth.get(`careers/?paginate=false&${query}`);
     const data: Career[] = response.data;
@@ -85,7 +85,7 @@ export const getCareer = async (id: string): Promise<Career | undefined> => {
   }
 };
 
-export const getCarrerasOtorgadas = async () =>{
+export const getCarrerasOtorgadas = async () => {
   try {
     const response = await apiAuth.get(`grant_career/current/`);
     const data = response.data;
@@ -93,4 +93,73 @@ export const getCarrerasOtorgadas = async () =>{
   } catch (error) {
     return Promise.reject(error);
   }
+};
+
+export interface GrandCarrerRes {
+  id: number;
+  student: Student;
+  approved_school_course: ApprovedSchoolCourse;
+  career: Career;
 }
+
+export interface ApprovedSchoolCourse {
+  id: number;
+  student: Student;
+  school_year: SchoolYear;
+  date: Date;
+  grade: number;
+}
+
+export interface SchoolYear {
+  id: number;
+  start_date: Date;
+  end_date: Date;
+  name: string;
+}
+
+export interface Student {
+  id: number;
+  is_approved: boolean;
+  group: Group;
+  ci: string;
+  address: string;
+  grade: number;
+  last_name: string;
+  first_name: string;
+  registration_number: string;
+  sex: string;
+  is_graduated: boolean;
+  is_dropped_out: boolean;
+  user: number;
+}
+
+export interface Group {
+  id: number;
+  professors: Professor[];
+  name: string;
+  grade: number;
+}
+
+export interface Professor {
+  id: number;
+  ci: string;
+  address: string;
+  last_name: string;
+  first_name: string;
+  sex: string;
+  user: number;
+}
+
+export const grant_careers = async (
+  query: string
+): Promise<GrandCarrerRes[] | undefined> => {
+  try {
+    const response = await apiAuth.get(
+      `grant_career/?paginate=false&ordering=student__ci&${query}`
+    );
+    const data: GrandCarrerRes[] = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

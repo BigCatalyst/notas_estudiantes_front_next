@@ -1,36 +1,148 @@
+/* eslint-disable prefer-const */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import ApiService from "@/services/ApiService";
 import { useEffect, useState } from "react";
 import { BsDatabaseFillX } from "react-icons/bs";
+import { IoFilterSharp } from "react-icons/io5";
 import { RiLoaderLine } from "react-icons/ri";
 
 const CarrerasOtorgadas = () => {
   const [list, setList] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
+  const [openFilter, setOpenFilter] = useState(true);
+
+  const [lastSY, setLastSY] = useState("");
+
+  const [schoolYears, setSchoolYears] = useState<
+    { id: string; name: string }[]
+  >([]);
+
+  const [filters, setFilters] = useState<{
+    approved_school_course__school_year__id?: string;
+  }>({});
+
+  const buildQueryString = () => {
+    const params = new URLSearchParams();
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value !== "") {
+        params.set(key, value + "");
+      }
+    });
+
+    return params.toString();
+  };
+
+  const fetchEntity = async () => {
+    try {
+      setLoading(true);
+      const query = buildQueryString();
+
+      const data = await ApiService.grant_careers(
+        `${
+          query.length === 0
+            ? `approved_school_course__school_year__id=${lastSY}`
+            : query
+        }`
+      );
+
+      console.log(query);
+
+      if (data) {
+        if (initLoadData) setInitLoadData(false);
+        console.log("---------------------------------");
+        console.log(data);
+        setList(data.reverse());
+      } else {
+        console.log("ajdsjadkl sadklsjaldkjsa ldjsal j");
+        setList([]);
+      }
+    } catch (error) {
+      console.error("Error fetching:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const carrerasOtorgadasApi = async () => {
+    const debounceTimer = setTimeout(() => {
+      fetchEntity();
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [filters, lastSY]);
+
+  useEffect(() => {
+    (async () => {
       try {
-        setLoading(true);
-        const res = await ApiService.getCarrerasOtorgadas();
+        const res = await ApiService.schoolYearsAll("");
         if (res) {
-          setList(res);
+          let datasy: { id: string; name: string }[] = [];
+          res.forEach((val) => {
+            if (val.id) datasy.push({ id: val.id + "", name: `${val.name}` });
+          });
+          setSchoolYears(datasy);
+          setLastSY(datasy[datasy.length - 1].id);
         }
       } catch (error) {
         console.log(error);
-        setInitLoadData(false);
-      } finally {
-        setLoading(false);
       }
-    };
-    carrerasOtorgadasApi();
+    })();
   }, []);
+
+  const handleFilterChange = (field: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
+      <div className="inline-flex w-full gap-3">
+        {/* Filtros */}
+        <div className="relative inline-block group z-10">
+          <div className="mb-5">
+            <button className="btn1" onClick={() => setOpenFilter(!openFilter)}>
+              <IoFilterSharp className="w-6 h-6 text-gray-200" />
+            </button>
+          </div>
+
+          {/* Tooltip */}
+          <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
+            Filtros
+          </div>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div
+        className={
+          !openFilter
+            ? "transition-all h-0 overflow-hidden opacity-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            : "transition-all h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 duration-400 shadow-md p-7 shadow-gray-300 rounded-lg"
+        }
+      >
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) =>
+            handleFilterChange(
+              "approved_school_course__school_year__id",
+              e.target.value
+            )
+          }
+        >
+          <option value="">SchoolYear</option>
+          {schoolYears.map((val, index) => (
+            <option
+              key={index + Date.now()}
+              value={val.id}
+            >{`${val.name}`}</option>
+          ))}
+        </select>
+      </div>
+
       <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
         <table className="w-full table-auto">
           <thead className="rounded-md">
@@ -61,7 +173,7 @@ const CarrerasOtorgadas = () => {
           </div>
         )}
 
-        {!loading && !initLoadData && list.length === 0 && (
+        {!loading && !initLoadData && list && list.length === 0 && (
           <div className="flex items-center justify-center gap-1 h-[150px] text-gray-800 animate-pulse">
             <BsDatabaseFillX className="w-12 h-12" />
             <span className="text-[20px]">
