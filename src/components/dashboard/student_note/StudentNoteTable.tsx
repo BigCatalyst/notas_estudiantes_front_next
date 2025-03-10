@@ -218,7 +218,7 @@ const StudentNoteTable = () => {
 
         <div className="mt-1 p-2 flex items-center justify-start w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 gap-7">
           <label htmlFor="start_date" className="text-gray-500">
-            Fecha del año Escolar:
+            Fecha del año Escolar {" >="}
           </label>
           <input
             id="start_date"
