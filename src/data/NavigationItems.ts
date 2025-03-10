@@ -81,6 +81,12 @@ export const navigationItemsDashboard: NavItem[] = [
     rols: [Rols.admin, Rols.secretary],
     Icon: PiUserListBold,
   },
+  {
+    name: "Mis Notas",
+    path: "/dashboard/student_note/me",
+    rols: [Rols.student],
+    Icon: PiUserListBold,
+  },
 
   {
     name: "Boleta de Estudiantes",
