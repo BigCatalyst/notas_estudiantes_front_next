@@ -337,8 +337,11 @@ export const QuickEditStudentNote = () => {
                     ) : (
                       <div
                         onClick={() => {
-                          if (item.id)
-                            setEditingCell({ rowId: item.id, field: "asc" });
+                          if (item.student)
+                            setEditingCell({
+                              rowId: item.student,
+                              field: "asc",
+                            });
                         }}
                         className="cursor-pointer flex flex-col"
                       >
