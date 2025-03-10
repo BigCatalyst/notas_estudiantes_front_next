@@ -4,6 +4,7 @@
 "use client";
 
 import MensageError from "@/components/message/MensageError";
+import Buttom from "@/components/ui/buttom/Buttom";
 import { StudentNote } from "@/services/api/student_note";
 import { Student } from "@/services/api/students";
 import { Subject } from "@/services/api/subjects";
@@ -11,6 +12,7 @@ import ApiService from "@/services/ApiService";
 import { useEffect, useState } from "react";
 import { BiSolidError } from "react-icons/bi";
 import { BsDatabaseFillX } from "react-icons/bs";
+import { IoIosArrowBack } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdEditDocument } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
@@ -179,7 +181,7 @@ export const QuickEditStudentNote = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <div className="inline-flex w-full gap-3">
+      <div className="inline-flex w-full gap-3 relative">
         {/* Filtros */}
         <div className="relative inline-block group z-10">
           <div className="mb-5">
@@ -209,6 +211,15 @@ export const QuickEditStudentNote = () => {
           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
             Salvar los cambios de la edición
           </div>
+        </div>
+
+        <div className="relative right-0">
+          <Buttom
+            title="Notas de Estudiantes"
+            icon={IoIosArrowBack}
+            to="/dashboard/student_note"
+            className="btn1"
+          />
         </div>
 
         {showError && (
@@ -243,7 +254,7 @@ export const QuickEditStudentNote = () => {
           {subjects.map((subj, index) => (
             <option key={index + Date.now()} value={subj.id}>
               {`${subj.name} | ${
-                subj.grade === "9" ? "9no" : subj.grade === "8" ? "8vo" : "7mo"
+                subj.grade == "9" ? "9no" : subj.grade == "8" ? "8vo" : "7mo"
               }`}
             </option>
           ))}
@@ -338,7 +349,7 @@ export const QuickEditStudentNote = () => {
                               : "text-gray-700"
                           }
                         >
-                          {item.asc}
+                          {item.asc == null ? 0 : item.asc}
                         </span>
                         {error && error.asc && error.asc.id === item.id && (
                           <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
