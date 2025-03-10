@@ -443,8 +443,11 @@ const StudentsTable = () => {
                       <div className="">
                         <button
                           onClick={() => {
-                            if (item.id)
+                            if (item.id && item.grade == "7")
                               exportReportAction(item.id + "", item.grade);
+                            else if (item.id) {
+                              redirect(`students/report/${item.id}`);
+                            }
                           }}
                           className="btn2 rounded-lg bg-green-700  hover:bg-green-600 "
                         >
