@@ -183,3 +183,15 @@ export const escalafonCalcular = async () => {
     return Promise.reject(error);
   }
 };
+
+export const getStudentAccount = async (): Promise<Student | undefined> => {
+  try {
+    const response = await apiAuth.get(`students/me/`);
+
+    const data: Student = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

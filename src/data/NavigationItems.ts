@@ -83,7 +83,7 @@ export const navigationItemsDashboard: NavItem[] = [
   },
   {
     name: "Mis Notas",
-    path: "/dashboard/student_note",
+    path: "/dashboard/student_note/me",
     rols: [Rols.student],
     Icon: PiUserListBold,
   },

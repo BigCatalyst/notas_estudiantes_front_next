@@ -1,7 +1,8 @@
+import StudentNoteMeTable from "@/components/dashboard/student_note/MeNoteView";
 import React from "react";
 
 const MeNoteView = () => {
-  return <div>Page</div>;
+  return <StudentNoteMeTable />;
 };
 
 export default MeNoteView;
