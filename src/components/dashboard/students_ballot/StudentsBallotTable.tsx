@@ -26,6 +26,40 @@ const StudentsBallotTable = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [IdDel, setIdDel] = useState(-1);
 
+  const [puedenEditarB, setPuedenEditarB] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await ApiService.student_ballot_can_edit();
+        if (res) {
+          console.log(res);
+          setPuedenEditarB(res.can_edit_bullet);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  const canEdit = (e: any) => {
+    console.log(e.target.checked);
+    const value: boolean = e.target.checked;
+    setPuedenEditarB(e.target.checked);
+    (async () => {
+      try {
+        const res = await ApiService.student_ballot_can_edit_add({
+          can_edit_bullet: value,
+        });
+        if (res) {
+          console.log(res);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  };
+
   const [filters, setFilters] = useState<{
     address__contains?: string;
     ci__contains?: string;
@@ -36,7 +70,7 @@ const StudentsBallotTable = () => {
     registration_number__contains?: string;
     sex?: string;
     student__is_dropped_out?: string;
-  }>({});
+  }>({ student__is_dropped_out: "false" });
 
   const handleEdit = (value: Ballot) => {
     // Lógica para editar
@@ -146,6 +180,21 @@ const StudentsBallotTable = () => {
             className="btn1"
             to="students_ballot/add"
           />
+        </div>
+
+        <div className="ml-2">
+          <label className="inline-flex items-center cursor-pointer mt-3">
+            <input
+              type="checkbox"
+              checked={puedenEditarB}
+              onChange={canEdit}
+              className="sr-only peer"
+            />
+            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-500 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600  shadow-md"></div>
+            <span className="ms-3 text-sm font-medium text-gray-900 ">
+              Pueden Editar las boletas
+            </span>
+          </label>
         </div>
       </div>
       {/* Filters */}

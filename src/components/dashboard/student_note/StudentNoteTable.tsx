@@ -43,7 +43,7 @@ const StudentNoteTable = () => {
     subject__name__contains?: string;
     student__is_dropped_out?: string;
     student__is_graduated?: string;
-  }>({});
+  }>({ student__is_graduated: "false", student__is_dropped_out: "false" });
 
   const handleEdit = (value: StudentNote) => {
     // Lógica para editar
@@ -218,7 +218,7 @@ const StudentNoteTable = () => {
 
         <div className="mt-1 p-2 flex items-center justify-start w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 gap-7">
           <label htmlFor="start_date" className="text-gray-500">
-            Fecha del año Escolar:
+            Fecha del año Escolar {" >="}
           </label>
           <input
             id="start_date"

@@ -52,7 +52,7 @@ export const navigationItemsDashboard: NavItem[] = [
   {
     name: "Profesores",
     path: "/dashboard/professor",
-    rols: [Rols.admin, Rols.profesor, Rols.secretary],
+    rols: [Rols.admin, Rols.secretary],
     Icon: MdOutlineSchool,
   },
   {
@@ -101,7 +101,7 @@ export const navigationItemsDashboard: NavItem[] = [
     Icon: FaSchoolFlag,
   },
   {
-    name: "Bajas",
+    name: "Altas y Bajas",
     path: "/dashboard/dropouts",
     rols: [Rols.admin, Rols.secretary],
     Icon: FaUserMinus,

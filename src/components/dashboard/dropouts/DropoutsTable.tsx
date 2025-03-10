@@ -38,6 +38,7 @@ const DropoutsTable = () => {
     student__first_name__contains?: string;
     student__last_name__contains?: string;
     student__sex?: string;
+    is_dropout?: string;
   }>({});
 
   const handleEdit = (value: Dropout) => {
@@ -172,16 +173,6 @@ const DropoutsTable = () => {
 
         {/* Exportar */}
         <div className="mb-5">
-          {/* <button className="btn1">
-            <TbTableExport className="w-7 h-7 text-gray-200" />
-            <span>Exportar</span>
-          </button> */}
-
-          <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
-        </div>
-
-        {/* Exportar */}
-        <div className="mb-5">
           <button className="btn1" onClick={exportReport}>
             <TbTableExport /> Exportar
           </button>
@@ -293,6 +284,15 @@ const DropoutsTable = () => {
           <option value="">Sexo</option>
           <option value="F">Fememino</option>
           <option value="M">Masculino</option>
+        </select>
+
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          onChange={(e) => handleFilterChange("is_dropout", e.target.value)}
+        >
+          <option value="">Alta o Baja</option>
+          <option value="true">Baja</option>
+          <option value="false">Alta</option>
         </select>
       </div>
 

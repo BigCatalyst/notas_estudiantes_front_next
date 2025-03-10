@@ -50,7 +50,7 @@ const StudentsTable = () => {
     sex?: string;
     is_dropped_out?: string;
     is_graduated?: string;
-  }>({});
+  }>({ is_graduated: "false", is_dropped_out: "false" });
 
   const handleEdit = (value: Student) => {
     // Lógica para editar

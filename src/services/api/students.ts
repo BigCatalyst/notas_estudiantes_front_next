@@ -24,6 +24,7 @@ export interface Student {
   account?: Account;
   user?: string;
   group?: Group;
+  can_edit_bullet?: boolean;
 }
 
 export interface StudentCreate {

@@ -20,6 +20,7 @@ const dropoutSchema = z.object({
   province: z.string().min(1, "La provincia es requerido"),
   school: z.string().min(1, "La escuela es requerida"),
   student: z.string().min(1, "El estudiante es requerido"),
+  is_dropout: z.string().min(1, "Este campo no puede estar vacío"),
 });
 
 type DropoutFormData = z.infer<typeof dropoutSchema>;
@@ -103,7 +104,7 @@ const AddDropout = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Crear Baja
+        Crear Alta o Baja
       </h2>
 
       <div className="absolute right-10 top-7">
@@ -118,6 +119,27 @@ const AddDropout = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Mensaje de error del servidor */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Alta Baja */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Alta o Baja
+            </label>
+            <select
+              {...register("is_dropout")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.is_dropout ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            >
+              <option value="">Alta o Baja</option>
+              <option value="true">Baja</option>
+              <option value="false">Alta</option>
+            </select>
+            {errors.is_dropout && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.is_dropout?.message}
+              </p>
+            )}
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Fecha de Inicio
@@ -164,7 +186,7 @@ const AddDropout = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Provincia
+              Municipio
             </label>
             <select
               {...register("municipality")}
