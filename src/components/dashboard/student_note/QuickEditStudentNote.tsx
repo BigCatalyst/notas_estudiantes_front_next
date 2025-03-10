@@ -100,7 +100,9 @@ export const QuickEditStudentNote = () => {
   ) => {
     const value = e.target.value;
     setList(
-      list.map((row) => (row.id === rowId ? { ...row, [field]: value } : row))
+      list.map((row) =>
+        row.student === rowId ? { ...row, [field]: value } : row
+      )
     );
   };
 
@@ -294,15 +296,16 @@ export const QuickEditStudentNote = () => {
                   <td className="p-3">{students && students[index].ci}</td>
                   {/* ASC */}
                   <td className="p-3">
-                    {editingCell.rowId === item.id &&
+                    {editingCell.rowId === item.student &&
                     editingCell.field === "asc" ? (
                       <input
                         type="number"
                         defaultValue={item.asc}
                         onChange={(e) => {
+                          console.log("OnChangeInput");
                           console.log(e.target.value);
                           if (e.target.value && Number(e.target.value) >= 0)
-                            handleChange(e, item.id, "asc");
+                            handleChange(e, item.student, "asc");
                           else {
                             console.log("NAN");
                             item.asc = 0;
@@ -311,14 +314,14 @@ export const QuickEditStudentNote = () => {
                         onBlur={() => {
                           console.log(item.asc);
                           if (
-                            item.id &&
+                            item.student &&
                             item.asc &&
                             (item.asc < 0 || item.asc > 10)
                           ) {
                             setError({
                               ...error,
                               asc: {
-                                id: item.id,
+                                id: item.student,
                                 m: "Este campo debe tener un valor entre 0 y 10",
                               },
                             });
@@ -354,26 +357,28 @@ export const QuickEditStudentNote = () => {
                         >
                           {item.asc == null ? 0 : item.asc}
                         </span>
-                        {error && error.asc && error.asc.id === item.id && (
-                          <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
-                            <BiSolidError className="w-12 h-12 animate-pulse" />
-                            <span className="text-[12px]">{error.asc.m}</span>
-                          </span>
-                        )}
+                        {error &&
+                          error.asc &&
+                          error.asc.id === item.student && (
+                            <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
+                              <BiSolidError className="w-12 h-12 animate-pulse" />
+                              <span className="text-[12px]">{error.asc.m}</span>
+                            </span>
+                          )}
                       </div>
                     )}
                   </td>
 
                   {/* Final Examen */}
                   <td className="p-3">
-                    {editingCell.rowId === item.id &&
+                    {editingCell.rowId === item.student &&
                     editingCell.field === "final_exam" ? (
                       <input
                         type="number"
                         defaultValue={item.final_exam}
                         onChange={(e) => {
                           if (e.target.value && Number(e.target.value) >= 0)
-                            handleChange(e, item.id, "final_exam");
+                            handleChange(e, item.student, "final_exam");
                           else {
                             console.log("NAN");
                             item.final_exam = 0;
@@ -382,14 +387,14 @@ export const QuickEditStudentNote = () => {
                         onBlur={() => {
                           console.log(item.final_exam);
                           if (
-                            item.id &&
+                            item.student &&
                             item.final_exam &&
                             (item.final_exam < 0 || item.final_exam > 100)
                           ) {
                             setError({
                               ...error,
                               final_exam: {
-                                id: item.id,
+                                id: item.student,
                                 m: "Este campo debe tener un valor entre 0 y 100",
                               },
                             });
@@ -408,9 +413,9 @@ export const QuickEditStudentNote = () => {
                     ) : (
                       <div
                         onClick={() => {
-                          if (item.id)
+                          if (item.student)
                             setEditingCell({
-                              rowId: item.id,
+                              rowId: item.student,
                               field: "final_exam",
                             });
                         }}
@@ -424,11 +429,11 @@ export const QuickEditStudentNote = () => {
                               : "text-gray-700"
                           }
                         >
-                          {item.final_exam}
+                          {item.final_exam == null ? 0 : item.final_exam}
                         </span>
                         {error &&
                           error.final_exam &&
-                          error.final_exam.id === item.id && (
+                          error.final_exam.id === item.student && (
                             <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
                               <BiSolidError className="w-12 h-12 animate-pulse" />
                               <span className="text-[12px]">
@@ -442,14 +447,14 @@ export const QuickEditStudentNote = () => {
 
                   {/* tcp1 */}
                   <td className="p-3">
-                    {editingCell.rowId === item.id &&
+                    {editingCell.rowId === item.student &&
                     editingCell.field === "tcp1" ? (
                       <input
                         type="number"
                         defaultValue={item.tcp1}
                         onChange={(e) => {
                           if (e.target.value && Number(e.target.value) >= 0)
-                            handleChange(e, item.id, "tcp1");
+                            handleChange(e, item.student, "tcp1");
                           else {
                             console.log("NAN");
                             item.tcp1 = 0;
@@ -458,14 +463,14 @@ export const QuickEditStudentNote = () => {
                         onBlur={() => {
                           console.log(item.tcp1);
                           if (
-                            item.id &&
+                            item.student &&
                             item.tcp1 &&
                             (item.tcp1 < 0 || item.tcp1 > 100)
                           ) {
                             setError({
                               ...error,
                               tcp1: {
-                                id: item.id,
+                                id: item.student,
                                 m: "Este campo debe tener un valor entre 0 y 100",
                               },
                             });
@@ -484,9 +489,9 @@ export const QuickEditStudentNote = () => {
                     ) : (
                       <div
                         onClick={() => {
-                          if (item.id)
+                          if (item.student)
                             setEditingCell({
-                              rowId: item.id,
+                              rowId: item.student,
                               field: "tcp1",
                             });
                         }}
@@ -499,28 +504,32 @@ export const QuickEditStudentNote = () => {
                               : "text-gray-700"
                           }
                         >
-                          {item.tcp1}
+                          {item.tcp1 == null ? 0 : item.tcp1}
                         </span>
-                        {error && error.tcp1 && error.tcp1.id === item.id && (
-                          <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
-                            <BiSolidError className="w-12 h-12 animate-pulse" />
-                            <span className="text-[12px]">{error.tcp1.m}</span>
-                          </span>
-                        )}
+                        {error &&
+                          error.tcp1 &&
+                          error.tcp1.id === item.student && (
+                            <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
+                              <BiSolidError className="w-12 h-12 animate-pulse" />
+                              <span className="text-[12px]">
+                                {error.tcp1.m}
+                              </span>
+                            </span>
+                          )}
                       </div>
                     )}
                   </td>
 
                   {/* tcp1 */}
                   <td className="p-3">
-                    {editingCell.rowId === item.id &&
+                    {editingCell.rowId === item.student &&
                     editingCell.field === "tcp2" ? (
                       <input
                         type="number"
                         defaultValue={item.tcp2}
                         onChange={(e) => {
                           if (e.target.value && Number(e.target.value) >= 0)
-                            handleChange(e, item.id, "tcp2");
+                            handleChange(e, item.student, "tcp2");
                           else {
                             console.log("NAN");
                             item.tcp2 = 0;
@@ -529,14 +538,14 @@ export const QuickEditStudentNote = () => {
                         onBlur={() => {
                           console.log(item.tcp2);
                           if (
-                            item.id &&
+                            item.student &&
                             item.tcp2 &&
                             (item.tcp2 < 0 || item.tcp2 > 100)
                           ) {
                             setError({
                               ...error,
                               tcp2: {
-                                id: item.id,
+                                id: item.student,
                                 m: "Este campo debe tener un valor entre 0 y 100",
                               },
                             });
@@ -555,9 +564,9 @@ export const QuickEditStudentNote = () => {
                     ) : (
                       <div
                         onClick={() => {
-                          if (item.id)
+                          if (item.student)
                             setEditingCell({
-                              rowId: item.id,
+                              rowId: item.student,
                               field: "tcp2",
                             });
                         }}
@@ -570,14 +579,18 @@ export const QuickEditStudentNote = () => {
                               : "text-gray-700"
                           }
                         >
-                          {item.tcp2}
+                          {item.tcp2 == null ? 0 : item.tcp2}
                         </span>
-                        {error && error.tcp2 && error.tcp2.id === item.id && (
-                          <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
-                            <BiSolidError className="w-12 h-12 animate-pulse" />
-                            <span className="text-[12px]">{error.tcp2.m}</span>
-                          </span>
-                        )}
+                        {error &&
+                          error.tcp2 &&
+                          error.tcp2.id === item.student && (
+                            <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
+                              <BiSolidError className="w-12 h-12 animate-pulse" />
+                              <span className="text-[12px]">
+                                {error.tcp2.m}
+                              </span>
+                            </span>
+                          )}
                       </div>
                     )}
                   </td>
