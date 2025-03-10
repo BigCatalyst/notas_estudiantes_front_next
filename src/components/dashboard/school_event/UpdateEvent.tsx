@@ -170,7 +170,7 @@ export const UpdateEvent = () => {
 
         {/* Botón de envío */}
         <Buttom
-          title="Crear Evento Escolar"
+          title="Actualizar Evento Escolar"
           type="submit"
           isLoading={isLoading}
           className="btn1"

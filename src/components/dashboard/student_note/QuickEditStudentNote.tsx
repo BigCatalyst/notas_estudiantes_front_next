@@ -274,7 +274,7 @@ export const QuickEditStudentNote = () => {
             {!loading &&
               list &&
               list.map((item, index) => (
-                <tr key={item.id} className="border-b border-b-gray-300">
+                <tr key={item.student} className="border-b border-b-gray-300">
                   {/* Nombre */}
                   <td className="p-3">
                     {students && students[index].first_name}

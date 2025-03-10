@@ -16,7 +16,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { TbLoader2, TbPlaylistAdd } from "react-icons/tb";
 import { useSelector } from "react-redux";
 
 export const EventsTable = () => {
@@ -141,16 +141,6 @@ export const EventsTable = () => {
           (val) => val === Rols.admin || val === Rols.secretary
         ) && (
           <div className="inline-flex gap-2">
-            {/* Exportar */}
-            <div className="mb-5">
-              {/* <button className="btn1">
-            <TbTableExport className="w-7 h-7 text-gray-200" />
-            <span>Exportar</span>
-          </button> */}
-
-              <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
-            </div>
-
             {/* Adicionar */}
             <div className="mb-5">
               <Buttom
