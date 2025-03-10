@@ -28,7 +28,7 @@ const studentSchema = z.object({
     .max(50)
     .optional()
     .or(z.literal("")),
-  password: z.string().optional().optional().or(z.literal("")),
+  password: z.string().optional().or(z.literal("")),
   email: z.string().email("Email inválido").optional().or(z.literal("")),
   group: z.string().optional(),
 });
