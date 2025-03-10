@@ -34,9 +34,6 @@ const studentNoteSchema = z.object({
     .min(0, "El TCP2 debe ser al menos 0")
     .max(100, "El TCP2 debe ser maximo 100")
     .optional(),
-  student: z
-    .string({ message: "Estudiante es requerido" })
-    .min(1, "Estudiante es requerido"),
   subject: z.string().min(1, "Materia es requerida"),
   school_year: z.string().min(1, "Año escolar es requerido"),
 });
@@ -54,12 +51,6 @@ const UpdateStudentNote = () => {
   >([]);
 
   const [selecteStudent, setSelecteStudent] = useState("");
-
-  const handleSelect = (item: { id: string; name: string }) => {
-    console.log("Elemento seleccionado:", item);
-    setValue("student", item.id);
-    clearErrors("student");
-  };
 
   const { id } = useParams<{ id: string }>();
 
@@ -80,9 +71,8 @@ const UpdateStudentNote = () => {
           setStudents(
             studentsData.map((student: any) => ({
               id: student.id,
-              name: `${student.first_name} ${student.last_name} | ${
-                student.grade == 9 ? "9no" : student.grade == 8 ? "8vo" : "7mo"
-              }`,
+              name: `${student.first_name} ${student.last_name}
+              `,
             }))
           );
         }
@@ -119,7 +109,6 @@ const UpdateStudentNote = () => {
         setValue("final_exam", res?.final_exam ?? 0);
         setValue("tcp1", res?.tcp1 ?? 0);
         setValue("tcp2", res?.tcp2 ?? 0);
-        setValue("student", res.student.id + "");
         setValue("subject", res.subject.id + "");
         setValue("school_year", res.school_year.id + "");
 
@@ -127,7 +116,7 @@ const UpdateStudentNote = () => {
           if (val.id === res.student.id) return val;
         });
 
-        setSelecteStudent(ss?.name ?? "");
+        if (ss) setSelecteStudent(ss.name);
       }
     };
 
@@ -148,6 +137,7 @@ const UpdateStudentNote = () => {
 
   const onSubmit = async (data: StudentNoteFormData) => {
     try {
+      console.log(data);
       setIsLoading(true);
       setIsSuccess(false);
       setServerError([]);
@@ -263,25 +253,11 @@ const UpdateStudentNote = () => {
             )}
           </div>
 
-          {/* Student */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante
             </label>
-            <AutoComplete
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.student ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-              items={students}
-              selecteItem={selecteStudent}
-              placeholder="Buscar estudiante..."
-              onSelect={handleSelect}
-            />
-            {errors.student && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.student.message}
-              </p>
-            )}
+            <div>{selecteStudent}</div>
           </div>
 
           {/* Subject */}

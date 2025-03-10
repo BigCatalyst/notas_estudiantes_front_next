@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Item {
   id: string;
@@ -23,6 +23,11 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
+  useEffect(() => {
+    console.log(selecteItem);
+    if (selecteItem) setInputValue(selecteItem);
+  }, []);
+
   // Filtrar la lista según el valor del input
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(inputValue.toLowerCase())
@@ -45,8 +50,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
       {/* Input */}
       <input
         type="text"
-        defaultValue={selecteItem}
-        //value={inputValue}
+        value={inputValue}
         onChange={handleInputChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setTimeout(() => setIsFocused(false), 200)} // Retraso para permitir clics en el dropdown

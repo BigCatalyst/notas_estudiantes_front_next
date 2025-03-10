@@ -15,7 +15,7 @@ export interface StudentNote {
   final_exam?: number;
   tcp1?: number;
   tcp2?: number;
-  student: any;
+  student?: any;
   subject: any;
   school_year: any;
 }
