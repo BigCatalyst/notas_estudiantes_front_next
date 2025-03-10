@@ -27,6 +27,11 @@ const StudentNoteTable = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [IdDel, setIdDel] = useState(-1);
 
+  const [lastSY, setLastSY] = useState("");
+  const [schoolYears, setSchoolYears] = useState<
+    { id: string; name: string }[]
+  >([]);
+
   // const [stident, setStident] = useState("");
   // const [subject, setSubject] = useState("");
 
@@ -43,6 +48,7 @@ const StudentNoteTable = () => {
     subject__name__contains?: string;
     student__is_dropped_out?: string;
     student__is_graduated?: string;
+    school_year__id?: string;
   }>({ student__is_graduated: "false", student__is_dropped_out: "false" });
 
   const handleEdit = (value: StudentNote) => {
@@ -92,7 +98,9 @@ const StudentNoteTable = () => {
     try {
       setLoading(true);
       const query = buildQueryString();
-      const data = await ApiService.studentsNote(`${query}`);
+      const data = await ApiService.studentsNote(
+        `${query.length === 0 ? `school_year__id=${lastSY}` : query}`
+      );
 
       console.log(query);
 
@@ -119,11 +127,34 @@ const StudentNoteTable = () => {
     }, 500);
 
     return () => clearTimeout(debounceTimer);
-  }, [filters, currentPage, pagesSize]);
+  }, [filters, currentPage, pagesSize, lastSY]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await ApiService.schoolYearsAll("");
+        if (res) {
+          let datasy: { id: string; name: string }[] = [];
+          res.forEach((val) => {
+            if (val.id) datasy.push({ id: val.id + "", name: `${val.name}` });
+          });
+          setSchoolYears(datasy);
+          console.log("last year");
+          console.log(datasy[datasy.length - 1].name);
+          setLastSY(datasy[datasy.length - 1].id);
+
+          handleFilterChange("school_year__id", datasy[datasy.length - 1].id);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   const handleFilterChange = (field: string, value: string) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
     setCurrentPage(1);
+    setLastSY(value);
   };
 
   return (
@@ -182,6 +213,19 @@ const StudentNoteTable = () => {
             : "transition-all h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6 duration-400 shadow-md p-7 shadow-gray-300 rounded-lg"
         }
       >
+        <select
+          className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          value={lastSY}
+          onChange={(e) =>
+            handleFilterChange("school_year__id", e.target.value)
+          }
+        >
+          <option value="">SchoolYear</option>
+          {schoolYears.map((val, index) => (
+            <option key={index} value={val.id}>{`${val.name}`}</option>
+          ))}
+        </select>
+
         <input
           type="number"
           placeholder="Buscar por >= GTE"
