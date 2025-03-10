@@ -125,7 +125,8 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
           if (
             res &&
             g === 9 &&
-            userAuth.user.roles.findIndex((val) => val === Rols.student) > -1
+            userAuth.user.roles.findIndex((val) => val === Rols.student) > -1 &&
+            res.results[0].can_edit_bullet
           ) {
             setGrado("9");
           }

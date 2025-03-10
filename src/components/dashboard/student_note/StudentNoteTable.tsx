@@ -43,7 +43,7 @@ const StudentNoteTable = () => {
     subject__name__contains?: string;
     student__is_dropped_out?: string;
     student__is_graduated?: string;
-  }>({});
+  }>({ student__is_graduated: "false", student__is_dropped_out: "false" });
 
   const handleEdit = (value: StudentNote) => {
     // Lógica para editar

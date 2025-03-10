@@ -89,3 +89,29 @@ export const getBallot = async (id: string): Promise<string[] | undefined> => {
     return Promise.reject(error);
   }
 };
+
+interface StudentBallotBanBditRes {
+  can_edit_bullet: boolean;
+}
+
+export const student_ballot_can_edit = async (): Promise<
+  StudentBallotBanBditRes | undefined
+> => {
+  try {
+    const response = await apiAuth.get(`students/can_edit/`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const student_ballot_can_edit_add = async (
+  data: StudentBallotBanBditRes
+): Promise<StudentBallotBanBditRes | undefined> => {
+  try {
+    const response = await apiAuth.post(`students/can_edit/`, data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
