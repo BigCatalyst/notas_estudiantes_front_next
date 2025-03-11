@@ -1,14 +1,30 @@
 "use client";
 
+import Buttom from "@/components/ui/buttom/Buttom";
 import { SectionResponseRes } from "@/services/api/virtual_classroom_edition";
 import ApiService from "@/services/ApiService";
-import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useParams, usePathname } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { IoIosArrowBack } from "react-icons/io";
 
 const StudentResponse = () => {
   const { idResponse } = useParams<{ idResponse: string }>();
 
   const [data, setData] = useState<SectionResponseRes[] | undefined>();
+
+  const url = useRef("");
+
+  const path = usePathname();
+
+  useEffect(() => {
+    const pathArray = path.split("/");
+    const res: string[] = [];
+    for (let index = 0; index < pathArray.length - 2; index++) {
+      res.push(pathArray[index]);
+    }
+    console.log(res.join("/"));
+    url.current = res.join("/");
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -25,7 +41,14 @@ const StudentResponse = () => {
   }, []);
 
   return (
-    <div>
+    <div className="relative">
+      <Buttom
+        title="Edición de Aula virtual"
+        className="btn1 mb-7"
+        icon={IoIosArrowBack}
+        to={url.current}
+      />
+
       {data &&
         data?.map((res, index) => (
           <div key={index}>
