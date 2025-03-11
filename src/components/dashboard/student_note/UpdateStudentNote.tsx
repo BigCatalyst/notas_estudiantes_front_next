@@ -167,7 +167,9 @@ const UpdateStudentNote = () => {
       let formattedErrorData: string[] = [];
       if (Object.keys(errorData).length > 0) {
         Object.entries(errorData).forEach(([key, value]) => {
-          formattedErrorData.push(`${key}: ${value}`);
+          if (key !== "non_field_errors")
+            formattedErrorData.push(`${key}: ${value}`);
+          else formattedErrorData.push(`${value}`);
         });
       }
       setServerError(formattedErrorData);
