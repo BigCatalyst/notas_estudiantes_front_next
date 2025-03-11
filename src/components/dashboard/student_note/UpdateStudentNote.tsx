@@ -33,7 +33,8 @@ const studentNoteSchema = z.object({
     .number()
     .min(0, "El TCP2 debe ser al menos 0")
     .max(100, "El TCP2 debe ser maximo 100")
-    .optional(),
+    .optional()
+    .or(z.literal(undefined)),
   subject: z.string().min(1, "Materia es requerida"),
   school_year: z.string().min(1, "Año escolar es requerido"),
 });
@@ -45,10 +46,14 @@ const UpdateStudentNote = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
-  const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([]);
+  const [subjects, setSubjects] = useState<
+    { id: string; name: string; tcp2: boolean }[]
+  >([]);
   const [schoolYears, setSchoolYears] = useState<
     { id: string; name: string }[]
   >([]);
+
+  const [showTcp2, setShowTcp2] = useState(false);
 
   const [selecteStudent, setSelecteStudent] = useState("");
 
@@ -62,8 +67,8 @@ const UpdateStudentNote = () => {
         const [studentsData, subjectsData, schoolYearsData] = await Promise.all(
           [
             ApiService.studentsAll(""),
-            ApiService.subjects(""),
-            ApiService.schoolYears(""),
+            ApiService.subjectsAll(""),
+            ApiService.schoolYearsAll(""),
           ]
         );
         if (studentsData) {
@@ -77,18 +82,25 @@ const UpdateStudentNote = () => {
           );
         }
 
-        if (subjectsData)
+        if (subjectsData) {
+          console.log(subjectsData);
           setSubjects(
-            subjectsData.results.map((subject: any) => ({
+            subjectsData.map((subject: any) => ({
               id: subject.id,
-              name: `${subject.name} | ${
-                subject.grade == 9 ? "9no" : subject.grade == 8 ? "8vo" : "7mo"
+              name: `${subject.name} | Grado: ${
+                subject.grade === 9
+                  ? "9no"
+                  : subject.grade === 8
+                  ? "8vo"
+                  : "7mo"
               }`,
+              tcp2: subject.tcp2_required,
             }))
           );
+        }
         if (schoolYearsData)
           setSchoolYears(
-            schoolYearsData.results.map((year: any) => ({
+            schoolYearsData.map((year: any) => ({
               id: year.id,
               name: year.name,
             }))
@@ -155,7 +167,9 @@ const UpdateStudentNote = () => {
       let formattedErrorData: string[] = [];
       if (Object.keys(errorData).length > 0) {
         Object.entries(errorData).forEach(([key, value]) => {
-          formattedErrorData.push(`${key}: ${value}`);
+          if (key !== "non_field_errors")
+            formattedErrorData.push(`${key}: ${value}`);
+          else formattedErrorData.push(`${value}`);
         });
       }
       setServerError(formattedErrorData);
@@ -237,21 +251,25 @@ const UpdateStudentNote = () => {
           </div>
 
           {/* TCP2 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              TCP2
-            </label>
-            <input
-              type="number"
-              {...register("tcp2", { valueAsNumber: true })}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.tcp2 ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.tcp2 && (
-              <p className="text-red-500 text-sm mt-1">{errors.tcp2.message}</p>
-            )}
-          </div>
+          {showTcp2 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                TCP2
+              </label>
+              <input
+                type="number"
+                {...register("tcp2", { valueAsNumber: true })}
+                className={`mt-1 p-2 block w-full rounded-md ${
+                  errors.tcp2 ? "border-red-500" : "border-gray-300"
+                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              />
+              {errors.tcp2 && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.tcp2.message}
+                </p>
+              )}
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -267,6 +285,16 @@ const UpdateStudentNote = () => {
             </label>
             <select
               {...register("subject")}
+              onChange={(e) => {
+                const selectedSubjectId = e.target.value;
+
+                const selectedSubject = subjects.find(
+                  (subject) => subject.id == selectedSubjectId
+                );
+                if (selectedSubject) {
+                  setShowTcp2(selectedSubject.tcp2); // Mostrar tcp2 si hasTcp2 es true
+                }
+              }}
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.subject ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
