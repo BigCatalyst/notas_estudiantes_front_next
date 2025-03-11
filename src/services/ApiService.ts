@@ -13,6 +13,7 @@ import * as eventService from "./api/events";
 import * as subjectsectionsubjectsService from "./api/virtual_classroom_edition";
 import * as studentGroup from "./api/group";
 import * as reportsService from "./api/reports";
+import * as schoolStatistics from "./api/school";
 
 export default {
   ...authService,
@@ -29,4 +30,5 @@ export default {
   ...subjectsectionsubjectsService,
   ...studentGroup,
   ...reportsService,
+  ...schoolStatistics,
 };
