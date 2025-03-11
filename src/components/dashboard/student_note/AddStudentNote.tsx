@@ -14,6 +14,7 @@ import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
 import Autocomplete from "@/components/ui/autocomplete/Autocomplete";
 import AutoComplete from "@/components/ui/autocomplete/Autocomplete";
+import { Subject } from "@/services/api/subjects";
 
 // Esquema de validación Zod
 const studentNoteSchema = z.object({
@@ -21,10 +22,6 @@ const studentNoteSchema = z.object({
     .number({ message: "Asc no puede estar vacío" })
     .min(0, "ASC debe ser al menos 0")
     .max(10, "ASC debe ser maximo 10"),
-  // final_grade: z
-  //   .number({ message: "La Nota Final no puede estar vacía" })
-  //   .min(0, "La Nota Final debe ser al menos 0")
-  //   .max(100, "La Nota Final debe ser maximo 100"),
   final_exam: z
     .number({ message: "El Examen Final no puede estar vacío" })
     .min(0, "El Examen Final debe ser al menos 0")
@@ -37,7 +34,8 @@ const studentNoteSchema = z.object({
     .number()
     .min(0, "El TCP2 debe ser al menos 0")
     .max(100, "El TCP2 debe ser maximo 100")
-    .optional(),
+    .optional()
+    .or(z.literal(undefined)),
   student: z
     .string({ message: "Estudiante es requerido" })
     .min(1, "Estudiante es requerido"),
@@ -52,10 +50,14 @@ const AddStudentNote = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
-  const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([]);
+  const [subjects, setSubjects] = useState<
+    { id: string; name: string; tcp2: boolean }[]
+  >([]);
   const [schoolYears, setSchoolYears] = useState<
     { id: string; name: string }[]
   >([]);
+
+  const [showTcp2, setShowTcp2] = useState(false);
 
   const router = useRouter();
 
@@ -84,7 +86,8 @@ const AddStudentNote = () => {
               }`,
             }))
           );
-        if (subjectsData)
+        if (subjectsData) {
+          console.log(subjectsData);
           setSubjects(
             subjectsData.map((subject: any) => ({
               id: subject.id,
@@ -95,8 +98,11 @@ const AddStudentNote = () => {
                   ? "8vo"
                   : "7mo"
               }`,
+              tcp2: subject.tcp2_required,
             }))
           );
+        }
+
         if (schoolYearsData)
           setSchoolYears(
             schoolYearsData.map((year: any) => ({
@@ -233,21 +239,25 @@ const AddStudentNote = () => {
           </div>
 
           {/* TCP2 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              TCP2
-            </label>
-            <input
-              type="number"
-              {...register("tcp2", { valueAsNumber: true })}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.tcp2 ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.tcp2 && (
-              <p className="text-red-500 text-sm mt-1">{errors.tcp2.message}</p>
-            )}
-          </div>
+          {showTcp2 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                TCP2
+              </label>
+              <input
+                type="number"
+                {...register("tcp2", { valueAsNumber: true })}
+                className={`mt-1 p-2 block w-full rounded-md ${
+                  errors.tcp2 ? "border-red-500" : "border-gray-300"
+                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              />
+              {errors.tcp2 && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.tcp2.message}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Student */}
           {/* <div>
@@ -300,6 +310,16 @@ const AddStudentNote = () => {
             </label>
             <select
               {...register("subject")}
+              onChange={(e) => {
+                const selectedSubjectId = e.target.value;
+
+                const selectedSubject = subjects.find(
+                  (subject) => subject.id == selectedSubjectId
+                );
+                if (selectedSubject) {
+                  setShowTcp2(selectedSubject.tcp2); // Mostrar tcp2 si hasTcp2 es true
+                }
+              }}
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.subject ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
