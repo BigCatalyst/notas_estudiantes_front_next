@@ -55,7 +55,7 @@ const StudentResponse = () => {
             <div className="w-full bg-white p-7 shadow-md rounded-lg flex flex-col gap-2">
               <div className="inline-flex gap-3">
                 <p className="font-bold">Nombre del Estudiante:</p>
-                <span>{res.student.first_name}</span>
+                <span>{`${res.student.first_name} ${res.student.last_name}`}</span>
               </div>
               <div className="inline-flex gap-3">
                 <p className="font-bold">CI del Estudiante:</p>
