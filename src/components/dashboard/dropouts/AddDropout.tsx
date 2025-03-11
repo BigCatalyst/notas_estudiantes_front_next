@@ -109,7 +109,7 @@ const AddDropout = () => {
 
       <div className="absolute right-10 top-7">
         <Buttom
-          title="Graduados"
+          title="Altas y Bajas"
           icon={IoIosArrowBack}
           to="/dashboard/dropouts"
           className="btn1"
@@ -265,7 +265,7 @@ const AddDropout = () => {
 
         {/* Botón de envío */}
         <Buttom
-          title="Crear Graduado"
+          title="Crear"
           type="submit"
           isLoading={isLoading}
           className="btn1"

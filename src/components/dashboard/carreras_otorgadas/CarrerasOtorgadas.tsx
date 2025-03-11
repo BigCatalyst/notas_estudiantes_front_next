@@ -42,6 +42,13 @@ const CarrerasOtorgadas = () => {
       setLoading(true);
       const query = buildQueryString();
 
+      // const data = await ApiService.grant_careers(
+      //   `${
+      //     query.length === 0
+      //       ? `approved_school_course__school_year__id=${lastSY}`
+      //       : query
+      //   }`
+      // );
       const data = await ApiService.grant_careers(
         `${
           query.length === 0
@@ -69,6 +76,8 @@ const CarrerasOtorgadas = () => {
   };
 
   useEffect(() => {
+    console.log(lastSY);
+
     const debounceTimer = setTimeout(() => {
       fetchEntity();
     }, 500);
@@ -86,6 +95,8 @@ const CarrerasOtorgadas = () => {
             if (val.id) datasy.push({ id: val.id + "", name: `${val.name}` });
           });
           setSchoolYears(datasy);
+          console.log("last year");
+          console.log(datasy[datasy.length - 1].name);
           setLastSY(datasy[datasy.length - 1].id);
         }
       } catch (error) {
@@ -96,6 +107,7 @@ const CarrerasOtorgadas = () => {
 
   const handleFilterChange = (field: string, value: string) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
+    setLastSY(value);
   };
 
   return (
@@ -126,6 +138,7 @@ const CarrerasOtorgadas = () => {
       >
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          value={lastSY}
           onChange={(e) =>
             handleFilterChange(
               "approved_school_course__school_year__id",
@@ -135,10 +148,7 @@ const CarrerasOtorgadas = () => {
         >
           <option value="">SchoolYear</option>
           {schoolYears.map((val, index) => (
-            <option
-              key={index + Date.now()}
-              value={val.id}
-            >{`${val.name}`}</option>
+            <option key={index} value={val.id}>{`${val.name}`}</option>
           ))}
         </select>
       </div>

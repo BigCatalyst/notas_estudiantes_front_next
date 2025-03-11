@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LuCircleFadingPlus } from "react-icons/lu";
 import ApiService from "@/services/ApiService";
 import { useRouter } from "next/navigation";
@@ -15,21 +15,21 @@ import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
 import { Group } from "./Types";
+import { Account } from "../../../services/api/professor";
 
 // Esquema de validación Zod
 const userSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Username debe tener al menos 3 caracteres")
-    .max(50),
   email: z.string().email("Email inválido"),
   first_name: z.string().min(2, "Nombre debe tener al menos 2 caracteres"),
   last_name: z.string().min(2, "Apellido debe tener al menos 2 caracteres"),
-  password: z.string().min(6, "Contraseña debe tener al menos 6 caracteres"),
-  repeat_password: z.string(),
+  password: z
+    .string()
+    .min(6, "Contraseña debe tener al menos 6 caracteres")
+    .optional()
+    .or(z.literal("")),
+  repeat_password: z.string().optional().or(z.literal("")),
   groups: z.array(z.string()).nonempty("Debe agregar al menos un grupo"),
   is_active: z.boolean().default(true),
-  is_superuser: z.boolean().default(true),
 });
 
 type UserFormData = z.infer<typeof userSchema>;
@@ -41,6 +41,8 @@ const UpdateUser = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [roles, setRoles] = useState<string[] | null>(null);
+
+  const username = useRef("");
 
   useEffect(() => {
     const roles = async () => {
@@ -63,11 +65,10 @@ const UpdateUser = () => {
 
           if (res) {
             console.log(res);
-            setValue("username", res.username || "");
+            if (res.username) username.current = res.username;
             setValue("email", res.email || "");
             setValue("first_name", res.first_name || "");
             setValue("is_active", res.is_active || false);
-            setValue("is_superuser", res.is_superuser || false);
             setValue("last_name", res.last_name || "");
 
             const grupos: string[] | Group[] | undefined = res.groups;
@@ -143,15 +144,37 @@ const UpdateUser = () => {
 
   const onSubmit = async (data: UserFormData) => {
     try {
+      const {
+        email,
+        first_name,
+        groups,
+        is_active,
+        last_name,
+        password,
+        repeat_password,
+      } = data;
       setIsLoading(true);
       setIsSuccess(false);
       setServerError("");
-      const res = await ApiService.updUser(id, data);
-      if (res) {
-        console.log(res);
-        setIsSuccess(true);
-        router.push("/dashboard/users");
+      console.log(data);
+      let dataF: any = {};
+
+      if (data.password?.length === 0) {
+        dataF = { email, first_name, groups, is_active, last_name };
+      } else {
+        dataF = { email, first_name, groups, is_active, last_name, password };
       }
+      if (password === repeat_password) {
+        const res = await ApiService.updUser(id, dataF);
+        if (res) {
+          console.log(res);
+          setIsSuccess(true);
+          router.push("/dashboard/users");
+        }
+      } else
+        setError("repeat_password", {
+          message: "Las contraseñas no coinciden",
+        });
     } catch (error: any) {
       console.log(error);
       const errorData = error.response.data;
@@ -191,17 +214,7 @@ const UpdateUser = () => {
             <label className="block text-sm font-medium text-gray-700">
               Username
             </label>
-            <input
-              {...register("username")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.username ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.username.message}
-              </p>
-            )}
+            <div>{username.current}</div>
           </div>
 
           {/* Email */}
@@ -378,22 +391,6 @@ const UpdateUser = () => {
                 Usuario activo
               </label>
             </div>
-
-            {/* Superuser */}
-            <div className="flex items-center">
-              <input
-                id="is_superuser"
-                type="checkbox"
-                {...register("is_superuser")}
-                className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="is_superuser"
-                className="ml-2 text-sm text-gray-700"
-              >
-                Superususario
-              </label>
-            </div>
           </div>
         </div>
 
@@ -420,7 +417,7 @@ const UpdateUser = () => {
         {/* Botón de envío */}
 
         <Buttom
-          title="Crear Usuario"
+          title="Actualizar Usuario"
           type="submit"
           isLoading={isLoading}
           className="btn1"
