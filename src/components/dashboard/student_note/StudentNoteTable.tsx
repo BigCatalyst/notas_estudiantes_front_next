@@ -382,7 +382,7 @@ const StudentNoteTable = () => {
                   <td className="p-3">{item.tcp2?.toFixed(2)}</td>
                   <td className="p-3">{item.final_exam?.toFixed(2)}</td>
                   <td className="p-3">{item.final_grade?.toFixed(2)}</td>
-                  <td className="p-3">{item.student.first_name}</td>
+                  <td className="p-3">{`${item.student.first_name} ${item.student.last_name}`}</td>
                   <td className="p-3">{item.subject.name}</td>
                   <td className="p-3">{item.subject.grade}</td>
                   <td className="p-3">{item.school_year.name}</td>

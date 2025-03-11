@@ -168,7 +168,9 @@ const CarrerasOtorgadas = () => {
               list &&
               list.map((item: any) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
-                  <td className="p-3">{item.student.first_name}</td>
+                  <td className="p-3">
+                    {`${item.student.first_name} ${item.student.last_name}`}
+                  </td>
                   <td className="p-3">{item.student.ci}</td>
                   <td className="p-3">{item.career.name}</td>
                 </tr>
