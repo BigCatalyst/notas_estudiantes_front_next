@@ -34,7 +34,9 @@ const StudentNoteMeTable = () => {
     final_grade__gte?: number;
     school_year__name__contains?: string;
     school_year__start_date__gte?: string;
+    subject__grade?: string;
     subject__name__contains?: string;
+    school_year__id?: string;
   }>({});
 
   const buildQueryString = () => {
@@ -209,7 +211,7 @@ const StudentNoteMeTable = () => {
           <select
             className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
             onChange={(e) =>
-              handleFilterChange("student__grade", e.target.value)
+              handleFilterChange("subject__grade", e.target.value)
             }
           >
             <option value="">Grados</option>

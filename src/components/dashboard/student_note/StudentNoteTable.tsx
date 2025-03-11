@@ -43,7 +43,7 @@ const StudentNoteTable = () => {
     school_year__start_date__gte?: string;
     student__ci__contains?: string;
     student__first_name__contains?: string;
-    student__grade?: string;
+    subject__grade?: string;
     student__sex?: string;
     subject__name__contains?: string;
     student__is_dropped_out?: string;
@@ -298,7 +298,7 @@ const StudentNoteTable = () => {
 
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          onChange={(e) => handleFilterChange("student__grade", e.target.value)}
+          onChange={(e) => handleFilterChange("subject__grade", e.target.value)}
         >
           <option value="">Grados</option>
           <option value="7">7mo</option>
