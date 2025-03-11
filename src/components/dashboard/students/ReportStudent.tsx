@@ -12,7 +12,7 @@ import { LuCircleFadingPlus } from "react-icons/lu";
 import { z } from "zod";
 
 const studentSchema = z.object({
-  grade: z.string().min(1, "Grado es requerido"),
+  grade: z.string().optional(),
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;
@@ -60,13 +60,35 @@ export const ReportStudent = () => {
     }
   };
 
+  const exportReportAction1 = async (id_estudiante: string) => {
+    try {
+      const res = await ApiService.reportCertificate(id_estudiante);
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "reporte.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onSubmit = async (data: StudentFormData) => {
     try {
       setIsLoading(true);
 
       console.log(data);
 
-      exportReportAction(id, data.grade);
+      if (data.grade) exportReportAction(id, data.grade);
+      else exportReportAction1(id);
     } catch (error: any) {
       console.log(error);
     } finally {
