@@ -360,12 +360,13 @@ const StudentNoteTable = () => {
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
               <th className="p-3 text-left">ASC</th>
-              <th className="p-3 text-left">Grado Final</th>
-              <th className="p-3 text-left">Examen Final</th>
               <th className="p-3 text-left">TCP1</th>
               <th className="p-3 text-left">TCP2</th>
+              <th className="p-3 text-left">Examen Final</th>
+              <th className="p-3 text-left">Nota Final</th>
               <th className="p-3 text-left">Estudiante</th>
               <th className="p-3 text-left">Asigntura</th>
+              <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">Año Escolar</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>
@@ -377,12 +378,13 @@ const StudentNoteTable = () => {
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
                   <td className="p-3">{item.asc?.toFixed(2)}</td>
-                  <td className="p-3">{item.final_grade?.toFixed(2)}</td>
-                  <td className="p-3">{item.final_exam?.toFixed(2)}</td>
                   <td className="p-3">{item.tcp1?.toFixed(2)}</td>
                   <td className="p-3">{item.tcp2?.toFixed(2)}</td>
+                  <td className="p-3">{item.final_exam?.toFixed(2)}</td>
+                  <td className="p-3">{item.final_grade?.toFixed(2)}</td>
                   <td className="p-3">{item.student.first_name}</td>
                   <td className="p-3">{item.subject.name}</td>
+                  <td className="p-3">{item.subject.grade}</td>
                   <td className="p-3">{item.school_year.name}</td>
                   <td className="p-3 flex gap-2">
                     <button
