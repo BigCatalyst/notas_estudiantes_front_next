@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
@@ -5,10 +6,8 @@ import { SectionType } from "./Types";
 import ApiService from "@/services/ApiService";
 import { redirect, useParams, usePathname } from "next/navigation";
 import { SubjectGet } from "@/services/api/subjects";
-import { LuCircleFadingPlus } from "react-icons/lu";
 import { BiCheckCircle, BiDownload, BiSend } from "react-icons/bi";
 import { IoCloseCircle } from "react-icons/io5";
-import Buttom from "@/components/ui/buttom/Buttom";
 import { IoIosArrowBack } from "react-icons/io";
 
 const DetallesAulaVirtual = () => {
@@ -210,6 +209,11 @@ const DetallesAulaVirtual = () => {
                           "detailsUrlCR",
                           JSON.stringify({ url: url })
                         );
+
+                        console.log(
+                          `/dashboard/virtual_classroom/student_task_response/${task.id}`
+                        );
+
                         redirect(
                           `/dashboard/virtual_classroom/student_task_response/${task.id}`
                         );
