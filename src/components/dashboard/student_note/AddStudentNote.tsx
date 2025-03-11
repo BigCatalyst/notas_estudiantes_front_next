@@ -57,12 +57,6 @@ const AddStudentNote = () => {
     { id: string; name: string }[]
   >([]);
 
-  const handleSelect = (item: { id: string; name: string }) => {
-    console.log("Elemento seleccionado:", item);
-    setValue("student", item.id);
-    clearErrors("student");
-  };
-
   const router = useRouter();
 
   useEffect(() => {
@@ -124,11 +118,19 @@ const AddStudentNote = () => {
     formState: { errors },
     setValue,
     clearErrors,
+    getValues,
   } = useForm<StudentNoteFormData>({
     resolver: zodResolver(studentNoteSchema),
     defaultValues: { tcp2: 0, final_exam: 0 },
     mode: "onChange",
   });
+
+  const handleSelect = (item: { id: string; name: string }) => {
+    console.log("Elemento seleccionado:", item);
+    setValue("student", item.id + "");
+    clearErrors("student");
+    console.log(getValues("student"));
+  };
 
   const onSubmit = async (data: StudentNoteFormData) => {
     try {
