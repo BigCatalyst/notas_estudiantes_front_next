@@ -70,9 +70,9 @@ const DetallesAulaVirtual = () => {
           <div className="inline-flex gap-1">
             <p className="font-bold">Grado:</p>
             <p>
-              {subject?.grade === "7"
+              {subject?.grade == "7"
                 ? "7mo"
-                : subject?.grade === "8"
+                : subject?.grade == "8"
                 ? "8vo"
                 : "9no"}
             </p>
