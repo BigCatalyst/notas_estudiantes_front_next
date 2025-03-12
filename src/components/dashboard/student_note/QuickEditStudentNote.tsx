@@ -5,6 +5,7 @@
 
 import MensageError from "@/components/message/MensageError";
 import Buttom from "@/components/ui/buttom/Buttom";
+import { ACS_MAX } from "@/config";
 import { StudentNote } from "@/services/api/student_note";
 import { Student } from "@/services/api/students";
 import { Subject } from "@/services/api/subjects";
@@ -29,6 +30,8 @@ export const QuickEditStudentNote = () => {
   const [idSubject, setIdSubject] = useState(1);
 
   const [students, setStudents] = useState<Student[] | null>(null);
+
+  const [showTcp2, setShowTcp2] = useState(false);
 
   const [error, setError] = useState<{
     asc: { id: number; m: string } | null;
@@ -84,7 +87,7 @@ export const QuickEditStudentNote = () => {
 
   const validData = (): boolean => {
     for (const val of list) {
-      if (val.asc && (val.asc < 0 || val.asc > 10)) return false;
+      if (val.asc && (val.asc < 0 || val.asc > ACS_MAX)) return false;
       if (val.final_exam && (val.final_exam < 0 || val.final_exam > 100))
         return false;
       if (val.tcp1 && (val.tcp1 < 0 || val.tcp1 > 100)) return false;
@@ -138,7 +141,9 @@ export const QuickEditStudentNote = () => {
       setLoading(true);
       const query = buildQueryString();
 
-      const data = await ApiService.studentsNoteMultiple("1");
+      const data = await ApiService.studentsNoteMultiple(
+        query && query.length > 0 ? query.split("=")[1] : "1"
+      );
 
       console.log(query);
 
@@ -250,6 +255,16 @@ export const QuickEditStudentNote = () => {
           onChange={(e) => {
             handleFilterChange("subject__id", e.target.value);
             setIdSubject(Number(e.target.value));
+
+            const selectedSubjectId = e.target.value;
+
+            const selectedSubject = subjects.find(
+              (subject) => subject.id + "" == selectedSubjectId
+            );
+
+            if (selectedSubject) {
+              setShowTcp2(selectedSubject.tcp2_required); // Mostrar tcp2 si hasTcp2 es true
+            }
           }}
         >
           <option value="">Asignaturas</option>
@@ -280,7 +295,7 @@ export const QuickEditStudentNote = () => {
               <th className="p-3 text-left">ASC</th>
               <th className="p-3 text-left">Examen Final</th>
               <th className="p-3 text-left">TCP1</th>
-              <th className="p-3 text-left">TCP2</th>
+              {showTcp2 && <th className="p-3 text-left">TCP2</th>}
             </tr>
           </thead>
           <tbody className="*:focus-within:bg-gray-200">
@@ -290,10 +305,14 @@ export const QuickEditStudentNote = () => {
                 <tr key={item.student} className="border-b border-b-gray-300">
                   {/* Nombre */}
                   <td className="p-3">
-                    {students && students[index].first_name}
+                    {students && students[index]
+                      ? students[index].first_name
+                      : "none"}
                   </td>
                   {/* CI */}
-                  <td className="p-3">{students && students[index].ci}</td>
+                  <td className="p-3">
+                    {students && students[index] && students[index].ci}
+                  </td>
                   {/* ASC */}
                   <td className="p-3">
                     {editingCell.rowId === item.student &&
@@ -316,13 +335,13 @@ export const QuickEditStudentNote = () => {
                           if (
                             item.student &&
                             item.asc &&
-                            (item.asc < 0 || item.asc > 10)
+                            (item.asc < 0 || item.asc > ACS_MAX)
                           ) {
                             setError({
                               ...error,
                               asc: {
                                 id: item.student,
-                                m: "Este campo debe tener un valor entre 0 y 10",
+                                m: `Este campo debe tener un valor entre 0 y ${ACS_MAX}`,
                               },
                             });
                           } else {
@@ -350,7 +369,7 @@ export const QuickEditStudentNote = () => {
                       >
                         <span
                           className={
-                            item.asc && (item.asc < 0 || item.asc > 10)
+                            item.asc && (item.asc < 0 || item.asc > ACS_MAX)
                               ? "text-red-600 font-bold"
                               : "text-gray-700"
                           }
@@ -520,80 +539,81 @@ export const QuickEditStudentNote = () => {
                     )}
                   </td>
 
-                  {/* tcp1 */}
-                  <td className="p-3">
-                    {editingCell.rowId === item.student &&
-                    editingCell.field === "tcp2" ? (
-                      <input
-                        type="number"
-                        defaultValue={item.tcp2}
-                        onChange={(e) => {
-                          if (e.target.value && Number(e.target.value) >= 0)
-                            handleChange(e, item.student, "tcp2");
-                          else {
-                            console.log("NAN");
-                            item.tcp2 = 0;
-                          }
-                        }}
-                        onBlur={() => {
-                          console.log(item.tcp2);
-                          if (
-                            item.student &&
-                            item.tcp2 &&
-                            (item.tcp2 < 0 || item.tcp2 > 100)
-                          ) {
-                            setError({
-                              ...error,
-                              tcp2: {
-                                id: item.student,
-                                m: "Este campo debe tener un valor entre 0 y 100",
-                              },
-                            });
-                          } else {
-                            setError({
-                              ...error,
-                              tcp2: null,
-                            });
-                          }
-                          setEditingCell({ rowId: null, field: null });
-                        }}
-                        autoFocus
-                        className="w-[150px] px-2 py-1 border rounded"
-                        placeholder="TCP2"
-                      />
-                    ) : (
-                      <div
-                        onClick={() => {
-                          if (item.student)
-                            setEditingCell({
-                              rowId: item.student,
-                              field: "tcp2",
-                            });
-                        }}
-                        className="cursor-pointer flex flex-col"
-                      >
-                        <span
-                          className={
-                            item.tcp2 && (item.tcp2 < 0 || item.tcp2 > 100)
-                              ? "text-red-600 font-bold"
-                              : "text-gray-700"
-                          }
+                  {showTcp2 && (
+                    <td className="p-3">
+                      {editingCell.rowId === item.student &&
+                      editingCell.field === "tcp2" ? (
+                        <input
+                          type="number"
+                          defaultValue={item.tcp2}
+                          onChange={(e) => {
+                            if (e.target.value && Number(e.target.value) >= 0)
+                              handleChange(e, item.student, "tcp2");
+                            else {
+                              console.log("NAN");
+                              item.tcp2 = 0;
+                            }
+                          }}
+                          onBlur={() => {
+                            console.log(item.tcp2);
+                            if (
+                              item.student &&
+                              item.tcp2 &&
+                              (item.tcp2 < 0 || item.tcp2 > 100)
+                            ) {
+                              setError({
+                                ...error,
+                                tcp2: {
+                                  id: item.student,
+                                  m: "Este campo debe tener un valor entre 0 y 100",
+                                },
+                              });
+                            } else {
+                              setError({
+                                ...error,
+                                tcp2: null,
+                              });
+                            }
+                            setEditingCell({ rowId: null, field: null });
+                          }}
+                          autoFocus
+                          className="w-[150px] px-2 py-1 border rounded"
+                          placeholder="TCP2"
+                        />
+                      ) : (
+                        <div
+                          onClick={() => {
+                            if (item.student)
+                              setEditingCell({
+                                rowId: item.student,
+                                field: "tcp2",
+                              });
+                          }}
+                          className="cursor-pointer flex flex-col"
                         >
-                          {item.tcp2 == null ? 0 : item.tcp2}
-                        </span>
-                        {error &&
-                          error.tcp2 &&
-                          error.tcp2.id === item.student && (
-                            <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
-                              <BiSolidError className="w-12 h-12 animate-pulse" />
-                              <span className="text-[12px]">
-                                {error.tcp2.m}
+                          <span
+                            className={
+                              item.tcp2 && (item.tcp2 < 0 || item.tcp2 > 100)
+                                ? "text-red-600 font-bold"
+                                : "text-gray-700"
+                            }
+                          >
+                            {item.tcp2 == null ? 0 : item.tcp2}
+                          </span>
+                          {error &&
+                            error.tcp2 &&
+                            error.tcp2.id === item.student && (
+                              <span className=" text-red-600 inline-flex items-center justify-center gap-3 shadow-lg bg-gray-200 p-2 rounded-lg mt-3 border-t-3">
+                                <BiSolidError className="w-12 h-12 animate-pulse" />
+                                <span className="text-[12px]">
+                                  {error.tcp2.m}
+                                </span>
                               </span>
-                            </span>
-                          )}
-                      </div>
-                    )}
-                  </td>
+                            )}
+                        </div>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
           </tbody>

@@ -23,7 +23,14 @@ const gradeOptions = [
 ];
 
 const studentSchema = z.object({
-  ci: z.string().min(1, "CI es requerido"),
+  ci: z
+    .string() // Acepta un string inicialmente
+    .min(11, "El CI debe tener exactamente 11 dígitos") // Validación de longitud mínima
+    .max(11, "El CI debe tener exactamente 11 dígitos") // Validación de longitud máxima
+    .refine(
+      (value) => /^\d+$/.test(value),
+      "El CI solo puede contener números"
+    ), // Asegura que sean solo números
   address: z.string().min(1, "Dirección es requerida"),
   grade: z.string().min(1, "Grado es requerido"),
   last_name: z.string().min(1, "Apellido es requerido"),

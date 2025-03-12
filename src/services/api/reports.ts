@@ -60,3 +60,14 @@ export const reportStudents = async (query: string) => {
     return Promise.reject(error);
   }
 };
+
+export const reportCertificate = async (id: string) => {
+  try {
+    const res = await apiAuth.get(`student_note/report/certification/${id}/`, {
+      responseType: "blob",
+    });
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

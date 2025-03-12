@@ -16,7 +16,6 @@ const DegreeScale = () => {
   const [loading, setLoading] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
   const [loadingCalculate, setLoadingCalculate] = useState(false);
-
   const userAuth: State = useSelector((state: any) => state.auth);
 
   useEffect(() => {
@@ -81,20 +80,18 @@ const DegreeScale = () => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
-        {userAuth.user?.roles.map(
-          (rol) =>
-            rol === Rols.admin ||
-            (rol === Rols.secretary && (
-              <div className="mb-5">
-                <Buttom
-                  title="Calcular"
-                  icon={TbPlaylistAdd}
-                  className="btn1"
-                  isLoading={loadingCalculate}
-                  onClick={handleCalcular}
-                />
-              </div>
-            ))
+        {userAuth.user?.roles.some(
+          (rol) => rol === Rols.admin || rol === Rols.secretary
+        ) && (
+          <div className="mb-5">
+            <Buttom
+              title="Calcular"
+              icon={TbPlaylistAdd}
+              className="btn1"
+              isLoading={loadingCalculate}
+              onClick={handleCalcular}
+            />
+          </div>
         )}
 
         {/* Exportar */}
@@ -121,7 +118,7 @@ const DegreeScale = () => {
               list &&
               list.map((item: any) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
-                  <td className="p-3">{item.student.first_name}</td>
+                  <td className="p-3">{`${item.student.first_name} ${item.student.last_name}`}</td>
                   <td className="p-3">{item.student.ci}</td>
                   <td className="p-3">{item.ranking_score.toFixed(2)}</td>
                   <td className="p-3">{item.ranking_number}</td>

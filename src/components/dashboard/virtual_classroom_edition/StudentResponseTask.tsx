@@ -14,6 +14,7 @@ import { LuCircleFadingPlus } from "react-icons/lu";
 import File from "./File";
 import { RiSave3Fill } from "react-icons/ri";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
+import { IoIosArrowBack } from "react-icons/io";
 
 export const StudentResponseTask = () => {
   const [task, setTask] = useState<ResponseTastRes | null>(null);
@@ -139,6 +140,19 @@ export const StudentResponseTask = () => {
       <button className="btn1" onClick={SalvarRespuesta}>
         <span className="inline-flex gap-1 items-center justify-center">
           <RiSave3Fill /> Salvar Respuesta
+        </span>
+      </button>
+
+      <button
+        onClick={() => {
+          const st: any = localStorage.getItem("detailsUrlCR");
+          const url = JSON.parse(st);
+          if (url) router.push(url.url);
+        }}
+        className="btn1"
+      >
+        <span className="inline-flex items-center justify-center gap-1">
+          <IoIosArrowBack className="w-5 h-5" /> Detalles Aula Virtual
         </span>
       </button>
 
