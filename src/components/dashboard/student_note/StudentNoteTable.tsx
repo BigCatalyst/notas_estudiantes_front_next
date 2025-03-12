@@ -14,7 +14,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { TbLoader2, TbPlaylistAdd } from "react-icons/tb";
 
 const StudentNoteTable = () => {
   const [list, setList] = useState<StudentNote[]>([]);
@@ -154,7 +154,7 @@ const StudentNoteTable = () => {
   const handleFilterChange = (field: string, value: string) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
     setCurrentPage(1);
-    setLastSY(value);
+    if (field === "school_year__id") setLastSY(value);
   };
 
   return (
@@ -175,14 +175,10 @@ const StudentNoteTable = () => {
         </div>
 
         {/* Exportar */}
-        <div className="mb-5">
-          {/* <button className="btn1">
-            <TbTableExport className="w-7 h-7 text-gray-200" />
-            <span>Exportar</span>
-          </button> */}
+        {/* <div className="mb-5">
 
           <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
-        </div>
+        </div> */}
 
         {/* Adicionar */}
         <div className="mb-5">
@@ -329,10 +325,11 @@ const StudentNoteTable = () => {
           onChange={(e) =>
             handleFilterChange("student__is_dropped_out", e.target.value)
           }
+          defaultValue="false"
         >
           <option value="">Es Baja?</option>
           <option value="true">Baja</option>
-          <option value="false">No Baja</option>
+          <option value="false">No es Baja</option>
         </select>
 
         <select
@@ -340,6 +337,7 @@ const StudentNoteTable = () => {
           onChange={(e) =>
             handleFilterChange("student__is_graduated", e.target.value)
           }
+          defaultValue="false"
         >
           <option value="">Es Graduado?</option>
           <option value="true">Graduado</option>
@@ -379,7 +377,9 @@ const StudentNoteTable = () => {
                   {/* <td className="p-3">{user.id}</td> */}
                   <td className="p-3">{item.asc?.toFixed(2)}</td>
                   <td className="p-3">{item.tcp1?.toFixed(2)}</td>
-                  <td className="p-3">{item.tcp2?.toFixed(2)}</td>
+                  <td className="p-3">
+                    {item.subject.tcp2_required ? item.tcp2?.toFixed(2) : "---"}
+                  </td>
                   <td className="p-3">{item.final_exam?.toFixed(2)}</td>
                   <td className="p-3">{item.final_grade?.toFixed(2)}</td>
                   <td className="p-3">{`${item.student.first_name} ${item.student.last_name}`}</td>
