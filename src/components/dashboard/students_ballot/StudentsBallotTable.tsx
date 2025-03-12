@@ -65,12 +65,12 @@ const StudentsBallotTable = () => {
     ci__contains?: string;
     first_name__contains?: string;
     last_name__contains?: string;
-    grade?: string;
+    // grade?: string;
     is_graduated?: string;
     registration_number__contains?: string;
     sex?: string;
     student__is_dropped_out?: string;
-  }>({ student__is_dropped_out: "false" });
+  }>({ student__is_dropped_out: "false", is_graduated: "false" });
 
   const handleEdit = (value: Ballot) => {
     // Lógica para editar
@@ -239,7 +239,7 @@ const StudentsBallotTable = () => {
           }
         />
 
-        <select
+        {/* <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("grade", e.target.value)}
         >
@@ -247,15 +247,16 @@ const StudentsBallotTable = () => {
           <option value="7">7mo</option>
           <option value="8">8vo</option>
           <option value="9">9no</option>
-        </select>
+        </select> */}
 
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("is_graduated", e.target.value)}
+          defaultValue="false"
         >
-          <option value="">Es raduado?</option>
-          <option value="true">Sí</option>
-          <option value="false">No</option>
+          <option value="">Es Graduado?</option>
+          <option value="true">Graduado</option>
+          <option value="false">No Graduado</option>
         </select>
 
         <input
@@ -281,10 +282,11 @@ const StudentsBallotTable = () => {
           onChange={(e) =>
             handleFilterChange("student__is_dropped_out", e.target.value)
           }
+          defaultValue="false"
         >
-          <option value="">Es Baja</option>
+          <option value="">Es Baja?</option>
           <option value="true">Baja</option>
-          <option value="false">No Baja</option>
+          <option value="false">No es Baja</option>
         </select>
       </div>
       {/* Modal */}

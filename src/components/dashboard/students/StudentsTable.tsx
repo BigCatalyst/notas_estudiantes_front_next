@@ -322,8 +322,9 @@ const StudentsTable = () => {
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("is_graduated", e.target.value)}
+          defaultValue="false"
         >
-          <option value="">Es Graduado</option>
+          <option value="">Es Graduado?</option>
           <option value="true">Graduado</option>
           <option value="false">No Graduado</option>
         </select>
@@ -331,10 +332,11 @@ const StudentsTable = () => {
         <select
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           onChange={(e) => handleFilterChange("is_dropped_out", e.target.value)}
+          defaultValue="false"
         >
-          <option value="">Es Baja</option>
+          <option value="">Es Baja?</option>
           <option value="true">Baja</option>
-          <option value="false">No Baja</option>
+          <option value="false">No es Baja</option>
         </select>
       </div>
 
