@@ -5,6 +5,7 @@
 
 import MensageError from "@/components/message/MensageError";
 import Buttom from "@/components/ui/buttom/Buttom";
+import { ACS_MAX } from "@/config";
 import { StudentNote } from "@/services/api/student_note";
 import { Student } from "@/services/api/students";
 import { Subject } from "@/services/api/subjects";
@@ -86,7 +87,7 @@ export const QuickEditStudentNote = () => {
 
   const validData = (): boolean => {
     for (const val of list) {
-      if (val.asc && (val.asc < 0 || val.asc > 10)) return false;
+      if (val.asc && (val.asc < 0 || val.asc > ACS_MAX)) return false;
       if (val.final_exam && (val.final_exam < 0 || val.final_exam > 100))
         return false;
       if (val.tcp1 && (val.tcp1 < 0 || val.tcp1 > 100)) return false;
@@ -334,13 +335,13 @@ export const QuickEditStudentNote = () => {
                           if (
                             item.student &&
                             item.asc &&
-                            (item.asc < 0 || item.asc > 10)
+                            (item.asc < 0 || item.asc > ACS_MAX)
                           ) {
                             setError({
                               ...error,
                               asc: {
                                 id: item.student,
-                                m: "Este campo debe tener un valor entre 0 y 10",
+                                m: `Este campo debe tener un valor entre 0 y ${ACS_MAX}`,
                               },
                             });
                           } else {
@@ -368,7 +369,7 @@ export const QuickEditStudentNote = () => {
                       >
                         <span
                           className={
-                            item.asc && (item.asc < 0 || item.asc > 10)
+                            item.asc && (item.asc < 0 || item.asc > ACS_MAX)
                               ? "text-red-600 font-bold"
                               : "text-gray-700"
                           }
