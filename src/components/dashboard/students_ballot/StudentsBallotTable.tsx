@@ -254,7 +254,7 @@ const StudentsBallotTable = () => {
           onChange={(e) => handleFilterChange("is_graduated", e.target.value)}
           defaultValue="false"
         >
-          <option value="">Es raduado?</option>
+          <option value="">Es Graduado?</option>
           <option value="true">Graduado</option>
           <option value="false">No Graduado</option>
         </select>
