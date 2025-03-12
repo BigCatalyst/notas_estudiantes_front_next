@@ -14,13 +14,14 @@ import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
 import AutoComplete from "@/components/ui/autocomplete/Autocomplete";
+import { ACS_MAX } from "@/config";
 
 // Esquema de validación Zod
 const studentNoteSchema = z.object({
   asc: z
     .number({ message: "Asc no puede estar vacío" })
     .min(0, "ASC debe ser al menos 0")
-    .max(10, "ASC debe ser maximo 10"),
+    .max(ACS_MAX, `ASC debe ser maximo ${ACS_MAX}`),
   final_exam: z
     .number({ message: "El Examen Final no puede estar vacío" })
     .min(0, "El Examen Final debe ser al menos 0")
