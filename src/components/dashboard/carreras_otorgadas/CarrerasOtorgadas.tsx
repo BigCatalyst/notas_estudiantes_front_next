@@ -3,17 +3,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import Buttom from "@/components/ui/buttom/Buttom";
+import { Rols } from "@/data/NavigationItems";
 import ApiService from "@/services/ApiService";
+import React from "react";
 import { useEffect, useState } from "react";
 import { BsDatabaseFillX } from "react-icons/bs";
+import { CgCheckO, CgCloseO } from "react-icons/cg";
+import { IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { RiLoaderLine } from "react-icons/ri";
+import { TbPlaylistAdd } from "react-icons/tb";
+import { useSelector } from "react-redux";
 
 const CarrerasOtorgadas = () => {
   const [list, setList] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [initLoadData, setInitLoadData] = useState(true);
   const [openFilter, setOpenFilter] = useState(true);
+  const [loadingCalculate, setLoadingCalculate] = useState(false);
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const [estudiantes_tienen_boletas, setEstudiantes_tienen_boletas] =
+    useState(-1);
+  const [estudiantes_posicion_escalafon, setEstudiantes_posicion_escalafon] =
+    useState(-1);
+  const [estudiantes_sin_otorgamiento, setEstudiantes_sin_otorgamiento] =
+    useState(false);
 
   const [lastSY, setLastSY] = useState("");
 
@@ -24,6 +39,39 @@ const CarrerasOtorgadas = () => {
   const [filters, setFilters] = useState<{
     school_year__id?: string;
   }>({});
+
+  const tiene_permiso_para_realizar_otorgamiento = () => {
+    return userAuth.user?.roles.some(
+      (rol) => rol == Rols.admin || rol == Rols.secretary
+    );
+  };
+  const se_puede_realizar_otorgamiento = () => {
+    return (
+      tiene_permiso_para_realizar_otorgamiento() &&
+      estudiantes_tienen_boletas &&
+      estudiantes_posicion_escalafon &&
+      estudiantes_sin_otorgamiento
+    );
+  };
+
+  const realizarOtorgamiento = async () => {
+    try {
+      setLoadingCalculate(true);
+      setLoading(true);
+      const res = await ApiService.make_granting();
+
+      if (res) {
+        // setList(res);
+        await comprobar_condiciones_y_actualizar_curso();
+      }
+    } catch (error) {
+      console.log(error);
+      setInitLoadData(false);
+    } finally {
+      setLoadingCalculate(false);
+      setLoading(false);
+    }
+  };
 
   const buildQueryString = () => {
     const params = new URLSearchParams();
@@ -70,7 +118,34 @@ const CarrerasOtorgadas = () => {
       setLoading(false);
     }
   };
-
+  const comprobar_condiciones = async () => {
+    if (tiene_permiso_para_realizar_otorgamiento()) {
+      const [
+        resEstudintesSinBoleta,
+        resEstudintesSinEscalafon,
+        resEstudiantesSinOtorgamiento,
+      ] = await Promise.all([
+        ApiService.verificarEstudintesSinBoleta(),
+        ApiService.verificarEstudintesSinEscalafon(),
+        ApiService.verificarEstudintesSinOtorgamiento(),
+      ]);
+      if (resEstudintesSinBoleta) {
+        setEstudiantes_tienen_boletas(
+          resEstudintesSinBoleta.are_missing_ballots ? 0 : 1
+        );
+      }
+      if (resEstudintesSinEscalafon) {
+        setEstudiantes_posicion_escalafon(
+          resEstudintesSinEscalafon.are_students_whithout_ranking ? 0 : 1
+        );
+      }
+      if (resEstudiantesSinOtorgamiento) {
+        setEstudiantes_sin_otorgamiento(
+          resEstudiantesSinOtorgamiento.without_granting
+        );
+      }
+    }
+  };
   useEffect(() => {
     console.log(lastSY);
 
@@ -81,24 +156,27 @@ const CarrerasOtorgadas = () => {
     return () => clearTimeout(debounceTimer);
   }, [filters, lastSY]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await ApiService.schoolYearsAll("");
-        if (res) {
-          let datasy: { id: string; name: string }[] = [];
-          res.forEach((val) => {
-            if (val.id) datasy.push({ id: val.id + "", name: `${val.name}` });
-          });
-          setSchoolYears(datasy);
-          console.log("last year");
-          console.log(datasy[datasy.length - 1].name);
-          setLastSY(datasy[datasy.length - 1].id);
-        }
-      } catch (error) {
-        console.log(error);
+  const comprobar_condiciones_y_actualizar_curso = async () => {
+    try {
+      const res = await ApiService.schoolYearsAll("");
+      if (res) {
+        let datasy: { id: string; name: string }[] = [];
+        res.forEach((val) => {
+          if (val.id) datasy.push({ id: val.id + "", name: `${val.name}` });
+        });
+        setSchoolYears(datasy);
+        console.log("last year");
+        console.log(datasy[datasy.length - 1].name);
+        setLastSY(datasy[datasy.length - 1].id);
       }
-    })();
+      await comprobar_condiciones();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    comprobar_condiciones_y_actualizar_curso();
   }, []);
 
   const handleFilterChange = (field: string, value: string) => {
@@ -109,6 +187,17 @@ const CarrerasOtorgadas = () => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
+        {se_puede_realizar_otorgamiento() && (
+          <div className="mb-5">
+            <Buttom
+              title="Calcular"
+              icon={TbPlaylistAdd}
+              className="btn1"
+              isLoading={loadingCalculate}
+              onClick={realizarOtorgamiento}
+            />
+          </div>
+        )}
         {/* Filtros */}
         <div className="relative inline-block group z-10">
           <div className="mb-5">
@@ -122,6 +211,110 @@ const CarrerasOtorgadas = () => {
             Filtros
           </div>
         </div>
+
+        {/*Condiciones*/}
+        {tiene_permiso_para_realizar_otorgamiento() && (
+          <div className="relative inline-block group z-10">
+            <p className="font-bold text-lg text-gray-800">
+              Condiciones para realizar otorgamiento:
+            </p>
+
+            <ul>
+              <li>
+                <p className="inline-flex justify-center items-center ml-3">
+                  <IoIosArrowForward className="text-gray-700" />
+                  <span
+                    className={`${
+                      estudiantes_tienen_boletas === 1
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    Todos los Estudiantes de 9no tienen Boletas
+                  </span>
+                  <CgCheckO
+                    className={
+                      "ml-2 text-green-700" +
+                      `${
+                        estudiantes_tienen_boletas === 0 ? " hidden" : " block"
+                      }`
+                    }
+                  />
+                  <CgCloseO
+                    className={
+                      "ml-2 text-red-700" +
+                      `${
+                        estudiantes_tienen_boletas === 0 ? " block" : " hidden"
+                      }`
+                    }
+                  />
+                </p>
+              </li>
+              <li>
+                <p className="inline-flex justify-center items-center ml-3">
+                  <IoIosArrowForward className="text-gray-700" />
+                  <span
+                    className={`${
+                      estudiantes_posicion_escalafon === 1
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    Todos los Estudiantes de 9no tienen una posición en el
+                    Escalafón
+                  </span>
+                  <CgCheckO
+                    className={
+                      "ml-2 text-green-700" +
+                      `${
+                        estudiantes_posicion_escalafon === 0
+                          ? " hidden"
+                          : " block"
+                      }`
+                    }
+                  />
+                  <CgCloseO
+                    className={
+                      "ml-2 text-red-700" +
+                      `${
+                        estudiantes_posicion_escalafon === 0
+                          ? " block"
+                          : " hidden"
+                      }`
+                    }
+                  />
+                </p>
+              </li>
+
+              <li>
+                <p className="inline-flex justify-center items-center ml-3">
+                  <IoIosArrowForward className="text-gray-700" />
+                  <span
+                    className={`${
+                      estudiantes_sin_otorgamiento
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    Existen estudiantes sin tener una carrera otorgada
+                  </span>
+                  <CgCheckO
+                    className={
+                      "ml-2 text-green-700" +
+                      `${estudiantes_sin_otorgamiento ? " block" : " hidden"}`
+                    }
+                  />
+                  <CgCloseO
+                    className={
+                      "ml-2 text-red-700" +
+                      `${estudiantes_sin_otorgamiento ? " hidden" : " block"}`
+                    }
+                  />
+                </p>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Filters */}
