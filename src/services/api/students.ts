@@ -156,9 +156,14 @@ export const verificarEstudintesSinBoleta = async (): Promise<
     return Promise.reject(error);
   }
 };
-export const subirGradoEstudiantes = async () => {
+export interface NewSchoolYear {
+  start_date: string;
+  end_date: string;
+  name: string;
+}
+export const subirGradoEstudiantes = async (value: NewSchoolYear) => {
   try {
-    const response = await apiAuth.get(`students/upgrading_all/`);
+    const response = await apiAuth.post(`students/upgrading_all/`, value);
 
     return response.data;
   } catch (error) {
