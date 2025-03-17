@@ -22,7 +22,7 @@ const CarrerasOtorgadas = () => {
   >([]);
 
   const [filters, setFilters] = useState<{
-    approved_school_course__school_year__id?: string;
+    school_year__id?: string;
   }>({});
 
   const buildQueryString = () => {
@@ -45,16 +45,12 @@ const CarrerasOtorgadas = () => {
       // const data = await ApiService.grant_careers(
       //   `${
       //     query.length === 0
-      //       ? `approved_school_course__school_year__id=${lastSY}`
+      //       ? `school_year__id=${lastSY}`
       //       : query
       //   }`
       // );
       const data = await ApiService.grant_careers(
-        `${
-          query.length === 0
-            ? `approved_school_course__school_year__id=${lastSY}`
-            : query
-        }`
+        `${query.length === 0 ? `school_year__id=${lastSY}` : query}`
       );
 
       console.log(query);
@@ -140,10 +136,7 @@ const CarrerasOtorgadas = () => {
           className="mt-1 p-2 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           value={lastSY}
           onChange={(e) =>
-            handleFilterChange(
-              "approved_school_course__school_year__id",
-              e.target.value
-            )
+            handleFilterChange("school_year__id", e.target.value)
           }
         >
           <option value="">SchoolYear</option>
