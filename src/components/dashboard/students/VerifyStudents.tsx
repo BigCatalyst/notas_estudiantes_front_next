@@ -125,12 +125,12 @@ const VerifyStudents = () => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
-      setServerError([""]);
+      setServerError([]);
 
       const res = await ApiService.subirGradoEstudiantes(data);
       if (res) {
         setIsSuccess(true);
-        router.push("/dashboard/grant_career");
+        router.push("/dashboard/students");
       }
     } catch (error) {
       console.log(error);

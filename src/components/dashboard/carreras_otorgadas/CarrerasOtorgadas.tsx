@@ -46,12 +46,15 @@ const CarrerasOtorgadas = () => {
     );
   };
   const se_puede_realizar_otorgamiento = () => {
-    return (
+    if (
       tiene_permiso_para_realizar_otorgamiento() &&
       estudiantes_tienen_boletas &&
       estudiantes_posicion_escalafon &&
       estudiantes_sin_otorgamiento
-    );
+    ) {
+      return true;
+    }
+    return false;
   };
 
   const realizarOtorgamiento = async () => {
