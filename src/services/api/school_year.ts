@@ -75,12 +75,24 @@ export const deleteSchoolYear = async (id: number) => {
   }
 };
 
-export const getSchoolYear = async (id: string): Promise<SchoolYear | undefined> => {
+export const getSchoolYear = async (
+  id: string
+): Promise<SchoolYear | undefined> => {
   try {
     const response = await apiAuth.get(`school_year/${id}/`);
 
     const data: SchoolYear = response.data;
 
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const schoolYearsCurrent = async (): Promise<SchoolYear | undefined> => {
+  try {
+    const response = await apiAuth.get(`school_year/current/`);
+    const data: SchoolYear = response.data;
     return data;
   } catch (error) {
     return Promise.reject(error);
