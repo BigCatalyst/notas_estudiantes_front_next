@@ -4,6 +4,7 @@
 "use client";
 
 import MensageError from "@/components/message/MensageError";
+import MensageExito from "@/components/message/MensageExito";
 import Buttom from "@/components/ui/buttom/Buttom";
 import { ACS_MAX } from "@/config";
 import { StudentNote } from "@/services/api/student_note";
@@ -47,6 +48,8 @@ export const QuickEditStudentNote = () => {
 
   const [showError, setShowError] = useState(false);
   const [keyM, setkeyM] = useState(Date.now());
+  const [keyMI, setkeyMI] = useState(Date.now());
+  const [showInfo, setShowInfo] = useState(false);
 
   const [editingCell, setEditingCell] = useState<{
     rowId: number | null;
@@ -59,7 +62,10 @@ export const QuickEditStudentNote = () => {
   // useEffect(() => {
   //   console.log(editingCell);
   // }, [editingCell]);
-
+  const showInfoMessage = () => {
+    setkeyMI(Date.now());
+    setShowInfo(true);
+  };
   const SalvarCambios = () => {
     setShowError(false);
 
@@ -73,6 +79,7 @@ export const QuickEditStudentNote = () => {
           if (res) {
             console.log(res);
             setList([...list]);
+            showInfoMessage();
           }
         } catch (error) {
           console.log(error);
@@ -239,6 +246,9 @@ export const QuickEditStudentNote = () => {
             </div>
           </div>
         )}
+      </div>
+      <div key={keyMI} className="inline-flex w-full gap-3 relative">
+        {showInfo && <MensageExito duration={2000} message="Datos Guardados" />}
       </div>
 
       {/* Filters */}
