@@ -6,7 +6,7 @@
 import Buttom from "@/components/ui/buttom/Buttom";
 import { Rols } from "@/data/NavigationItems";
 import ApiService from "@/services/ApiService";
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { BsDatabaseFillX } from "react-icons/bs";
 import { CgCheckO, CgCloseO } from "react-icons/cg";
@@ -31,7 +31,7 @@ const CarrerasOtorgadas = () => {
     useState(false);
 
   const [lastSY, setLastSY] = useState("");
-
+  const load_filter_data = useRef<boolean>(true);
   const [schoolYears, setSchoolYears] = useState<
     { id: string; name: string }[]
   >([]);
@@ -61,8 +61,18 @@ const CarrerasOtorgadas = () => {
       const res = await ApiService.make_granting();
 
       if (res) {
-        // setList(res);
-        await comprobar_condiciones_y_actualizar_curso();
+        console.log("la respuesta de realizar el otorgamiento");
+        console.log(res);
+        setList(res);
+        const last_year = schoolYears[schoolYears.length - 1];
+        console.log("el last year");
+        console.log(last_year);
+        const last_year_id = last_year.id;
+        console.log(`last_year_id ${last_year_id}`);
+        setLastSY(last_year_id);
+        load_filter_data.current = false;
+        await comprobar_condiciones();
+        load_filter_data.current = true;
       }
     } catch (error) {
       console.log(error);
@@ -148,12 +158,12 @@ const CarrerasOtorgadas = () => {
   };
   useEffect(() => {
     console.log(lastSY);
-
-    const debounceTimer = setTimeout(() => {
-      fetchEntity();
-    }, 500);
-
-    return () => clearTimeout(debounceTimer);
+    if (load_filter_data.current) {
+      const debounceTimer = setTimeout(() => {
+        fetchEntity();
+      }, 500);
+      return () => clearTimeout(debounceTimer);
+    }
   }, [filters, lastSY]);
 
   const comprobar_condiciones_y_actualizar_curso = async () => {
