@@ -34,6 +34,13 @@ const VerifyStudents = () => {
   const [estudiantes_sin_otorgamiento, setEstudiantes_sin_otorgamiento] =
     useState(false);
 
+  const [estudiantes_suspensos_7, setEstudiantes_suspensos_7] = useState(0);
+  const [estudiantes_suspensos_8, setEstudiantes_suspensos_8] = useState(0);
+  const [estudiantes_suspensos_9, setEstudiantes_suspensos_9] = useState(0);
+  const [estudiantes_bajas_7, setEstudiantes_bajas_7] = useState(0);
+  const [estudiantes_bajas_8, setEstudiantes_bajas_8] = useState(0);
+  const [estudiantes_bajas_9, setEstudiantes_bajas_9] = useState(0);
+
   const router = useRouter();
 
   const {
@@ -52,10 +59,16 @@ const VerifyStudents = () => {
   useEffect(() => {
     const verifyApi = async () => {
       try {
-        const [res1, res2, resEstudiantesSinOtorgamiento] = await Promise.all([
+        const [
+          res1,
+          res2,
+          resEstudiantesSinOtorgamiento,
+          resStadisticasEscuela,
+        ] = await Promise.all([
           ApiService.verificarEstudintesSinBoleta(),
           ApiService.verificarEstudintesSinEscalafon(),
           ApiService.verificarEstudintesSinOtorgamiento(),
+          ApiService.getSchoolStatistics(),
         ]);
         if (res1) {
           setEstudiantes_tienen_boletas(res1.are_missing_ballots ? 0 : 1);
@@ -69,6 +82,14 @@ const VerifyStudents = () => {
           setEstudiantes_sin_otorgamiento(
             resEstudiantesSinOtorgamiento.without_granting
           );
+        }
+        if (resStadisticasEscuela) {
+          setEstudiantes_bajas_7(resStadisticasEscuela.dropouts_7);
+          setEstudiantes_bajas_8(resStadisticasEscuela.dropouts_8);
+          setEstudiantes_bajas_9(resStadisticasEscuela.dropouts_9);
+          setEstudiantes_suspensos_7(resStadisticasEscuela.not_approved_7);
+          setEstudiantes_suspensos_8(resStadisticasEscuela.not_approved_8);
+          setEstudiantes_suspensos_9(resStadisticasEscuela.not_approved_9);
         }
       } catch (error: any) {
         setServerError(["Existen Condiciones sin cumplir"]);
@@ -122,6 +143,50 @@ const VerifyStudents = () => {
 
   return (
     <div className="bg-white rounded-lg shadow-md relative">
+      <div className="max-w-2xl mx-auto p-2  ">
+        <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
+          Datos de este Curso:
+        </h2>
+        {/* <p className="font-bold text-lg text-gray-800">Datos de este Curso:</p> */}
+        <ul>
+          <li>
+            <p className="inline-flex justify-center items-center ml-3">
+              <IoIosArrowForward className="text-gray-700" />
+              <span>Suspensos de 7mo: {estudiantes_suspensos_7}</span>
+            </p>
+          </li>
+          <li>
+            <p className="inline-flex justify-center items-center ml-3">
+              <IoIosArrowForward className="text-gray-700" />
+              <span>Suspensos de 8bo: {estudiantes_suspensos_8}</span>
+            </p>
+          </li>
+          <li>
+            <p className="inline-flex justify-center items-center ml-3">
+              <IoIosArrowForward className="text-gray-700" />
+              <span>Suspensos de 9no: {estudiantes_suspensos_9}</span>
+            </p>
+          </li>
+          <li>
+            <p className="inline-flex justify-center items-center ml-3">
+              <IoIosArrowForward className="text-gray-700" />
+              <span>Bajas de 7mo: {estudiantes_bajas_7}</span>
+            </p>
+          </li>
+          <li>
+            <p className="inline-flex justify-center items-center ml-3">
+              <IoIosArrowForward className="text-gray-700" />
+              <span>Bajas de 8bo: {estudiantes_bajas_8}</span>
+            </p>
+          </li>
+          <li>
+            <p className="inline-flex justify-center items-center ml-3">
+              <IoIosArrowForward className="text-gray-700" />
+              <span>Bajas de 9no: {estudiantes_bajas_9}</span>
+            </p>
+          </li>
+        </ul>
+      </div>
       <div className="max-w-2xl mx-auto p-2  ">
         <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
           Verificar Estudiantes
