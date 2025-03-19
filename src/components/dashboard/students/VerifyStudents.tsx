@@ -130,6 +130,11 @@ const VerifyStudents = () => {
       const res = await ApiService.subirGradoEstudiantes(data);
       if (res) {
         setIsSuccess(true);
+        const year = await ApiService.schoolYearsCurrent();
+        const year_tag = document.getElementById("id-school-year");
+        if (year_tag && year) {
+          year_tag.innerText = year.name;
+        }
         router.push("/dashboard/students");
       }
     } catch (error) {
