@@ -188,7 +188,10 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                       <span className="text-orange-500 text-shadow text-shadow-gray-400 text-shadow-blur-1">
                         Estudiantes
                       </span>
-                      <span className="ml-3 text-[17px]">{`Año Escolar ${schoolYear}`}</span>
+                      <span
+                        id="id-school-year"
+                        className="ml-3 text-[17px]"
+                      >{`Año Escolar ${schoolYear}`}</span>
                     </div>
 
                     <div className="block md:hidden">

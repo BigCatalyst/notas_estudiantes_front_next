@@ -51,20 +51,27 @@ const AddSchoolYear = () => {
       if (res) {
         console.log(res);
         setIsSuccess(true);
+        const year = await ApiService.schoolYearsCurrent();
+        const year_tag = document.getElementById("id-school-year");
+        if (year_tag && year) {
+          year_tag.innerText = year.name;
+        }
         router.push("/dashboard/school_year");
       }
     } catch (error: any) {
       console.log(error);
-      const errorData: {
-        [key: string]: string[] | { email: string[]; username: string[] };
-      } = error.response.data;
-      let formattedErrorData: string[] = [];
-      if (Object.keys(errorData).length > 0) {
-        Object.entries(errorData).forEach(([key, value]) => {
-          formattedErrorData.push(`${key}: ${value}`);
-        });
+      if (error.response && error.response.data) {
+        const errorData: {
+          [key: string]: string[] | { email: string[]; username: string[] };
+        } = error.response.data;
+        let formattedErrorData: string[] = [];
+        if (Object.keys(errorData).length > 0) {
+          Object.entries(errorData).forEach(([key, value]) => {
+            formattedErrorData.push(`${key}: ${value}`);
+          });
+        }
+        setServerError(formattedErrorData);
       }
-      setServerError(formattedErrorData);
     } finally {
       setIsLoading(false);
     }

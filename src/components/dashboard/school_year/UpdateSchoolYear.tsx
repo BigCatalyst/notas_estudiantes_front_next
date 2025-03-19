@@ -67,6 +67,11 @@ const UpdateSchoolYear = () => {
       if (res) {
         console.log(res);
         setIsSuccess(true);
+        const year = await ApiService.schoolYearsCurrent();
+        const year_tag = document.getElementById("id-school-year");
+        if (year_tag && year) {
+          year_tag.innerText = year.name;
+        }
         router.push("/dashboard/school_year");
       }
     } catch (error: any) {

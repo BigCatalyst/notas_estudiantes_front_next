@@ -163,3 +163,33 @@ export const grant_careers = async (
     return Promise.reject(error);
   }
 };
+
+export const make_granting = async (): Promise<
+  GrandCarrerRes[] | undefined
+> => {
+  try {
+    const response = await apiAuth.get(`grant_career/grant/`);
+    const data: GrandCarrerRes[] = response.data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+interface VerificarEstudintesSinOtorgamiento {
+  without_granting: boolean;
+}
+
+export const verificarEstudintesSinOtorgamiento = async (): Promise<
+  VerificarEstudintesSinOtorgamiento | undefined
+> => {
+  try {
+    const response = await apiAuth.get(`grant_career/without_granting/`);
+
+    const data: VerificarEstudintesSinOtorgamiento = response.data;
+
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
