@@ -16,7 +16,7 @@
     "@reduxjs/toolkit": "^2.5.1",
     "@tailwindcss/postcss": "^4.0.4",
     "axios": "^1.7.9",
-    "next": "15.1.5",
+    "next": "15.2.3",
     "postcss": "^8.5.1",
     "react": "^19.0.0",
     "react-countup": "^6.5.3",
