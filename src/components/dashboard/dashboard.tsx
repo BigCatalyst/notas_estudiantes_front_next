@@ -11,6 +11,12 @@ const DashboardContent = () => {
     amount_of_students_8: 0,
     amount_of_students_9: 0,
     amount_of_professor: 0,
+    dropouts_7: 0,
+    dropouts_8: 0,
+    dropouts_9: 0,
+    not_approved_7: 0,
+    not_approved_8: 0,
+    not_approved_9: 0,
   });
 
   useEffect(() => {
