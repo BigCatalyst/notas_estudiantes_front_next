@@ -1,7 +1,9 @@
 import { SchoolStatistics } from "@/services/api/school";
 import ApiService from "@/services/ApiService";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import CountUp from "react-countup";
+
 const DashboardContent = () => {
   const [schoolStatistics, setSchoolStatistics] = useState<SchoolStatistics>({
     amount_of_students: 0,
@@ -9,6 +11,12 @@ const DashboardContent = () => {
     amount_of_students_8: 0,
     amount_of_students_9: 0,
     amount_of_professor: 0,
+    dropouts_7: 0,
+    dropouts_8: 0,
+    dropouts_9: 0,
+    not_approved_7: 0,
+    not_approved_8: 0,
+    not_approved_9: 0,
   });
 
   useEffect(() => {
@@ -29,12 +37,39 @@ const DashboardContent = () => {
     <div className="min-h-screen bg-gray-100 p-6">
       <header className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-800">
-          Bienvenido al Dashboard
+          Secundaria Básica ¨Mártires del 9 de Abril¨
         </h1>
         <p className="text-gray-600 mt-3">
           Gestiona y visualiza toda la información de tu institución educativa
         </p>
       </header>
+
+      {/* Información de la Escuela */}
+      <section className="bg-white p-6 rounded-lg shadow-md mb-12 flex flex-col md:flex-row">
+        <Image
+          src="/images/escuela/escuela.jpg"
+          alt="Imagen de la escuela"
+          width={500}
+          height={300}
+          className="w-full md:w-1/3 rounded-lg shadow-md mb-4 md:mb-0 md:mr-6"
+        />
+        <div className="flex items-center">
+          <p className="text-gray-800 text-justify">
+            La Secundaria Básica ¨Mártires del 9 de Abril¨ se encuentra ubicada
+            en el consejo popular de Tapaste, cita en calle 26 e/ 15 y final,
+            Tapaste, San José de las Lajas, Mayabeque. La escuela se fundó en el
+            curso escolar 1977-1978, su construcción se realizó a base de unos
+            paneles de unas naves de reclusos que desmantelaron en Melena del
+            Sur, entre padres y profesores trabajaron y levantaron las aulas de
+            madera y ya para 1984-1985 se logró reconstruir de mampostería y
+            fibras. El nombre del centro honra el hecho ocurrido en el año 1958,
+            la Huelga General Revolucionaria, que tuvo como objetivo paralizar
+            económicamente al país y acelerar la caída del régimen batistiano
+            por el M-26-7. En esta acción mueren dos jóvenes de nuestro pueblo
+            Víctor González y Orlando Cuellar, mártires de nuestra localidad.
+          </p>
+        </div>
+      </section>
 
       {/* Estadísticas Principales */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
