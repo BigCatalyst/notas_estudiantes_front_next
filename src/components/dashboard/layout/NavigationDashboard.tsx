@@ -184,9 +184,9 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
 
                   <div className="text-[24px] font-bold text-slate-200 cursor-default">
                     <div className="hidden md:block">
-                      Gestión
+                      ESBU.
                       <span className="text-orange-500 text-shadow text-shadow-gray-400 text-shadow-blur-1">
-                        Estudiantes
+                        Mártires-9-4
                       </span>
                       <span
                         id="id-school-year"
@@ -259,7 +259,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                             role="menuitem"
                           >
-                            Profile
+                            Perfil
                           </Link>
                         </li>
                         <li>
@@ -268,7 +268,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                             role="menuitem"
                           >
-                            Logout
+                            Cerrar Sesión
                           </Link>
                         </li>
                       </ul>

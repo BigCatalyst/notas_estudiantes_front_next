@@ -12,7 +12,7 @@ function Profile() {
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">User Profile</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Perfil de Usuario</h1>
         {/* <button
           className="btn"
           onClick={() => redirect("/dashboard/profile/update")}
@@ -22,7 +22,7 @@ function Profile() {
         </button> */}
 
         <Buttom
-          title="Edit Profile"
+          title="Editar Perfil"
           className="btn1"
           icon={FaUserEdit}
           to="/dashboard/profile/update"
@@ -34,23 +34,23 @@ function Profile() {
         {/* Sección de Información Personal */}
         <div className="bg-white p-6 rounded-xl shadow-sm shadow-neo container-neo">
           <h2 className="text-xl font-semibold mb-4 text-gray-800">
-            Personal Information
+            Información Personal
           </h2>
 
           <div className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm text-gray-500">First Name</label>
+                <label className="text-sm text-gray-500">Nombre</label>
                 <p className="font-medium text-gray-900">{user?.first_name}</p>
               </div>
               <div>
-                <label className="text-sm text-gray-500">Last Name</label>
+                <label className="text-sm text-gray-500">Apellidos</label>
                 <p className="font-medium text-gray-900">{user?.last_name}</p>
               </div>
             </div>
 
             <div>
-              <label className="text-sm text-gray-500">Username</label>
+              <label className="text-sm text-gray-500">Usuario</label>
               <p className="font-medium text-gray-900">{user?.username}</p>
             </div>
 
@@ -60,7 +60,7 @@ function Profile() {
             </div>
 
             <div>
-              <label className="text-sm text-gray-500">User ID</label>
+              <label className="text-sm text-gray-500">ID de Usuario</label>
               <p className="font-medium text-gray-900">#{user?.id}</p>
             </div>
           </div>

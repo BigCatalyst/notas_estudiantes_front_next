@@ -113,6 +113,24 @@ const StudentNoteMeTable = () => {
     setCurrentPage(1);
   };
 
+  const calculateAveragePerGrade = (notes: StudentNote[], grade: number) => {
+    if (!notes || notes.length === 0) return "---";
+  
+    const filtered = notes.filter(
+      (note) =>
+        note.subject?.grade === grade &&
+        note.final_grade !== undefined &&
+        typeof note.final_grade === "number"
+    );
+  
+    if (filtered.length === 0) return "---";
+  
+    const sum = filtered.reduce((acc, curr) => acc + curr.final_grade!, 0);
+    const average = sum / filtered.length;
+  
+    return average.toFixed(2);
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="flex flex-col w-full gap-3">
@@ -143,6 +161,29 @@ const StudentNoteMeTable = () => {
 
             <Buttom title="Exportar" icon={TbTableExport} className="btn1" />
           </div>
+
+         {!loading &&list.length > 0 && (
+          <div className="flex gap-4 mt-4">
+           <div className="flex items-center gap-2">
+            <label className="font-medium">Promedio 7mo:</label>
+            <div className="px-3 py-1 bg-gray-100 rounded shadow">
+              {calculateAveragePerGrade(list, 7)}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+          <label className="font-medium">Promedio 8vo:</label>
+           <div className="px-3 py-1 bg-gray-100 rounded shadow">
+            {calculateAveragePerGrade(list, 8)}
+           </div>
+          </div>
+          <div className="flex items-center gap-2">
+           <label className="font-medium">Promedio 9no:</label>
+           <div className="px-3 py-1 bg-gray-100 rounded shadow">
+            {calculateAveragePerGrade(list, 9)}
+           </div>
+          </div>
+        </div>
+        )}       
         </div>
 
         {/* Filters */}

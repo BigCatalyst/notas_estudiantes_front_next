@@ -107,7 +107,7 @@ const LoginForm = () => {
               className="w-[100px] h-[100px]"
             />
           </div>
-          Login
+          Bienvenido
         </div>
         {error && (
           <div className="animate-slide-down" key={Date.now()}>
@@ -122,7 +122,7 @@ const LoginForm = () => {
           <input
             type="text"
             id="username"
-            placeholder="Username"
+            placeholder="Usuario"
             {...register("username")}
           />
           {errors.username && <p>{errors.username.message}</p>}
@@ -133,7 +133,7 @@ const LoginForm = () => {
           <input
             type="password"
             id="password"
-            placeholder="Password"
+            placeholder="Contraseña"
             {...register("password")}
           />
           {errors.password && <p>{errors.password.message}</p>}
@@ -149,7 +149,7 @@ const LoginForm = () => {
               Iniciando Sesión...
             </span>
           ) : (
-            <span className="inline-flex items-center gap-2">LogIn</span>
+            <span className="inline-flex items-center gap-2">Acceder</span>
           )}
         </button>
       </form>

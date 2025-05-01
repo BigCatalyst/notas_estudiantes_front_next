@@ -14,6 +14,9 @@ import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPlaylistAdd } from "react-icons/tb";
 import { Group } from "../../../services/api/group";
+import { useSelector } from "react-redux";
+import { State } from "@/redux/features/authSlice";
+import { Rols } from "@/data/NavigationItems";
 
 export const StudentGroupTable = () => {
   const [list, setList] = useState<Group[]>([]);
@@ -112,6 +115,9 @@ export const StudentGroupTable = () => {
     setFilters((prev) => ({ ...prev, [field]: value }));
     setCurrentPage(1);
   };
+  
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -129,8 +135,9 @@ export const StudentGroupTable = () => {
             Filtros
           </div>
         </div>
-
+ 
         {/* Adicionar */}
+        {isSecretary && (
         <div className="mb-5">
           <Buttom
             title="Adicionar"
@@ -139,6 +146,7 @@ export const StudentGroupTable = () => {
             to="student_group/add"
           />
         </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -201,7 +209,8 @@ export const StudentGroupTable = () => {
                         ))}
                     </div>
                   </td>
-
+                   
+                  {isSecretary && (
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => handleEdit(item)}
@@ -227,6 +236,7 @@ export const StudentGroupTable = () => {
                       </span>
                     </button>
                   </td>
+                  )}
                 </tr>
               ))}
           </tbody>

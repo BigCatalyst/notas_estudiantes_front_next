@@ -197,6 +197,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.ci ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.ci && (
               <p className="text-red-500 text-sm mt-1">{errors.ci.message}</p>
@@ -213,6 +214,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.address ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.address && (
               <p className="text-red-500 text-sm mt-1">
@@ -231,6 +233,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.grade ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             >
               <option value="">Seleccione un grado</option>
               <option value="7">7mo</option>
@@ -254,6 +257,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.last_name ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.last_name && (
               <p className="text-red-500 text-sm mt-1">
@@ -272,6 +276,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.first_name ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.first_name && (
               <p className="text-red-500 text-sm mt-1">
@@ -292,6 +297,7 @@ const UpdateStudent = () => {
                   ? "border-red-500"
                   : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.registration_number && (
               <p className="text-red-500 text-sm mt-1">
@@ -310,6 +316,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.sex ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             >
               <option value="">Seleccione el sexo</option>
               <option value="M">Masculino</option>
@@ -330,6 +337,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.group ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             >
               <option value="">Seleccione un Grupo</option>
               {groups.map((group) => (

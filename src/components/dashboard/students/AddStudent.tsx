@@ -312,7 +312,7 @@ const AddStudent = () => {
               {...register("group")}
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.group ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}             
             >
               <option value="">Seleccione un Grupo</option>
               {groups.map((group) => (

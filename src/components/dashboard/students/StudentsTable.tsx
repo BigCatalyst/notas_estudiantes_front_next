@@ -25,6 +25,9 @@ import {
   TbTableExport,
   TbUserPlus,
 } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { State } from "@/redux/features/authSlice";
+import { Rols } from "@/data/NavigationItems";
 
 const StudentsTable = () => {
   const [list, setList] = useState<Student[]>([]);
@@ -183,6 +186,9 @@ const StudentsTable = () => {
       setReportLoading(false);
     }
   };
+  
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -218,6 +224,7 @@ const StudentsTable = () => {
         </div>
 
         {/* Adicionar */}
+        {isSecretary && (
         <div className="mb-5">
           <Buttom
             title="Adicionar"
@@ -226,8 +233,10 @@ const StudentsTable = () => {
             to="students/add"
           />
         </div>
+        )}
 
         {/* Subir de Grado */}
+        {isSecretary && (
         <div className="mb-5">
           {list.length > 0 && (
             <Buttom
@@ -238,6 +247,7 @@ const StudentsTable = () => {
             />
           )}
         </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -427,7 +437,8 @@ const StudentsTable = () => {
                         Editar
                       </span>
                     </button>
-
+                    
+                    {isSecretary && (
                     <button
                       onClick={() => {
                         if (item.id) handleDelete(item.id);
@@ -440,6 +451,7 @@ const StudentsTable = () => {
                         Eliminar
                       </span>
                     </button>
+                    )}
 
                     <div className="relative inline-block group z-10">
                       <div className="">

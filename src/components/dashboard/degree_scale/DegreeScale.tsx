@@ -81,7 +81,7 @@ const DegreeScale = () => {
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
         {userAuth.user?.roles.some(
-          (rol) => rol === Rols.admin || rol === Rols.secretary
+          (rol) => rol === Rols.secretary
         ) && (
           <div className="mb-5">
             <Buttom

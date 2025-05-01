@@ -38,7 +38,7 @@ export const navigationItemsHome: NavItem[] = [
 
 export const navigationItemsDashboard: NavItem[] = [
   {
-    name: "Dashboard",
+    name: "Panel Informativo",
     path: "/dashboard",
     rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
     Icon: TbLayoutDashboardFilled,
@@ -155,7 +155,7 @@ export const navigationItemsDashboard: NavItem[] = [
     Icon: FaUserCog,
   },
   {
-    name: "Logout",
+    name: "Cerrar Sesión",
     path: "/logout",
     rols: [Rols.admin, Rols.profesor, Rols.secretary, Rols.student],
     Icon: MdLogout,
