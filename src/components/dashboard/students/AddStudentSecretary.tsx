@@ -44,7 +44,7 @@ const AddStudentSecretary = () => {
   const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [groups, setGroups] = useState<{ id: string; name: string }[]>([]);
+  const [groups, setGroups] = useState<{ id: string; name: string; grade:string }[]>([]);
 
   console.log("entro");
 
@@ -56,9 +56,10 @@ const AddStudentSecretary = () => {
         const groupsData = await ApiService.studentGroupsAll("");
         if (groupsData)
           setGroups(
-            groupsData.map(({ id, name }: any) => ({
+            groupsData.map(({ id, name, grade }: any) => ({
               id,
               name,
+              grade
             }))
           );
       } catch (error) {
@@ -140,9 +141,46 @@ const AddStudentSecretary = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* CI */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">         
+
+            {/* Nombre */}
+            <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Nombre
+            </label>
+            <input
+              {...register("first_name")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.first_name ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.first_name && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.first_name.message}
+              </p>
+            )}
+          </div>
+
+          {/* Apellido */}
           <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Apellido
+            </label>
+            <input
+              {...register("last_name")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.last_name ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.last_name && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.last_name.message}
+              </p>
+            )}
+          </div>
+
+           {/* CI */}
+           <div>
             <label className="block text-sm font-medium text-gray-700">
               CI
             </label>
@@ -154,6 +192,26 @@ const AddStudentSecretary = () => {
             />
             {errors.ci && (
               <p className="text-red-500 text-sm mt-1">{errors.ci.message}</p>
+            )}
+          </div>
+
+          {/* Sexo */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Sexo
+            </label>
+            <select
+              {...register("sex")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.sex ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            >
+              <option value="">Seleccione el sexo</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+            </select>
+            {errors.sex && (
+              <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
             )}
           </div>
 
@@ -198,46 +256,10 @@ const AddStudentSecretary = () => {
                 {errors.grade.message}
               </p>
             )}
-          </div>
+          </div>         
 
-          {/* Apellido */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Apellido
-            </label>
-            <input
-              {...register("last_name")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.last_name ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.last_name && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.last_name.message}
-              </p>
-            )}
-          </div>
-
-          {/* Nombre */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Nombre
-            </label>
-            <input
-              {...register("first_name")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.first_name ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.first_name && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.first_name.message}
-              </p>
-            )}
-          </div>
-
-          {/* Número de matrícula */}
-          <div>
+           {/* Número de matrícula */}
+           <div>
             <label className="block text-sm font-medium text-gray-700">
               Número de matrícula
             </label>
@@ -256,26 +278,6 @@ const AddStudentSecretary = () => {
             )}
           </div>
 
-          {/* Sexo */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Sexo
-            </label>
-            <select
-              {...register("sex")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.sex ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            >
-              <option value="">Seleccione el sexo</option>
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-            </select>
-            {errors.sex && (
-              <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
-            )}
-          </div>
-
           {/* Group */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -290,7 +292,7 @@ const AddStudentSecretary = () => {
               <option value="">Seleccione un Grupo</option>
               {groups.map((group) => (
                 <option key={group.id} value={group.id}>
-                  {group.name}
+                  {group.grade} - {group.name}
                 </option>
               ))}
             </select>

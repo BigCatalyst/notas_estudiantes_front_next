@@ -78,13 +78,8 @@ const AddStudentNote = () => {
           setStudents(
             studentsData.map((student: any) => ({
               id: student.id,
-              name: `${student.first_name} ${student.last_name} | Grado: ${
-                student.grade === 9
-                  ? "9no"
-                  : student.grade === 8
-                  ? "8vo"
-                  : "7mo"
-              }`,
+              name: `CI: ${student.ci} 
+              | ${student.first_name} ${student.last_name}`,
             }))
           );
         if (subjectsData) {
@@ -188,106 +183,7 @@ const AddStudentNote = () => {
         {/* Mensaje de error del servidor */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* ASC */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              ASC
-            </label>
-            <input
-              type="number"
-              {...register("asc", { valueAsNumber: true })}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.asc ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.asc && (
-              <p className="text-red-500 text-sm mt-1">{errors.asc.message}</p>
-            )}
-          </div>
-
-          {/* Final Exam */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Examen Final
-            </label>
-            <input
-              type="number"
-              {...register("final_exam", { valueAsNumber: true })}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.final_exam ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.final_exam && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.final_exam.message}
-              </p>
-            )}
-          </div>
-
-          {/* TCP1 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              TCP1
-            </label>
-            <input
-              type="number"
-              {...register("tcp1", { valueAsNumber: true })}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.tcp1 ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.tcp1 && (
-              <p className="text-red-500 text-sm mt-1">{errors.tcp1.message}</p>
-            )}
-          </div>
-
-          {/* TCP2 */}
-          {showTcp2 && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                TCP2
-              </label>
-              <input
-                type="number"
-                {...register("tcp2", { valueAsNumber: true })}
-                className={`mt-1 p-2 block w-full rounded-md ${
-                  errors.tcp2 ? "border-red-500" : "border-gray-300"
-                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-              />
-              {errors.tcp2 && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.tcp2.message}
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* Student */}
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Estudiante
-            </label>
-            <select
-              {...register("student")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.student ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            >
-              <option value="">Seleccione un Estudiante</option>
-              {students.map((student) => (
-                <option key={student.id} value={student.id}>
-                  {student.name}
-                </option>
-              ))}
-            </select>
-            {errors.student && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.student.message}
-              </p>
-            )}
-          </div> */}
-
-          <div>
+        <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante
             </label>
@@ -340,6 +236,106 @@ const AddStudentNote = () => {
               </p>
             )}
           </div>
+
+          {/* ASC */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              ASC
+            </label>
+            <input
+              type="number"
+              {...register("asc", { valueAsNumber: true })}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.asc ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.asc && (
+              <p className="text-red-500 text-sm mt-1">{errors.asc.message}</p>
+            )}
+          </div>
+
+          {/* TCP1 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              TCP1
+            </label>
+            <input
+              type="number"
+              {...register("tcp1", { valueAsNumber: true })}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.tcp1 ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.tcp1 && (
+              <p className="text-red-500 text-sm mt-1">{errors.tcp1.message}</p>
+            )}
+          </div>
+
+          {/* TCP2 */}
+          {showTcp2 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                TCP2
+              </label>
+              <input
+                type="number"
+                {...register("tcp2", { valueAsNumber: true })}
+                className={`mt-1 p-2 block w-full rounded-md ${
+                  errors.tcp2 ? "border-red-500" : "border-gray-300"
+                } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              />
+              {errors.tcp2 && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.tcp2.message}
+                </p>
+              )}
+            </div>
+          )}
+          
+          {/* Final Exam */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Examen Final
+            </label>
+            <input
+              type="number"
+              {...register("final_exam", { valueAsNumber: true })}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.final_exam ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.final_exam && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.final_exam.message}
+              </p>
+            )}
+          </div>
+
+
+          {/* Student */}
+          {/* <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Estudiante
+            </label>
+            <select
+              {...register("student")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.student ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            >
+              <option value="">Seleccione un Estudiante</option>
+              {students.map((student) => (
+                <option key={student.id} value={student.id}>
+                  {student.name}
+                </option>
+              ))}
+            </select>
+            {errors.student && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.student.message}
+              </p>
+            )}
+          </div> */}
 
           {/* School Year */}
           <div>

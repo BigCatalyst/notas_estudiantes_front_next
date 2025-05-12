@@ -185,8 +185,8 @@ const CareersTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
-              <th className="p-3 text-left">Cantidad</th>
               <th className="p-3 text-left">Nombre</th>
+              <th className="p-3 text-left">Cantidad</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>
           </thead>
@@ -196,8 +196,8 @@ const CareersTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
-                  <td className="p-3">{item.amount}</td>
                   <td className="p-3">{item.name}</td>
+                  <td className="p-3">{item.amount}</td>
                   
                   
                    {isSecretary && (

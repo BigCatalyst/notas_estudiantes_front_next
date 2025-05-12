@@ -99,7 +99,7 @@ export const ReportStudent = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Esportar Certificación de Notas
+        Exportar Certificación de Notas
       </h2>
 
       <div className="absolute right-10 top-7">
@@ -124,7 +124,7 @@ export const ReportStudent = () => {
                 errors.grade ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
             >
-              <option value="">Seleccione un grado</option>
+              <option value="">Todos los grados</option>
               <option value="7">7mo</option>
               <option value="8">8vo</option>
               <option value="9">9no</option>

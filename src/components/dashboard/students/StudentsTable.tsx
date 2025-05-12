@@ -362,15 +362,15 @@ const StudentsTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+            <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">Apellido</th>
               {/* <th className="p-3 text-left">ID</th> */}
-              <th className="p-3 text-left">Aprobado</th>
-              <th className="p-3 text-left">CI</th>
+              <th className="p-3 text-left">Aprobado</th> 
+              <th className="p-3 text-left">Grado</th>            
               <th className="p-3 text-left">Grupo</th>
-              <th className="p-3 text-left">Dirección</th>
-              <th className="p-3 text-left">Grado</th>
-              <th className="p-3 text-left">Registro</th>
+              <th className="p-3 text-left">Dirección</th>            
+              <th className="p-3 text-left">No.Matrícula</th>
               <th className="p-3 text-left">Sexo</th>
               <th className="p-3 text-left">Graduado</th>
               <th className="p-3 text-left">Baja</th>
@@ -383,6 +383,7 @@ const StudentsTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
+                  <td className="p-3">{item.ci}</td>
                   <td className="p-3">{item.first_name}</td>
                   <td className="p-3">{item.last_name}</td>
                   <td className="p-3">
@@ -395,12 +396,10 @@ const StudentsTable = () => {
                     >
                       {item.is_approved ? "Aprobado" : "Desaprobado"}
                     </span>
-                  </td>
-
-                  <td className="p-3">{item.ci}</td>
+                  </td>    
+                  <td className="p-3">{item.grade}</td>          
                   <td className="p-3">{item.group?.name}</td>
-                  <td className="p-3 w-[100px]">{item.address}</td>
-                  <td className="p-3">{item.grade}</td>
+                  <td className="p-3 w-[100px]">{item.address}</td>                
                   <td className="p-3">{item.registration_number}</td>
                   <td className="p-3">
                     <span

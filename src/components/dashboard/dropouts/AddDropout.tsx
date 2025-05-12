@@ -13,6 +13,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
 import { getMunicipios, listarProvincias } from "@/data/provincias_cuba";
+import AutoComplete from "@/components/ui/autocomplete/Autocomplete";
 
 const dropoutSchema = z.object({
   date: z.string().min(1, "La fecha es requerida"),
@@ -36,12 +37,13 @@ const AddDropout = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const studentsData = await ApiService.studentsAll("grade=9");
+        const studentsData = await ApiService.studentsAll("is_graduated=false&ordering=grade,first_name");
         if (studentsData)
           setStudents(
             studentsData.map((student: any) => ({
               id: student.id,
-              name: `${student.first_name} ${student.last_name}`,
+              name: `CI: ${student.ci} 
+              | ${student.first_name} ${student.last_name}`,
             }))
           );
       } catch (error) {
@@ -101,6 +103,12 @@ const AddDropout = () => {
     }
   };
 
+  const handleSelect = (item: { id: string; name: string }) => {
+    console.log("Elemento seleccionado:", item);
+    setValue("student", item.id + "");
+    clearErrors("student");
+  };
+
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
@@ -119,6 +127,27 @@ const AddDropout = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Mensaje de error del servidor */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+           {/* Student */}
+           <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Estudiante
+            </label>
+            <AutoComplete
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.student ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              items={students}
+              placeholder="Buscar estudiante..."
+              onSelect={handleSelect}
+            />
+            {errors.student && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.student.message}
+              </p>
+            )}
+          </div>
+
           {/* Alta Baja */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -228,30 +257,6 @@ const AddDropout = () => {
             )}
           </div>
 
-          {/* Student */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Estudiante
-            </label>
-            <select
-              {...register("student")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.student ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            >
-              <option value="">Seleccione un Estudiante</option>
-              {students.map((student) => (
-                <option key={student.id} value={student.id}>
-                  {student.name}
-                </option>
-              ))}
-            </select>
-            {errors.student && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.student.message}
-              </p>
-            )}
-          </div>
         </div>
 
         {serverError.length > 0 && (
