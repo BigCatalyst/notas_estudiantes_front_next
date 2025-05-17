@@ -206,11 +206,11 @@ export const ProfessorsTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+              <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">Apellido</th>
-              <th className="p-3 text-left">CI</th>
-              <th className="p-3 text-left">Dirección</th>
               <th className="p-3 text-left">Sexo</th>
+              <th className="p-3 text-left">Dirección</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>
           </thead>
@@ -220,10 +220,9 @@ export const ProfessorsTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
+                  <td className="p-3">{item.ci}</td>
                   <td className="p-3">{item.first_name}</td>
                   <td className="p-3">{item.last_name}</td>
-                  <td className="p-3">{item.ci}</td>
-                  <td className="p-3 w-[100px]">{item.address}</td>
                   <td className="p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
@@ -235,6 +234,7 @@ export const ProfessorsTable = () => {
                       {item.sex === "M" ? "Masculino" : "Femenino"}
                     </span>
                   </td>
+                  <td className="p-3 w-[100px]">{item.address}</td>
 
                   <td className="p-3 flex gap-2">
                     <button

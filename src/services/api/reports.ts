@@ -11,6 +11,17 @@ export const reportEscalafon = async () => {
   }
 };
 
+export const reportGrantCareers = async () => {
+  try {
+    const res = await apiAuth.get("grant-careers/report/", {
+      responseType: "blob",
+    });
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const reportBajas = async () => {
   try {
     const res = await apiAuth.get("dropouts/report/", {

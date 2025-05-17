@@ -107,10 +107,10 @@ const DegreeScale = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+              <th className="p-3 text-left">Posición</th>
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Promedio</th>
-              <th className="p-3 text-left">Posición</th>
             </tr>
           </thead>
           <tbody className="*:focus-within:bg-gray-200 ">
@@ -118,10 +118,10 @@ const DegreeScale = () => {
               list &&
               list.map((item: any) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
+                  <td className="p-3">{item.ranking_number}</td>
                   <td className="p-3">{`${item.student.first_name} ${item.student.last_name}`}</td>
                   <td className="p-3">{item.student.ci}</td>
                   <td className="p-3">{item.ranking_score.toFixed(2)}</td>
-                  <td className="p-3">{item.ranking_number}</td>
                 </tr>
               ))}
           </tbody>
