@@ -6,6 +6,7 @@
 import Buttom from "@/components/ui/buttom/Buttom";
 import { Rols } from "@/data/NavigationItems";
 import { State } from "@/redux/features/authSlice";
+import { GrandCarrerRes } from "@/services/api/careers";
 import ApiService from "@/services/ApiService";
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
@@ -198,6 +199,28 @@ const CarrerasOtorgadas = () => {
     setLastSY(value);
   };
 
+  const getLabelPosition = (item: GrandCarrerRes): string => {
+    try {
+      if (item.degree_scale && item.degree_scale.ranking_number) {
+        return item.degree_scale.ranking_number + "";
+      }
+    } catch {}
+
+    return "";
+  };
+
+  const getLabelNote = (item: GrandCarrerRes): string => {
+    try {
+      if (item.degree_scale && item.degree_scale.ranking_score) {
+        const numero = Number(item.degree_scale.ranking_score);
+        const formateado = numero.toFixed(2).replace(/\.?0+$/, "");
+        return formateado;
+      }
+    } catch {}
+
+    return "";
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -360,6 +383,8 @@ const CarrerasOtorgadas = () => {
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Carrera</th>
+              <th className="p-3 text-left">Nota</th>
+              <th className="p-3 text-left">Posicion</th>
             </tr>
           </thead>
 
@@ -373,6 +398,9 @@ const CarrerasOtorgadas = () => {
                   </td>
                   <td className="p-3">{item.student.ci}</td>
                   <td className="p-3">{item.career.name}</td>
+
+                  <td className="p-3">{getLabelNote(item)}</td>
+                  <td className="p-3">{getLabelPosition(item)}</td>
                 </tr>
               ))}
           </tbody>

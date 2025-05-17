@@ -94,12 +94,20 @@ export const getCarrerasOtorgadas = async () => {
     return Promise.reject(error);
   }
 };
+interface DegreeScale {
+  id: number;
+  ranking_score: number;
+  ranking_number: number;
+  student: number;
+  school_year: number;
+}
 
 export interface GrandCarrerRes {
   id: number;
   student: Student;
   approved_school_course: ApprovedSchoolCourse;
   career: Career;
+  degree_scale: DegreeScale;
 }
 
 export interface ApprovedSchoolCourse {
