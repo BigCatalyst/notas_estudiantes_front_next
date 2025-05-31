@@ -45,6 +45,7 @@ export interface RowStudentNoteMultipleByStudent
 
 export const QuickEditStudentNoteByStudents = () => {
   const [isPending, startTransition] = useTransition();
+  const [isPendingTable, startTransitionTable] = useTransition();
   const [students, setStudents] = useState<StudentType[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<StudentType | null>(
     null
@@ -137,7 +138,7 @@ export const QuickEditStudentNoteByStudents = () => {
       setList([]);
       return;
     }
-    startTransition(async () => {
+    startTransitionTable(async () => {
       try {
         const data = await ApiService.studentsNoteMultipleByStudent(
           selectedStudent.id + ""
@@ -299,143 +300,150 @@ export const QuickEditStudentNoteByStudents = () => {
           <MensageErrorServer duration={20_000} messages={serverError} />
         </div>
       )}
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Curso
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Grado
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Asignatura
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ASC
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                TCP1
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                TCP2
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Examen Final
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {list.map((item) => (
-              <tr key={item.rowId} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {item.school_year.name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {item.subject.grade}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {item.subject.name}
-                </td>
-
-                {/* Campo ASC */}
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <input
-                    type="number"
-                    step="0.01"
-                    className={`w-20 px-2 py-1 border rounded ${
-                      errors[`${item.rowId}-asc`]
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                    value={item.asc === undefined ? "" : item.asc}
-                    onChange={(e) =>
-                      handleInputChange(item.rowId, "asc", e.target.value)
-                    }
-                  />
-                  {errors[`${item.rowId}-asc`] && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors[`${item.rowId}-asc`]}
-                    </p>
-                  )}
-                </td>
-
-                {/* Campo TCP1 */}
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <input
-                    type="number"
-                    step="0.01"
-                    className={`w-20 px-2 py-1 border rounded ${
-                      errors[`${item.rowId}-tcp1`]
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                    value={item.tcp1 === undefined ? "" : item.tcp1}
-                    onChange={(e) =>
-                      handleInputChange(item.rowId, "tcp1", e.target.value)
-                    }
-                  />
-                  {errors[`${item.rowId}-tcp1`] && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors[`${item.rowId}-tcp1`]}
-                    </p>
-                  )}
-                </td>
-
-                {/* Campo TCP2 */}
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <input
-                    type="number"
-                    step="0.01"
-                    className={`w-20 px-2 py-1 border rounded ${
-                      errors[`${item.rowId}-tcp2`]
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                    value={item.tcp2 === undefined ? "" : item.tcp2}
-                    onChange={(e) =>
-                      handleInputChange(item.rowId, "tcp2", e.target.value)
-                    }
-                  />
-                  {errors[`${item.rowId}-tcp2`] && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors[`${item.rowId}-tcp2`]}
-                    </p>
-                  )}
-                </td>
-
-                {/* Campo Examen Final */}
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <input
-                    type="number"
-                    step="0.01"
-                    className={`w-20 px-2 py-1 border rounded ${
-                      errors[`${item.rowId}-final_exam`]
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                    value={item.final_exam === undefined ? "" : item.final_exam}
-                    onChange={(e) =>
-                      handleInputChange(
-                        item.rowId,
-                        "final_exam",
-                        e.target.value
-                      )
-                    }
-                  />
-                  {errors[`${item.rowId}-final_exam`] && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors[`${item.rowId}-final_exam`]}
-                    </p>
-                  )}
-                </td>
+      {isPendingTable ? (
+        <div className="flex items-center justify-center h-[200px]">
+          <span>Cargando datos ...</span>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Curso
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Grado
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Asignatura
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ASC
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  TCP1
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  TCP2
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Examen Final
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {list.map((item) => (
+                <tr key={item.rowId} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.school_year.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.subject.grade}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.subject.name}
+                  </td>
+
+                  {/* Campo ASC */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <input
+                      type="number"
+                      step="0.01"
+                      className={`w-20 px-2 py-1 border rounded ${
+                        errors[`${item.rowId}-asc`]
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                      value={item.asc === undefined ? "" : item.asc}
+                      onChange={(e) =>
+                        handleInputChange(item.rowId, "asc", e.target.value)
+                      }
+                    />
+                    {errors[`${item.rowId}-asc`] && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors[`${item.rowId}-asc`]}
+                      </p>
+                    )}
+                  </td>
+
+                  {/* Campo TCP1 */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <input
+                      type="number"
+                      step="0.01"
+                      className={`w-20 px-2 py-1 border rounded ${
+                        errors[`${item.rowId}-tcp1`]
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                      value={item.tcp1 === undefined ? "" : item.tcp1}
+                      onChange={(e) =>
+                        handleInputChange(item.rowId, "tcp1", e.target.value)
+                      }
+                    />
+                    {errors[`${item.rowId}-tcp1`] && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors[`${item.rowId}-tcp1`]}
+                      </p>
+                    )}
+                  </td>
+
+                  {/* Campo TCP2 */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <input
+                      type="number"
+                      step="0.01"
+                      className={`w-20 px-2 py-1 border rounded ${
+                        errors[`${item.rowId}-tcp2`]
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                      value={item.tcp2 === undefined ? "" : item.tcp2}
+                      onChange={(e) =>
+                        handleInputChange(item.rowId, "tcp2", e.target.value)
+                      }
+                    />
+                    {errors[`${item.rowId}-tcp2`] && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors[`${item.rowId}-tcp2`]}
+                      </p>
+                    )}
+                  </td>
+
+                  {/* Campo Examen Final */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <input
+                      type="number"
+                      step="0.01"
+                      className={`w-20 px-2 py-1 border rounded ${
+                        errors[`${item.rowId}-final_exam`]
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
+                      value={
+                        item.final_exam === undefined ? "" : item.final_exam
+                      }
+                      onChange={(e) =>
+                        handleInputChange(
+                          item.rowId,
+                          "final_exam",
+                          e.target.value
+                        )
+                      }
+                    />
+                    {errors[`${item.rowId}-final_exam`] && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors[`${item.rowId}-final_exam`]}
+                      </p>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
