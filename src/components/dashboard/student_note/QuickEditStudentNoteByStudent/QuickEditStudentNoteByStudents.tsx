@@ -55,6 +55,13 @@ export const QuickEditStudentNoteByStudents = () => {
     console.error(message);
   };
   const validData = (): boolean => {
+    for (const val of list) {
+      if (val.asc && (val.asc < 0 || val.asc > ACS_MAX)) return false;
+      if (val.final_exam && (val.final_exam < 0 || val.final_exam > 100))
+        return false;
+      if (val.tcp1 && (val.tcp1 < 0 || val.tcp1 > 100)) return false;
+      if (val.tcp2 && (val.tcp2 < 0 || val.tcp2 > 100)) return false;
+    }
     return true;
   };
   const SalvarCambios = () => {};
@@ -97,21 +104,23 @@ export const QuickEditStudentNoteByStudents = () => {
     }
 
     let error = "";
-    if (numValue !== undefined && !isNaN(numValue)) {
-      switch (field) {
-        case "asc":
-          if (numValue < 0 || numValue > 20)
-            error = "ASC debe estar entre 0 y 20";
-          break;
-        case "tcp1":
-        case "tcp2":
-        case "final_exam":
-          if (numValue < 0 || numValue > 100)
-            error = "Debe estar entre 0 y 100";
-          break;
+    if (numValue !== undefined) {
+      if (!isNaN(numValue)) {
+        switch (field) {
+          case "asc":
+            if (numValue < 0 || numValue > 20)
+              error = "ASC debe estar entre 0 y 20";
+            break;
+          case "tcp1":
+          case "tcp2":
+          case "final_exam":
+            if (numValue < 0 || numValue > 100)
+              error = "Debe estar entre 0 y 100";
+            break;
+        }
+      } else {
+        error = "Número inválido";
       }
-    } else {
-      error = "Número inválido";
     }
 
     setErrors((prev) => ({ ...prev, [`${id}-${field}`]: error }));
@@ -183,7 +192,11 @@ export const QuickEditStudentNoteByStudents = () => {
         {/* Salvar Cambios */}
         <div className="relative inline-block group ">
           <div className="mb-5">
-            <button className="btn1" onClick={SalvarCambios}>
+            <button
+              disabled={!validData()}
+              className="btn1"
+              onClick={SalvarCambios}
+            >
               <span className="inline-flex justify-center items-center gap-1">
                 <MdEditDocument className="w-5 h-5 text-gray-200" />
                 Salvar
