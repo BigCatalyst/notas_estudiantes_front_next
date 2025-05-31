@@ -173,7 +173,24 @@ export const UpdateStudetGroup = () => {
         {/* Mensaje de error del servidor */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Grado */}
+         
+          {/* Nombre */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Nombre
+            </label>
+            <input
+              {...register("name")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.name ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            )}
+          </div>
+
+           {/* Grado */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Grado
@@ -193,22 +210,6 @@ export const UpdateStudetGroup = () => {
               <p className="text-red-500 text-sm mt-1">
                 {errors.grade.message}
               </p>
-            )}
-          </div>
-
-          {/* Nombre */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Nombre
-            </label>
-            <input
-              {...register("name")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.name ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
         </div>

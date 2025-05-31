@@ -43,9 +43,9 @@ const BallotEdit = () => {
     console.log("e1");
     const fetchData = async () => {
       try {
-        const fetchCarreers = await ApiService.careers("");
+        const fetchCarreers = await ApiService.careersAll("");
         if (fetchCarreers) {
-          setCareers(fetchCarreers.results);
+          setCareers(fetchCarreers);
 
           if (userAuth.user?.id) {
             const res = await ApiService.students(
@@ -182,7 +182,7 @@ const BallotEdit = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Editar Boleta de Estudiante
+        LLenado de Boleta
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

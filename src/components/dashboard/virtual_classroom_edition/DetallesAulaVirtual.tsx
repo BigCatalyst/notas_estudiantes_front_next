@@ -76,7 +76,7 @@ const DetallesAulaVirtual = () => {
                 : "9no"}
             </p>
           </div>
-          <div className="inline-flex gap-1 items-center">
+          {/*<div className="inline-flex gap-1 items-center">
             <p className="font-bold">Tiene TCP2:</p>
             <p>
               {subject?.tcp2_required ? (
@@ -85,7 +85,7 @@ const DetallesAulaVirtual = () => {
                 <IoCloseCircle className="text-red-700 w-5 h-5" />
               )}
             </p>
-          </div>
+          </div>*/}
           <div className="flex flex-col gap-1 mt-2">
             <p className="font-bold">Listado de Profesores:</p>
             <div className="grid md:grid-cols-2 mt-3">

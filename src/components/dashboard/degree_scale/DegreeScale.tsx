@@ -68,7 +68,7 @@ const DegreeScale = () => {
 
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.download = "reporte.pdf";
+      link.download = "Escalafón.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -85,7 +85,7 @@ const DegreeScale = () => {
         ) && (
           <div className="mb-5">
             <Buttom
-              title="Calcular"
+              title="Confeccionar"
               icon={TbPlaylistAdd}
               className="btn1"
               isLoading={loadingCalculate}

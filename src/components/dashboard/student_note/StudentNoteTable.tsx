@@ -200,6 +200,7 @@ const StudentNoteTable = () => {
 
         {/* Edicion Rapida Por asignaturas */}
         {isSecretary && (
+
           <div className="mb-5">
             <Buttom
               title="Edición Rápida Por Asignatura"
@@ -222,6 +223,7 @@ const StudentNoteTable = () => {
           </div>
         )}
       </div>
+
 
       {/* Filters */}
       <div
@@ -380,7 +382,7 @@ const StudentNoteTable = () => {
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
               <th className="p-3 text-left">Estudiante</th>
-              <th className="p-3 text-left">Asigntura</th>
+              <th className="p-3 text-left">Asignatura</th>
               <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">ASC</th>
               <th className="p-3 text-left">TCP1</th>

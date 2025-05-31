@@ -82,3 +82,33 @@ export const reportCertificate = async (id: string) => {
     return Promise.reject(error);
   }
 };
+
+export const reportCertificacionNotasFinal = async (
+  id_estudiante: string,
+  grado: string
+) => {
+  try {
+    const res = await apiAuth.get(
+      `student_note/report/certificationfinal/${id_estudiante}/${grado}/`,
+      {
+        responseType: "blob",
+      }
+    );
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const reportCertificateFinal = async (id: string) => {
+  try {
+    const res = await apiAuth.get(`student_note/report/certificationfinal/${id}/`, {
+      responseType: "blob",
+    });
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+
