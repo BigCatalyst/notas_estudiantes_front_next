@@ -1,11 +1,7 @@
-import NeomorfLoader from "@/components/loader/l3/NeomorfLoader";
+import GeneralLoader from "@/components/loader/GeneralLoader";
 
 const loading = () => {
-  return (
-    <div className="flex justify-center items-center">
-      <NeomorfLoader />
-    </div>
-  );
+  return <GeneralLoader />;
 };
 
 export default loading;

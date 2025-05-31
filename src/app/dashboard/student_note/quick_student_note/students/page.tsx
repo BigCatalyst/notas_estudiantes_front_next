@@ -1,4 +1,4 @@
-import { QuickEditStudentNoteByStudents } from "@/components/dashboard/student_note/QuickEditStudentNoteByStudents";
+import { QuickEditStudentNoteByStudents } from "@/components/dashboard/student_note/QuickEditStudentNoteByStudent/QuickEditStudentNoteByStudents";
 import React from "react";
 
 const Page = () => {
