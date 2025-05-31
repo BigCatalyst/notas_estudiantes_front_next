@@ -20,6 +20,32 @@ export interface StudentNote {
   school_year: any;
 }
 
+export interface SubjectInNote {
+  id: number;
+  grade: number;
+  name: string;
+  tcp2_required: boolean;
+  professor: number[];
+}
+export interface SchoolYearInNote {
+  id: number;
+  start_date: string;
+  end_date: string;
+  name: string;
+}
+
+export interface StudentNoteMultipleByStudent {
+  id?: number;
+  asc?: number;
+  final_grade?: number;
+  final_exam?: number;
+  tcp1?: number;
+  tcp2?: number;
+  student: number;
+  subject: SubjectInNote;
+  school_year: SchoolYearInNote;
+}
+
 export const studentsNote = async (
   query: string
 ): Promise<StudentNoteRes | undefined> => {
@@ -99,6 +125,20 @@ export const SaveStudentsNoteEdit = async (data: StudentNote[]) => {
   try {
     const response = await apiAuth.post(`/student_note/multiple/`, data);
     return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const studentsNoteMultipleByStudent = async (
+  id: string
+): Promise<StudentNoteMultipleByStudent[] | undefined> => {
+  try {
+    const response = await apiAuth.get(
+      `/student_note/multiple/bySudent/${id}/`
+    );
+    const data: StudentNoteMultipleByStudent[] = response.data;
+    return data;
   } catch (error) {
     return Promise.reject(error);
   }

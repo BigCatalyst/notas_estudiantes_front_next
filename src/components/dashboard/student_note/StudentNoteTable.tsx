@@ -160,9 +160,8 @@ const StudentNoteTable = () => {
     if (field === "school_year__id") setLastSY(value);
   };
 
-  
-const userAuth: State = useSelector((state: any) => state.auth);
-const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -189,40 +188,42 @@ const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
 
         {/* Adicionar */}
         {isSecretary && (
-        <div className="mb-5">
-          <Buttom
-            title="Adicionar"
-            icon={TbPlaylistAdd}
-            className="btn1"
-            to="student_note/add"
-          />
-        </div>
+          <div className="mb-5">
+            <Buttom
+              title="Adicionar"
+              icon={TbPlaylistAdd}
+              className="btn1"
+              to="student_note/add"
+            />
+          </div>
         )}
 
-        {/* Adicionar */}
+        {/* Edicion Rapida Por asignaturas */}
         {isSecretary && (
-        <div className="mb-5">
-          <Buttom
-            title="Edición en Lote"
-            icon={MdEdit}
-            className="btn1"
-            to="student_note/quick_student_note"
-          />
-        </div> 
-        )}     
 
-         {/* Adicionar */}
+          <div className="mb-5">
+            <Buttom
+              title="Edición Rápida Por Asignatura"
+              icon={MdEdit}
+              className="btn1"
+              to="student_note/quick_student_note"
+            />
+          </div>
+        )}
+
+        {/* Edicion Rapida Por Estudiante */}
         {isSecretary && (
-        <div className="mb-5">
-          <Buttom
-            title="Edición en Lote2"
-            icon={MdEdit}
-            className="btn1"
-            to="student_note/lote_student_note"
-          />
-        </div> 
-        )}   
-      </div>        
+          <div className="mb-5">
+            <Buttom
+              title="Edición Rápida Por Estudiante"
+              icon={MdEdit}
+              className="btn1"
+              to="student_note/quick_student_note/students"
+            />
+          </div>
+        )}
+      </div>
+
 
       {/* Filters */}
       <div
@@ -407,34 +408,34 @@ const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
                     {item.subject.tcp2_required ? item.tcp2?.toFixed(2) : "---"}
                   </td>
                   <td className="p-3">{item.final_exam?.toFixed(2)}</td>
-                  <td className="p-3">{item.final_grade?.toFixed(2)}</td>                 
+                  <td className="p-3">{item.final_grade?.toFixed(2)}</td>
                   <td className="p-3">{item.school_year.name}</td>
                   {isSecretary && (
-                  <td className="p-3 flex gap-2">
-                    <button
-                      onClick={() => handleEdit(item)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg group focus:bg-blue-400"
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        <MdEdit className="group-focus:hidden" />
-                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
-                        Editar
-                      </span>
-                    </button>
+                    <td className="p-3 flex gap-2">
+                      <button
+                        onClick={() => handleEdit(item)}
+                        className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg group focus:bg-blue-400"
+                      >
+                        <span className="inline-flex items-center gap-1">
+                          <MdEdit className="group-focus:hidden" />
+                          <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
+                          Editar
+                        </span>
+                      </button>
 
-                    <button
-                      onClick={() => {
-                        if (item.id) handleDelete(item.id);
-                      }}
-                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg group focus:bg-red-400"
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        <MdDeleteForever className="group-focus:hidden" />
-                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
-                        Eliminar
-                      </span>
-                    </button>
-                  </td>
+                      <button
+                        onClick={() => {
+                          if (item.id) handleDelete(item.id);
+                        }}
+                        className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg group focus:bg-red-400"
+                      >
+                        <span className="inline-flex items-center gap-1">
+                          <MdDeleteForever className="group-focus:hidden" />
+                          <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
+                          Eliminar
+                        </span>
+                      </button>
+                    </td>
                   )}
                 </tr>
               ))}
