@@ -23,7 +23,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdEditDocument } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
-
+import { setData } from "@/redux/features/noteStudentMultipleSlice";
+import { useDispatch, useSelector } from "react-redux";
 export interface RowStudentNoteMultipleByStudent
   extends StudentNoteMultipleByStudent {
   rowId: string;
@@ -34,6 +35,7 @@ export const TableQuickEditStudentNote = ({
 }: {
   idStudent: string;
 }) => {
+  const dispatch = useDispatch();
   const [isPending, startTransition] = useTransition();
   const [list, setList] = useState<RowStudentNoteMultipleByStudent[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -50,6 +52,7 @@ export const TableQuickEditStudentNote = ({
             rowId: `${row.subject.id}-${row.school_year.id}`,
           })) || []
         );
+        dispatch(setData(list));
       } catch (error) {
         callError(error);
       }
@@ -96,6 +99,7 @@ export const TableQuickEditStudentNote = ({
         item.rowId === id ? { ...item, [field]: numValue } : item
       )
     );
+    dispatch(setData(list));
   };
 
   return (
