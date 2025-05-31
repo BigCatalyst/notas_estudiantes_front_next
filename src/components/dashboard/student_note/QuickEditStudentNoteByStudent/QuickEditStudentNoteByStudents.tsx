@@ -294,45 +294,25 @@ export const QuickEditStudentNoteByStudents = () => {
           <span>Cargando datos ...</span>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Curso
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Grado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Asignatura
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ASC
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  TCP1
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  TCP2
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Examen Final
-                </th>
+        <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
+          <table className="w-full table-auto">
+            <thead className="rounded-md">
+              <tr className="bg-slate-700 text-gray-200">
+                <th className="p-3 text-left">Curso</th>
+                <th className="p-3 text-left">Grado</th>
+                <th className="p-3 text-left">Asignatura</th>
+                <th className="p-3 text-left">ASC</th>
+                <th className="p-3 text-left">TCP1</th>
+                <th className="p-3 text-left">TCP2</th>
+                <th className="p-3 text-left">Examen Final</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="*:focus-within:bg-gray-200">
               {list.map((item) => (
-                <tr key={item.rowId} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.school_year.name}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.subject.grade}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.subject.name}
-                  </td>
+                <tr key={item.rowId} className="border-b border-b-gray-300">
+                  <td className="p-3">{item.school_year.name}</td>
+                  <td className="p-3">{item.subject.grade}</td>
+                  <td className="p-3">{item.subject.name}</td>
 
                   {/* Campo ASC */}
                   <td className="px-6 py-4 whitespace-nowrap">
