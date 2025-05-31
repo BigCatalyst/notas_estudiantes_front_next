@@ -87,7 +87,19 @@ export const QuickEditStudentNoteByStudents = () => {
 
       (async () => {
         try {
-          const res = await ApiService.SaveStudentsNoteEdit(list);
+          const res = await ApiService.SaveStudentsNoteEdit(
+            list.map((studendData) => ({
+              id: studendData.id,
+              asc: studendData.asc,
+              final_grade: studendData.final_grade,
+              final_exam: studendData.final_exam,
+              tcp1: studendData.tcp1,
+              tcp2: studendData.tcp2,
+              student: studendData.student,
+              subject: studendData.subject.id,
+              school_year: studendData.school_year.id,
+            }))
+          );
           if (res) {
             console.log(res);
             setList([...list]);
