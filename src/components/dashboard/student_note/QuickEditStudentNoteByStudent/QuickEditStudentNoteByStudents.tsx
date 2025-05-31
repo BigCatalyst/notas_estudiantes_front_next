@@ -28,6 +28,7 @@ import AutoComplete from "@/components/ui/autocomplete/Autocomplete";
 import GeneralLoader from "@/components/loader/GeneralLoader";
 import { TableQuickEditStudentNote } from "./TableQuickEditStudentNoteByStudent";
 import AutoCompleteStudents from "@/components/ui/autocomplete/AutocompleteStudent";
+import MensageErrorServer from "@/components/message/MensageErrorServer";
 
 interface StudentType {
   id: string;
@@ -51,8 +52,20 @@ export const QuickEditStudentNoteByStudents = () => {
   const [list, setList] = useState<RowStudentNoteMultipleByStudent[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [serverError, setServerError] = useState<string[]>([]);
+  const [keyMSE, setkeyMSE] = useState(Date.now());
+  const [showError, setShowError] = useState(false);
+  const [keyM, setkeyM] = useState(Date.now());
+  const [keyMI, setkeyMI] = useState(Date.now());
+  const [showInfo, setShowInfo] = useState(false);
+  const showInfoMessage = () => {
+    setkeyMI(Date.now());
+    setShowInfo(true);
+  };
   const callError = (message: unknown) => {
     console.error(message);
+    setShowError(true);
+    setkeyM(Date.now());
   };
   const validData = (): boolean => {
     for (const val of list) {
@@ -64,7 +77,48 @@ export const QuickEditStudentNoteByStudents = () => {
     }
     return true;
   };
-  const SalvarCambios = () => {};
+  const SalvarCambios = () => {
+    setServerError([]);
+    setShowError(false);
+
+    if (validData()) {
+      console.log(list);
+      console.log("si");
+
+      (async () => {
+        try {
+          const res = await ApiService.SaveStudentsNoteEdit(list);
+          if (res) {
+            console.log(res);
+            setList([...list]);
+            showInfoMessage();
+          }
+        } catch (error: any) {
+          console.log(error);
+          const errorData: {
+            [key: string]: string[] | { email: string[]; username: string[] };
+          } = error.response.data;
+          let formattedErrorData: string[] = [];
+          if (Object.keys(errorData).length > 0) {
+            Object.entries(errorData).forEach(([key, value]) => {
+              Object.entries(value).forEach(([newkey, value]) => {
+                if (Array.isArray(value))
+                  formattedErrorData.push(
+                    `${key} -> ${newkey}: ${value.join(", ")}`
+                  );
+              });
+            });
+          }
+          setServerError(formattedErrorData);
+          setkeyMSE(Date.now());
+        }
+      })();
+    } else {
+      setShowError(true);
+      console.log("no");
+      setkeyM(Date.now());
+    }
+  };
 
   useEffect(() => {
     if (!selectedStudent) {
@@ -210,6 +264,30 @@ export const QuickEditStudentNoteByStudents = () => {
           </div>
         </div>
       </div>
+
+      {showError && (
+        <div key={keyM} className="relative w-full">
+          <div className="animate-slide-down absolute right-[200px]">
+            <MensageError
+              duration={10000}
+              message="Revise los campos editados y resuelva los errores"
+            />
+          </div>
+        </div>
+      )}
+
+      {showInfo && (
+        <div key={keyMI} className="inline-flex w-full gap-3 relative">
+          <MensageExito duration={2000} message="Datos Guardados" />
+        </div>
+      )}
+
+      {serverError.length > 0 && (
+        <div key={keyMSE} className="inline-flex w-full gap-3 relative">
+          <MensageErrorServer duration={20_000} messages={serverError} />
+        </div>
+      )}
+
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
