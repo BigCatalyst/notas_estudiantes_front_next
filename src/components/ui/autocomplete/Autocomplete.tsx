@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 interface Item {
   id: string;
   name: string;
+  label: string;
 }
 
 interface AutoCompleteProps {
@@ -30,7 +31,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
 
   // Filtrar la lista según el valor del input
   const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(inputValue.toLowerCase())
+   item.label.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   // Manejar cambios en el input
@@ -67,7 +68,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
               onClick={() => handleItemClick(item)}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100"
             >
-              {item.name}
+              {item.label}
             </div>
           ))}
         </div>

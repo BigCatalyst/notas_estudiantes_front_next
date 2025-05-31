@@ -12,6 +12,7 @@ import { redirect, useParams, useRouter } from "next/navigation";
 import ApiService from "@/services/ApiService";
 import { error } from "console";
 import { IoIosArrowBack } from "react-icons/io";
+import { SubjectGet } from "@/services/api/subjects";
 
 const EdicionAulaVirtual: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,6 +25,8 @@ const EdicionAulaVirtual: React.FC = () => {
 
   const [error, setError] = useState<string[]>([]);
 
+  const [subject, setSubject] = useState<SubjectGet | null>(null);
+
   useEffect(() => {
     localStorage.setItem("total_sections", sections.length + "");
   }, [sections]);
@@ -34,6 +37,12 @@ const EdicionAulaVirtual: React.FC = () => {
         const res = await ApiService.subject_section_create_data(id);
         if (res) {
           setSections(res);
+        }
+
+        const res1 = await ApiService.getSubject(id);
+                if (res1) {
+                  console.log(res1);
+                  setSubject(res1);
         }
       } catch (error) {
         console.log(error);
@@ -289,7 +298,7 @@ const EdicionAulaVirtual: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Edición del Aula Virtual</h1>
+      <h1 className="text-2xl font-bold mb-4">Edición del Aula Virtual || Asignatura: {subject?.name} || Grado: {subject?.grade}</h1>
       <button onClick={addSection} className="btn1">
         <span className="inline-flex items-center justify-center gap-1">
           <LuCircleFadingPlus className="w-5 h-5" /> Adicionar Sección

@@ -50,7 +50,7 @@ const AddStudentNote = () => {
   const [serverError, setServerError] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
+  const [students, setStudents] = useState<{ id: string; name: string; label: string}[]>([]);
   const [subjects, setSubjects] = useState<
     { id: string; name: string; tcp2: boolean }[]
   >([]);
@@ -78,8 +78,8 @@ const AddStudentNote = () => {
           setStudents(
             studentsData.map((student: any) => ({
               id: student.id,
-              name: `CI: ${student.ci} 
-              | ${student.first_name} ${student.last_name}`,
+              label: `CI: ${student.ci} | ${student.first_name} ${student.last_name}`,
+              name: `${student.first_name} ${student.last_name}`,
             }))
           );
         if (subjectsData) {

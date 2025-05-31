@@ -203,14 +203,26 @@ const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
         {isSecretary && (
         <div className="mb-5">
           <Buttom
-            title="Edición Rápida"
+            title="Edición en Lote"
             icon={MdEdit}
             className="btn1"
             to="student_note/quick_student_note"
           />
         </div> 
         )}     
-      </div>    
+
+         {/* Adicionar */}
+        {isSecretary && (
+        <div className="mb-5">
+          <Buttom
+            title="Edición en Lote2"
+            icon={MdEdit}
+            className="btn1"
+            to="student_note/lote_student_note"
+          />
+        </div> 
+        )}   
+      </div>        
 
       {/* Filters */}
       <div
@@ -369,7 +381,7 @@ const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
               <th className="p-3 text-left">Estudiante</th>
-              <th className="p-3 text-left">Asigntura</th>
+              <th className="p-3 text-left">Asignatura</th>
               <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">ASC</th>
               <th className="p-3 text-left">TCP1</th>

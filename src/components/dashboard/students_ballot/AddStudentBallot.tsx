@@ -14,6 +14,7 @@ import Buttom from "@/components/ui/buttom/Buttom";
 import MessageForm from "@/components/ui/messageForm/MessageForm";
 import { LuCircleFadingPlus } from "react-icons/lu";
 import { Career } from "@/services/api/careers";
+import AutoComplete from "@/components/ui/autocomplete/Autocomplete";
 
 // Esquema de validación Zod
 const ballotSchema = z.object({
@@ -36,12 +37,7 @@ const AddStudentBallot = () => {
   const [serverError, setServerError] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [students, setStudents] = useState<
-    {
-      id?: string;
-      name: string;
-    }[]
-  >([]);
+  const [students, setStudents] = useState<{ id: string; name: string; label: string }[]>([]);
 
   const [careers, setCareers] = useState<Career[]>();
 
@@ -58,7 +54,8 @@ const AddStudentBallot = () => {
           setStudents(
             studentsData.map((student: any) => ({
               id: student.id,
-              name: `${student.first_name}`,
+              name: `${student.first_name} ${student.last_name}`,
+              label: `CI: ${student.ci} | ${student.first_name} ${student.last_name}`,
             }))
           );
 
@@ -79,6 +76,8 @@ const AddStudentBallot = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    clearErrors,
+    setValue,
   } = useForm<BallotFormData>({
     resolver: zodResolver(ballotSchema),
     mode: "onChange",
@@ -134,6 +133,12 @@ const AddStudentBallot = () => {
     }
   };
 
+  const handleSelect = (item: { id: string; name: string }) => {
+    console.log("Elemento seleccionado:", item);
+    setValue("student", item.id + "");
+    clearErrors("student");
+  };
+
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
@@ -151,23 +156,19 @@ const AddStudentBallot = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+              {/* Student */}
+           <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante
             </label>
-            <select
-              {...register("student")}
+            <AutoComplete
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.student ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            >
-              <option value="">Seleccione un Estudiante</option>
-              {students.map((student) => (
-                <option key={student.id} value={student.id}>
-                  {student.name}
-                </option>
-              ))}
-            </select>
+              items={students}
+              placeholder="Buscar estudiante..."
+              onSelect={handleSelect}
+            />
             {errors.student && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.student.message}

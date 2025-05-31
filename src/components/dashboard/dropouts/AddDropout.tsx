@@ -30,7 +30,7 @@ const AddDropout = () => {
   const [serverError, setServerError] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
+  const [students, setStudents] = useState<{ id: string; name: string; label: string }[]>([]);
 
   const router = useRouter();
 
@@ -42,8 +42,8 @@ const AddDropout = () => {
           setStudents(
             studentsData.map((student: any) => ({
               id: student.id,
-              name: `CI: ${student.ci} 
-              | ${student.first_name} ${student.last_name}`,
+              label: `CI: ${student.ci} | ${student.first_name} ${student.last_name}`,
+              name: `${student.first_name} ${student.last_name}`,
             }))
           );
       } catch (error) {

@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
 import { LuCircleFadingPlus } from "react-icons/lu";
 import { z } from "zod";
+import { useSearchParams } from "next/navigation";
 
 const studentSchema = z.object({
   grade: z.string().optional(),
@@ -21,6 +22,15 @@ export const ReportStudent = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams<{ id: string }>();
+
+  const searchParams = useSearchParams();
+  const reportType = searchParams.get("type");
+  const titleLabel =
+  reportType === "evaluaciones"
+    ? "Exportar Control de Evaluaciones"
+    : reportType === "certificacion"
+    ? "Exportar Certificación de Notas"
+    : "Exportar";
 
   const {
     register,
@@ -81,14 +91,68 @@ export const ReportStudent = () => {
     }
   };
 
+  const exportReportActionF = async (id_estudiante: string, grado: string) => {
+    try {
+      const res = await ApiService.reportCertificacionNotasFinal(
+        id_estudiante,
+        grado
+      );
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "Certificación.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const exportReportActionF1 = async (id_estudiante: string) => {
+    try {
+      const res = await ApiService.reportCertificateFinal(id_estudiante);
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "Certidicación.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   const onSubmit = async (data: StudentFormData) => {
     try {
       setIsLoading(true);
 
       console.log(data);
-
+     if (reportType === "evaluaciones") {
       if (data.grade) exportReportAction(id, data.grade);
       else exportReportAction1(id);
+     }else if (reportType === "certificacion") {
+        if (data.grade) exportReportActionF(id, data.grade);
+       else exportReportActionF1(id);
+     }
+     if (reportType !== "evaluaciones" && reportType !== "certificacion") {
+      console.error("Tipo de reporte inválido");
+       return;
+     }
     } catch (error: any) {
       console.log(error);
     } finally {
@@ -99,7 +163,7 @@ export const ReportStudent = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Exportar Certificación de Notas
+        {titleLabel}
       </h2>
 
       <div className="absolute right-10 top-7">
