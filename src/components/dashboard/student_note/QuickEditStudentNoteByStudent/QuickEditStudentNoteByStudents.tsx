@@ -18,6 +18,8 @@ import GeneralLoader from "@/components/loader/GeneralLoader";
 
 import AutoCompleteStudents from "@/components/ui/autocomplete/AutocompleteStudent";
 import MensageErrorServer from "@/components/message/MensageErrorServer";
+import Buttom from "@/components/ui/buttom/Buttom";
+import { IoIosArrowBack } from "react-icons/io";
 
 interface StudentType {
   id: string;
@@ -246,25 +248,22 @@ export const QuickEditStudentNoteByStudents = () => {
           />
         </div>
         {/* Salvar Cambios */}
-        <div className="relative inline-block group ">
-          <div className="mb-5">
-            <button
-              disabled={!validData()}
-              className="btn1"
-              onClick={SalvarCambios}
-            >
-              <span className="inline-flex justify-center items-center gap-1">
-                <MdEditDocument className="w-5 h-5 text-gray-200" />
-                Salvar
-              </span>
-            </button>
-          </div>
-
-          {/* Tooltip */}
-          <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
-            Salvar los cambios de la edición
-          </div>
-        </div>
+        <button
+          disabled={!validData()}
+          className="btn1"
+          onClick={SalvarCambios}
+        >
+          <span className="inline-flex justify-center items-center gap-1">
+            <MdEditDocument className="w-5 h-5 text-gray-200" />
+            Salvar
+          </span>
+        </button>
+        <Buttom
+          title="Notas de Estudiantes"
+          icon={IoIosArrowBack}
+          to="/dashboard/student_note"
+          className="btn1"
+        />
       </div>
 
       {showError && (
