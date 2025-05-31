@@ -12,7 +12,6 @@ import { PiWarning } from "react-icons/pi";
 import { GiCancel, GiConfirmed } from "react-icons/gi";
 import Buttom from "@/components/ui/buttom/Buttom";
 import ApiService from "@/services/ApiService";
-import { BiEdit } from "react-icons/bi";
 
 interface NavigationDashboardProps {
   children: React.ReactNode;
@@ -233,18 +232,20 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                         </span>
                       </button>
                       <IoIosArrowDown
-                        className={`text-gray-300 transition-all ${openUserMenu && "-rotate-90"
-                          }`}
+                        className={`text-gray-300 transition-all ${
+                          openUserMenu && "-rotate-90"
+                        }`}
                       />
                     </div>
 
                     <div
-                      className={`z-50 my-4 text-base list-none divide-y  rounded shadow-md bg-gray-700 divide-gray-600 absolute top-12 right-0 ${openUserMenu
-                        ? "open-menu"
-                        : !openUserMenu && userMernuInitial !== 0
+                      className={`z-50 my-4 text-base list-none divide-y  rounded shadow-md bg-gray-700 divide-gray-600 absolute top-12 right-0 ${
+                        openUserMenu
+                          ? "open-menu"
+                          : !openUserMenu && userMernuInitial !== 0
                           ? "close-menu"
                           : "hidden"
-                        }`}
+                      }`}
                     >
                       <div className="px-4 py-3">
                         <p className="text-sm text-gray-900 dark:text-white">
@@ -290,103 +291,113 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                 ? `fixed top-0 left-0 z-40 w-64 h-screen pt-20 border-r bg-gray-800 border-gray-700 
            transition-transform [transition-duration:300ms] -translate-x-full sm:translate-x-0`
                 : `fixed top-0 left-0 z-40 w-64 h-screen pt-20 border-r bg-gray-800 border-gray-700 
-           transition-transform [transition-duration:300ms] ${openMenu ? "translate-x-0" : "-translate-x-full"
-                }`
+           transition-transform [transition-duration:300ms] ${
+             openMenu ? "translate-x-0" : "-translate-x-full"
+           }`
             }
           >
             <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
               <ul className="space-y-2 font-medium">
-                {navigationItemsDashboard.map(({ name, path, Icon, rols, children }, index) => {
-                  const userRoles = userAuth.user?.roles || [];
-                  const hasPermission = rols?.some((rol: string) => userRoles.includes(rol));
-
-                  const isEditarBoleta = name === "Editar Boleta";
-                  const canSeeEditarBoleta = userRoles.includes("estudiante") && grado === "9";
-
-                  if ((hasPermission && !isEditarBoleta) || (isEditarBoleta && canSeeEditarBoleta)) {
-                    const isOpen = openSubMenus.includes(index);
-                    return (
-                      <li key={index}>
-                        {children && children.length > 0 ? (
-                          <>
-                            <button
-                              onClick={() => toggleSubMenu(index)}
-                              className="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-700 group"
-                            >
-                              {Icon && (
-                                <Icon className="w-6 h-6 mr-2 text-gray-400 group-hover:text-white" />
-                              )}
-                              <span className="flex-1 text-gray-300 group-hover:text-white">
-                                {name}
-                              </span>
-                              <IoIosArrowDown
-                                className={`ml-auto transition-transform text-gray-400 group-hover:text-white ${isOpen ? "rotate-180" : ""
-                                  }`}
-                              />
-                            </button>
-
-                            <ul
-                              className={`pl-6 mt-1 space-y-1 overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[500px]" : "max-h-0"
-                                }`}
-                            >
-                              {children.map((child, idx) =>
-                                child.path ? (
-                                  <li key={idx}>
-                                    <Link
-                                      href={child.path}
-                                      className="flex items-center p-2 rounded-lg hover:bg-gray-700 group"
-                                    >
-                                      {child.Icon && (
-                                        <child.Icon className="w-4 h-4 mr-2 text-gray-400 group-hover:text-white" />
-                                      )}
-                                      <span className="text-gray-300 group-hover:text-white">
-                                        {child.name}
-                                      </span>
-                                    </Link>
-                                  </li>
-                                ) : null
-                              )}
-                            </ul>
-                          </>
-                        ) : (
-                          path && (
-                            <Link
-                              href={path}
-                              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white 
-                transition-all duration-150 hover:bg-gray-100 overflow-hidden dark:hover:bg-gray-700 group relative"
-                            >
-                              {pathname === path && (
-                                <span className="absolute bg-gradient-to-tr from-gray-700 to-gray-500 right-0 z-10 blur-lg w-full h-full"></span>
-                              )}
-
-                              {Icon && (
-                                <Icon className="w-6 h-6 text-gray-500 transition duration-150 dark:text-gray-400 group-hover:text-white z-20" />
-                              )}
-
-                              <span className="flex-1 ms-3 whitespace-nowrap z-20">
-                                {name}
-                              </span>
-                            </Link>
-                          )
-                        )}
-                      </li>
+                {navigationItemsDashboard.map(
+                  ({ name, path, Icon, rols, children }, index) => {
+                    const userRoles = userAuth.user?.roles || [];
+                    const hasPermission = rols?.some((rol: string) =>
+                      userRoles.includes(rol)
                     );
+
+                    const isEditarBoleta = name === "Editar Boleta";
+                    const canSeeEditarBoleta =
+                      userRoles.includes("estudiante") && grado === "9";
+
+                    if (
+                      (hasPermission && !isEditarBoleta) ||
+                      (isEditarBoleta && canSeeEditarBoleta)
+                    ) {
+                      const isOpen = openSubMenus.includes(index);
+                      return (
+                        <li key={index}>
+                          {children && children.length > 0 ? (
+                            <>
+                              <button
+                                onClick={() => toggleSubMenu(index)}
+                                className="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-700 group"
+                              >
+                                {Icon && (
+                                  <Icon className="w-6 h-6 mr-2 text-gray-400 group-hover:text-white" />
+                                )}
+                                <span className="flex-1 text-gray-300 group-hover:text-white">
+                                  {name}
+                                </span>
+                                <IoIosArrowDown
+                                  className={`ml-auto transition-transform text-gray-400 group-hover:text-white ${
+                                    isOpen ? "rotate-180" : ""
+                                  }`}
+                                />
+                              </button>
+
+                              <ul
+                                className={`pl-6 mt-1 space-y-1 overflow-hidden transition-all duration-300 ${
+                                  isOpen ? "max-h-[500px]" : "max-h-0"
+                                }`}
+                              >
+                                {children.map((child, idx) =>
+                                  child.path ? (
+                                    <li key={idx}>
+                                      <Link
+                                        href={child.path}
+                                        className="flex items-center p-2 rounded-lg hover:bg-gray-700 group"
+                                      >
+                                        {child.Icon && (
+                                          <child.Icon className="w-4 h-4 mr-2 text-gray-400 group-hover:text-white" />
+                                        )}
+                                        <span className="text-gray-300 group-hover:text-white">
+                                          {child.name}
+                                        </span>
+                                      </Link>
+                                    </li>
+                                  ) : null
+                                )}
+                              </ul>
+                            </>
+                          ) : (
+                            path && (
+                              <Link
+                                href={path}
+                                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white 
+                transition-all duration-150 hover:bg-gray-100 overflow-hidden dark:hover:bg-gray-700 group relative"
+                              >
+                                {pathname === path && (
+                                  <span className="absolute bg-gradient-to-tr from-gray-700 to-gray-500 right-0 z-10 blur-lg w-full h-full"></span>
+                                )}
+
+                                {Icon && (
+                                  <Icon className="w-6 h-6 text-gray-500 transition duration-150 dark:text-gray-400 group-hover:text-white z-20" />
+                                )}
+
+                                <span className="flex-1 ms-3 whitespace-nowrap z-20">
+                                  {name}
+                                </span>
+                              </Link>
+                            )
+                          )}
+                        </li>
+                      );
+                    }
+
+                    return null;
                   }
-
-                  return null;
-                })}
-
+                )}
               </ul>
             </div>
           </aside>
-
 
           <div
             className={
               openMenuInit === 0
                 ? "p-4 transition-all duration-300 ml-0 lg:ml-64"
-                : `p-4 transition-all duration-300 ${openMenu ? "lg:ml-64" : "ml-0"
-                }`
+                : `p-4 transition-all duration-300 ${
+                    openMenu ? "lg:ml-64" : "ml-0"
+                  }`
             }
           >
             <div className="p-4 rounded-lg border-gray-700 mt-14 min-h-[70vh]">
