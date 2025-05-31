@@ -54,6 +54,11 @@ export const QuickEditStudentNoteByStudents = () => {
   const callError = (message: unknown) => {
     console.error(message);
   };
+  const validData = (): boolean => {
+    return true;
+  };
+  const SalvarCambios = () => {};
+
   useEffect(() => {
     if (!selectedStudent) {
       setList([]);
@@ -158,18 +163,38 @@ export const QuickEditStudentNoteByStudents = () => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       {/* Filters */}
-      <div className="transition-all h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6 duration-400 shadow-md p-7 shadow-gray-300 rounded-lg">
-        <div>
+      <div
+        className="transition-all h-auto  gap-4 mb-6 duration-400 shadow-md p-7 shadow-gray-300 rounded-lg
+        flex flex-row justify-between items-center flex-wrap
+      "
+      >
+        <div className="w-[500px] ">
           <label className="block text-sm font-medium text-gray-700">
             Estudiante
           </label>
           <AutoCompleteStudents
-            className={`mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            className={`mt-1 p-2 block w-full  rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500`}
             items={students}
             selecteItem={selectedStudent}
             placeholder="Buscar estudiante..."
             onSelect={handleSelect}
           />
+        </div>
+        {/* Salvar Cambios */}
+        <div className="relative inline-block group ">
+          <div className="mb-5">
+            <button className="btn1" onClick={SalvarCambios}>
+              <span className="inline-flex justify-center items-center gap-1">
+                <MdEditDocument className="w-5 h-5 text-gray-200" />
+                Salvar
+              </span>
+            </button>
+          </div>
+
+          {/* Tooltip */}
+          <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
+            Salvar los cambios de la edición
+          </div>
         </div>
       </div>
       <div className="overflow-x-auto">
