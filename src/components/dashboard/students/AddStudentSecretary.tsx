@@ -31,27 +31,9 @@ const studentSchema = z.object({
     ), // Asegura que sean solo números
   address: z.string().min(1, "Dirección es requerida"),
   grade: z.string().min(1, "Grado es requerido"),
-  last_name: z
-    .string()
-    .min(1, "Apellido es requerido")
-    .refine(
-      (value) => /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(value),
-      "El apellido solo puede contener letras y espacios"
-    ),
-   first_name: z
-    .string()
-    .min(1, "Nombre es requerido")
-    .refine(
-      (value) => /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(value),
-      "El nombre solo puede contener letras y espacios"
-    ),
-  registration_number: z
-  .string()
-  .min(1, "Número de matrícula es requerido")
-  .refine(
-    (value) => /^[0-9-]+$/.test(value),
-    "El número de matrícula solo puede contener números y guiones"
-  ),
+  last_name: z.string().min(1, "Apellido es requerido"),
+  first_name: z.string().min(1, "Nombre es requerido"),
+  registration_number: z.string().min(1, "Número de matrícula es requerido"),
   sex: z.string().min(1, "Sexo es requerido"),
   group: z.string().optional(),
 });

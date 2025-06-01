@@ -46,7 +46,7 @@ export const navigationItemsDashboard: NavItem[] = [
     Icon: TbLayoutDashboardFilled,
   },
   {
-    name: "LLenado Boleta",
+    name: "Editar Boleta",
     path: "/dashboard/students/ballot_edit",
     rols: [Rols.student],
     Icon: BiEdit,

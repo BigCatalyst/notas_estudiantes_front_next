@@ -153,31 +153,7 @@ const StudentsTable = () => {
 
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.download = "Control_de_Evaluaciones.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const exportReportActionF = async (id_estudiante: string, grado: string) => {
-    try {
-      const res = await ApiService.reportCertificacionNotasFinal(
-        id_estudiante,
-        grado
-      );
-      console.log(res);
-
-      console.log("respuesta");
-      console.log(res);
-      const pdfBlob = new Blob([res], { type: "application/pdf" });
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-
-      const link = document.createElement("a");
-      link.href = pdfUrl;
-      link.download = "Certificación.pdf";
+      link.download = "reporte.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -200,7 +176,7 @@ const StudentsTable = () => {
 
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.download = "Listado.pdf";
+      link.download = "reporte.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -264,7 +240,7 @@ const StudentsTable = () => {
         <div className="mb-5">
           {list.length > 0 && (
             <Buttom
-              title="Promover de Grado"
+              title="Subir de Grado"
               icon={TbUserPlus}
               className="btn1"
               to="students/verify"
@@ -483,32 +459,7 @@ const StudentsTable = () => {
                             if (item.id && item.grade == "7")
                               exportReportAction(item.id + "", item.grade);
                             else if (item.id) {
-                              redirect(`students/report/${item.id}?type=evaluaciones`);
-                            }
-                          }}
-                          className="btn2 rounded-lg bg-green-700  hover:bg-green-600 "
-                        >
-                          <span className="inline-flex items-center gap-1">
-                            <TbPdf className="group-focus:hidden" />
-                            Evaluaciones
-                          </span>
-                        </button>
-                      </div>
-
-                      {/* Tooltip */}
-                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
-                        Control de Evaluaciones
-                      </div>
-                    </div>
-
-                     <div className="relative inline-block group z-10">
-                      <div className="">
-                        <button
-                          onClick={() => {
-                            if (item.id && item.grade == "7")
-                              exportReportActionF(item.id + "", item.grade);
-                            else if (item.id) {
-                              redirect(`students/report/${item.id}?type=certificacion`);
+                              redirect(`students/report/${item.id}`);
                             }
                           }}
                           className="btn2 rounded-lg bg-green-700  hover:bg-green-600 "
@@ -525,7 +476,6 @@ const StudentsTable = () => {
                         Certificación de Notas
                       </div>
                     </div>
-
                   </td>
                 </tr>
               ))}

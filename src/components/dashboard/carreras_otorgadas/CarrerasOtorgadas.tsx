@@ -407,11 +407,11 @@ const CarrerasOtorgadas = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
-              <th className="p-3 text-left">Posición</th>
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Carrera</th>
-              <th className="p-3 text-left">Nota</th>           
+              <th className="p-3 text-left">Nota</th>
+              <th className="p-3 text-left">Posicion</th>
             </tr>
           </thead>
 
@@ -420,7 +420,6 @@ const CarrerasOtorgadas = () => {
               list &&
               list.map((item: any) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
-                  <td className="p-3">{getLabelPosition(item)}</td>
                   <td className="p-3">
                     {`${item.student.first_name} ${item.student.last_name}`}
                   </td>
@@ -428,6 +427,7 @@ const CarrerasOtorgadas = () => {
                   <td className="p-3">{item.career.name}</td>
 
                   <td className="p-3">{getLabelNote(item)}</td>
+                  <td className="p-3">{getLabelPosition(item)}</td>
                 </tr>
               ))}
           </tbody>

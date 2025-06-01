@@ -37,9 +37,7 @@ const AddDropout = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const studentsData = await ApiService.studentsAll(
-          "is_graduated=false&ordering=grade,first_name"
-        );
+        const studentsData = await ApiService.studentsAll("is_graduated=false&ordering=grade,first_name");
         if (studentsData)
           setStudents(
             studentsData.map((student: any) => ({
@@ -129,8 +127,9 @@ const AddDropout = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Mensaje de error del servidor */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Student */}
-          <div>
+          
+           {/* Student */}
+           <div>
             <label className="block text-sm font-medium text-gray-700">
               Estudiante
             </label>
@@ -257,6 +256,7 @@ const AddDropout = () => {
               </p>
             )}
           </div>
+
         </div>
 
         {serverError.length > 0 && (

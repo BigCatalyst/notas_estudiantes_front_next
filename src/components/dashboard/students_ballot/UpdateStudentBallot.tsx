@@ -61,7 +61,7 @@ const UpdateStudentBallot = () => {
           setStudents(
             studentsData.map((student: any) => ({
               id: student.id,
-              name: `${student.first_name} ${student.last_name}`,
+              name: `${student.first_name}`,
             }))
           );
         }
