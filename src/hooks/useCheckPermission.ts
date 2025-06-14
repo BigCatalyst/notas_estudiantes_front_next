@@ -2,7 +2,7 @@ import { navigationItemsDashboard, NavItem } from "@/data/NavigationItems";
 import { State } from "@/redux/features/authSlice";
 import { logout } from "@/redux/features/authSlice";
 import ApiService from "@/services/ApiService";
-import { usePathname, redirect, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -40,7 +40,7 @@ export const useCheckPermission = () => {
             items: NavItem[],
             path: string
           ): NavItem | null => {
-            let matches: NavItem[] = [];
+            const matches: NavItem[] = [];
 
             for (const item of items) {
               if (item.path) {
