@@ -25,7 +25,7 @@ export enum Rols {
   secretary = "secretary",
 }
 
-interface NavItem {
+export interface NavItem {
   name: string;
   path?: string;
   rols?: Rols[];
@@ -84,7 +84,7 @@ export const navigationItemsDashboard: NavItem[] = [
     rols: [Rols.admin, Rols.secretary],
     Icon: MdOutlineSchool,
   },
-   {
+  {
     name: "Estudiantes",
     Icon: FaUsers,
     rols: [Rols.admin, Rols.secretary],

@@ -100,9 +100,9 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
     verifySchoolYear();
   }, []);
 
-  useEffect(() => {
-    if (!userAuth.isAuthenticated) redirect("/logout");
-  }, []);
+  // useEffect(() => {
+  //   if (!userAuth.isAuthenticated) redirect("/logout");
+  // }, []);
 
   useEffect(() => {
     if (window.innerWidth <= 640) {
