@@ -12,7 +12,6 @@ import { PiWarning } from "react-icons/pi";
 import { GiCancel, GiConfirmed } from "react-icons/gi";
 import Buttom from "@/components/ui/buttom/Buttom";
 import ApiService from "@/services/ApiService";
-import { useCheckPermission } from "@/hooks/useCheckPermission";
 
 interface NavigationDashboardProps {
   children: React.ReactNode;
@@ -28,8 +27,6 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
   const [schoolYear, setSchoolYear] = useState<string | null>(null);
 
   const [grado, setGrado] = useState("1");
-
-  useCheckPermission();
 
   const toggleSubMenu = (index: number) => {
     setOpenSubMenus((prev) =>

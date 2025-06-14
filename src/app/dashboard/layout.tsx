@@ -1,4 +1,4 @@
-import NavigationDashboard from "@/components/dashboard/layout/NavigationDashboard";
+import ProtectedRoutes from "@/components/dashboard/layout/ProtectedRoutes";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <NavigationDashboard>{children}</NavigationDashboard>
+      <ProtectedRoutes>{children}</ProtectedRoutes>
     </>
   );
 };

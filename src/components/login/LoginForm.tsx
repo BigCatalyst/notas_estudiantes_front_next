@@ -7,7 +7,7 @@ import { TbLoader2, TbLockCog } from "react-icons/tb";
 import MensageError from "../message/MensageError";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { date, z } from "zod";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ApiService from "@/services/ApiService";
@@ -41,18 +41,19 @@ const LoginForm = () => {
   const userAuth: State = useSelector((state: any) => state.auth);
   const searchParams = useSearchParams();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const [keyErrorMessage, setKeyErrorMessage] = useState<number>(Date.now());
   useEffect(() => {
     const msg = searchParams.get("errorMessage");
     if (msg) {
       setErrorMessage(decodeURIComponent(msg));
+      setKeyErrorMessage(Date.now());
     }
   }, [searchParams]);
   console.log(userAuth);
 
-  useEffect(() => {
-    if (userAuth.isAuthenticated) redirect("/dashboard");
-  }, []);
+  // useEffect(() => {
+  //   if (userAuth.isAuthenticated) redirect("/dashboard");
+  // }, [userAuth]);
 
   const onSubmit = async (data: any) => {
     setError(false);
@@ -127,7 +128,7 @@ const LoginForm = () => {
         )}
 
         {errorMessage && (
-          <div className="animate-slide-down" key={Date.now()}>
+          <div className="animate-slide-down" key={keyErrorMessage}>
             <MensageError duration={10000} message={errorMessage} />
           </div>
         )}
