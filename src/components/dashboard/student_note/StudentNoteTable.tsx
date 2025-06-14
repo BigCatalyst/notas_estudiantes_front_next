@@ -15,6 +15,9 @@ import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPlaylistAdd } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { State } from "@/redux/features/authSlice";
+import { Rols } from "@/data/NavigationItems";
 
 const StudentNoteTable = () => {
   const [list, setList] = useState<StudentNote[]>([]);
@@ -157,6 +160,9 @@ const StudentNoteTable = () => {
     if (field === "school_year__id") setLastSY(value);
   };
 
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -181,25 +187,43 @@ const StudentNoteTable = () => {
         </div> */}
 
         {/* Adicionar */}
-        <div className="mb-5">
-          <Buttom
-            title="Adicionar"
-            icon={TbPlaylistAdd}
-            className="btn1"
-            to="student_note/add"
-          />
-        </div>
+        {isSecretary && (
+          <div className="mb-5">
+            <Buttom
+              title="Adicionar"
+              icon={TbPlaylistAdd}
+              className="btn1"
+              to="student_note/add"
+            />
+          </div>
+        )}
 
-        {/* Adicionar */}
-        <div className="mb-5">
-          <Buttom
-            title="Edición Rápida"
-            icon={MdEdit}
-            className="btn1"
-            to="student_note/quick_student_note"
-          />
-        </div>
+        {/* Edicion Rapida Por asignaturas */}
+        {isSecretary && (
+
+          <div className="mb-5">
+            <Buttom
+              title="Edición Rápida Por Asignatura"
+              icon={MdEdit}
+              className="btn1"
+              to="student_note/quick_student_note"
+            />
+          </div>
+        )}
+
+        {/* Edicion Rapida Por Estudiante */}
+        {isSecretary && (
+          <div className="mb-5">
+            <Buttom
+              title="Edición Rápida Por Estudiante"
+              icon={MdEdit}
+              className="btn1"
+              to="student_note/quick_student_note/students"
+            />
+          </div>
+        )}
       </div>
+
 
       {/* Filters */}
       <div
@@ -357,14 +381,14 @@ const StudentNoteTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+              <th className="p-3 text-left">Estudiante</th>
+              <th className="p-3 text-left">Asignatura</th>
+              <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">ASC</th>
               <th className="p-3 text-left">TCP1</th>
               <th className="p-3 text-left">TCP2</th>
               <th className="p-3 text-left">Examen Final</th>
               <th className="p-3 text-left">Nota Final</th>
-              <th className="p-3 text-left">Estudiante</th>
-              <th className="p-3 text-left">Asigntura</th>
-              <th className="p-3 text-left">Grado</th>
               <th className="p-3 text-left">Año Escolar</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>
@@ -375,6 +399,9 @@ const StudentNoteTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
+                  <td className="p-3">{`${item.student.first_name} ${item.student.last_name}`}</td>
+                  <td className="p-3">{item.subject.name}</td>
+                  <td className="p-3">{item.subject.grade}</td>
                   <td className="p-3">{item.asc?.toFixed(2)}</td>
                   <td className="p-3">{item.tcp1?.toFixed(2)}</td>
                   <td className="p-3">
@@ -382,35 +409,34 @@ const StudentNoteTable = () => {
                   </td>
                   <td className="p-3">{item.final_exam?.toFixed(2)}</td>
                   <td className="p-3">{item.final_grade?.toFixed(2)}</td>
-                  <td className="p-3">{`${item.student.first_name} ${item.student.last_name}`}</td>
-                  <td className="p-3">{item.subject.name}</td>
-                  <td className="p-3">{item.subject.grade}</td>
                   <td className="p-3">{item.school_year.name}</td>
-                  <td className="p-3 flex gap-2">
-                    <button
-                      onClick={() => handleEdit(item)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg group focus:bg-blue-400"
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        <MdEdit className="group-focus:hidden" />
-                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
-                        Editar
-                      </span>
-                    </button>
+                  {isSecretary && (
+                    <td className="p-3 flex gap-2">
+                      <button
+                        onClick={() => handleEdit(item)}
+                        className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 shadow-md border-3 hover:shadow-lg group focus:bg-blue-400"
+                      >
+                        <span className="inline-flex items-center gap-1">
+                          <MdEdit className="group-focus:hidden" />
+                          <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
+                          Editar
+                        </span>
+                      </button>
 
-                    <button
-                      onClick={() => {
-                        if (item.id) handleDelete(item.id);
-                      }}
-                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg group focus:bg-red-400"
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        <MdDeleteForever className="group-focus:hidden" />
-                        <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
-                        Eliminar
-                      </span>
-                    </button>
-                  </td>
+                      <button
+                        onClick={() => {
+                          if (item.id) handleDelete(item.id);
+                        }}
+                        className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md border-3 hover:shadow-lg group focus:bg-red-400"
+                      >
+                        <span className="inline-flex items-center gap-1">
+                          <MdDeleteForever className="group-focus:hidden" />
+                          <TbLoader2 className="hidden group-focus:block  group-focus:animate-spin " />
+                          Eliminar
+                        </span>
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
           </tbody>

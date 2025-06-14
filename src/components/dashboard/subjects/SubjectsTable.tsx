@@ -19,6 +19,9 @@ import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPdf, TbPlaylistAdd } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { State } from "@/redux/features/authSlice";
+import { Rols } from "@/data/NavigationItems";
 
 const SubjectsTable = () => {
   const [list, setList] = useState<Subject[]>([]);
@@ -141,6 +144,9 @@ const SubjectsTable = () => {
     }
   };
 
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -157,8 +163,9 @@ const SubjectsTable = () => {
             Filtros
           </div>
         </div>
-
+       
         {/* Adicionar */}
+        {isSecretary && (
         <div className="mb-5">
           <Buttom
             title="Adicionar"
@@ -167,6 +174,7 @@ const SubjectsTable = () => {
             to="subjects/add"
           />
         </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -216,8 +224,8 @@ const SubjectsTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+            <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">Grado</th>
-              <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">TCP2</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>
@@ -228,8 +236,8 @@ const SubjectsTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
-                  <td className="p-3">{item.grade}</td>
                   <td className="p-3">{item.name}</td>
+                  <td className="p-3">{item.grade}</td>
 
                   <td className="p-3">
                     {item.tcp2_required === true ? (
@@ -238,7 +246,8 @@ const SubjectsTable = () => {
                       <IoMdCloseCircle className="w-5 h-5 text-red-700" />
                     )}
                   </td>
-
+                  
+                  {isSecretary && (
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => handleEdit(item)}
@@ -285,6 +294,7 @@ const SubjectsTable = () => {
                       </div>
                     </div>
                   </td>
+                  )}
                 </tr>
               ))}
           </tbody>

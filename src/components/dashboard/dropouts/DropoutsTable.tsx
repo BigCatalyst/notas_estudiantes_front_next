@@ -15,6 +15,9 @@ import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPlaylistAdd, TbTableExport } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { State } from "@/redux/features/authSlice";
+import { Rols } from "@/data/NavigationItems";
 
 const DropoutsTable = () => {
   const [list, setList] = useState<Dropout[]>([]);
@@ -154,6 +157,9 @@ const DropoutsTable = () => {
     }
   };
 
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -179,6 +185,7 @@ const DropoutsTable = () => {
         </div>
 
         {/* Adicionar */}
+        {isSecretary && (
         <div className="mb-5">
           <Buttom
             title="Adicionar"
@@ -187,6 +194,7 @@ const DropoutsTable = () => {
             to="dropouts/add"
           />
         </div>
+         )}
       </div>
 
       {/* Filters */}
@@ -332,6 +340,7 @@ const DropoutsTable = () => {
                   <td className="p-3">{item.municipality}</td>
                   <td className="p-3">{item.school}</td>
 
+                  {isSecretary && (
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => handleEdit(item)}
@@ -357,6 +366,7 @@ const DropoutsTable = () => {
                       </span>
                     </button>
                   </td>
+                  )}
                 </tr>
               ))}
           </tbody>

@@ -25,6 +25,9 @@ import {
   TbTableExport,
   TbUserPlus,
 } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { State } from "@/redux/features/authSlice";
+import { Rols } from "@/data/NavigationItems";
 
 const StudentsTable = () => {
   const [list, setList] = useState<Student[]>([]);
@@ -150,7 +153,31 @@ const StudentsTable = () => {
 
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.download = "reporte.pdf";
+      link.download = "Control_de_Evaluaciones.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const exportReportActionF = async (id_estudiante: string, grado: string) => {
+    try {
+      const res = await ApiService.reportCertificacionNotasFinal(
+        id_estudiante,
+        grado
+      );
+      console.log(res);
+
+      console.log("respuesta");
+      console.log(res);
+      const pdfBlob = new Blob([res], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "Certificación.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -173,7 +200,7 @@ const StudentsTable = () => {
 
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.download = "reporte.pdf";
+      link.download = "Listado.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -183,6 +210,9 @@ const StudentsTable = () => {
       setReportLoading(false);
     }
   };
+  
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -218,6 +248,7 @@ const StudentsTable = () => {
         </div>
 
         {/* Adicionar */}
+        {isSecretary && (
         <div className="mb-5">
           <Buttom
             title="Adicionar"
@@ -226,18 +257,21 @@ const StudentsTable = () => {
             to="students/add"
           />
         </div>
+        )}
 
         {/* Subir de Grado */}
+        {isSecretary && (
         <div className="mb-5">
           {list.length > 0 && (
             <Buttom
-              title="Subir de Grado"
+              title="Promover de Grado"
               icon={TbUserPlus}
               className="btn1"
               to="students/verify"
             />
           )}
         </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -352,15 +386,15 @@ const StudentsTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+            <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">Apellido</th>
               {/* <th className="p-3 text-left">ID</th> */}
-              <th className="p-3 text-left">Aprobado</th>
-              <th className="p-3 text-left">CI</th>
+              <th className="p-3 text-left">Aprobado</th> 
+              <th className="p-3 text-left">Grado</th>            
               <th className="p-3 text-left">Grupo</th>
-              <th className="p-3 text-left">Dirección</th>
-              <th className="p-3 text-left">Grado</th>
-              <th className="p-3 text-left">Registro</th>
+              <th className="p-3 text-left">Dirección</th>            
+              <th className="p-3 text-left">No.Matrícula</th>
               <th className="p-3 text-left">Sexo</th>
               <th className="p-3 text-left">Graduado</th>
               <th className="p-3 text-left">Baja</th>
@@ -373,6 +407,7 @@ const StudentsTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
+                  <td className="p-3">{item.ci}</td>
                   <td className="p-3">{item.first_name}</td>
                   <td className="p-3">{item.last_name}</td>
                   <td className="p-3">
@@ -385,12 +420,10 @@ const StudentsTable = () => {
                     >
                       {item.is_approved ? "Aprobado" : "Desaprobado"}
                     </span>
-                  </td>
-
-                  <td className="p-3">{item.ci}</td>
+                  </td>    
+                  <td className="p-3">{item.grade}</td>          
                   <td className="p-3">{item.group?.name}</td>
-                  <td className="p-3 w-[100px]">{item.address}</td>
-                  <td className="p-3">{item.grade}</td>
+                  <td className="p-3 w-[100px]">{item.address}</td>                
                   <td className="p-3">{item.registration_number}</td>
                   <td className="p-3">
                     <span
@@ -427,7 +460,8 @@ const StudentsTable = () => {
                         Editar
                       </span>
                     </button>
-
+                    
+                    {isSecretary && (
                     <button
                       onClick={() => {
                         if (item.id) handleDelete(item.id);
@@ -440,6 +474,7 @@ const StudentsTable = () => {
                         Eliminar
                       </span>
                     </button>
+                    )}
 
                     <div className="relative inline-block group z-10">
                       <div className="">
@@ -448,7 +483,32 @@ const StudentsTable = () => {
                             if (item.id && item.grade == "7")
                               exportReportAction(item.id + "", item.grade);
                             else if (item.id) {
-                              redirect(`students/report/${item.id}`);
+                              redirect(`students/report/${item.id}?type=evaluaciones`);
+                            }
+                          }}
+                          className="btn2 rounded-lg bg-green-700  hover:bg-green-600 "
+                        >
+                          <span className="inline-flex items-center gap-1">
+                            <TbPdf className="group-focus:hidden" />
+                            Evaluaciones
+                          </span>
+                        </button>
+                      </div>
+
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
+                        Control de Evaluaciones
+                      </div>
+                    </div>
+
+                     <div className="relative inline-block group z-10">
+                      <div className="">
+                        <button
+                          onClick={() => {
+                            if (item.id && item.grade == "7")
+                              exportReportActionF(item.id + "", item.grade);
+                            else if (item.id) {
+                              redirect(`students/report/${item.id}?type=certificacion`);
                             }
                           }}
                           className="btn2 rounded-lg bg-green-700  hover:bg-green-600 "
@@ -465,6 +525,7 @@ const StudentsTable = () => {
                         Certificación de Notas
                       </div>
                     </div>
+
                   </td>
                 </tr>
               ))}

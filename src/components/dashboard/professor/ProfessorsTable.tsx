@@ -14,6 +14,9 @@ import { IoFilterSharp } from "react-icons/io5";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbLoader2, TbPlaylistAdd } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { State } from "@/redux/features/authSlice";
+import { Rols } from "@/data/NavigationItems";
 
 export const ProfessorsTable = () => {
   const [list, setList] = useState<ProfessorType[]>([]);
@@ -115,6 +118,9 @@ export const ProfessorsTable = () => {
     setCurrentPage(1);
   };
 
+  const userAuth: State = useSelector((state: any) => state.auth);
+  const isSecretary = userAuth.user?.roles.includes(Rols.secretary);
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -133,6 +139,7 @@ export const ProfessorsTable = () => {
         </div>
 
         {/* Adicionar */}
+        {isSecretary && (
         <div className="mb-5">
           <Buttom
             title="Adicionar"
@@ -141,6 +148,7 @@ export const ProfessorsTable = () => {
             to="professor/add"
           />
         </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -198,11 +206,11 @@ export const ProfessorsTable = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+              <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">Apellido</th>
-              <th className="p-3 text-left">CI</th>
-              <th className="p-3 text-left">Dirección</th>
               <th className="p-3 text-left">Sexo</th>
+              <th className="p-3 text-left">Dirección</th>
               <th className="p-3 text-left">Acciones</th>
             </tr>
           </thead>
@@ -212,10 +220,9 @@ export const ProfessorsTable = () => {
               list.map((item) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
                   {/* <td className="p-3">{user.id}</td> */}
+                  <td className="p-3">{item.ci}</td>
                   <td className="p-3">{item.first_name}</td>
                   <td className="p-3">{item.last_name}</td>
-                  <td className="p-3">{item.ci}</td>
-                  <td className="p-3 w-[100px]">{item.address}</td>
                   <td className="p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
@@ -227,6 +234,7 @@ export const ProfessorsTable = () => {
                       {item.sex === "M" ? "Masculino" : "Femenino"}
                     </span>
                   </td>
+                  <td className="p-3 w-[100px]">{item.address}</td>
 
                   <td className="p-3 flex gap-2">
                     <button
@@ -239,7 +247,8 @@ export const ProfessorsTable = () => {
                         Editar
                       </span>
                     </button>
-
+                    
+                    {isSecretary && (
                     <button
                       onClick={() => {
                         if (item.id) handleDelete(item.id);
@@ -252,6 +261,7 @@ export const ProfessorsTable = () => {
                         Eliminar
                       </span>
                     </button>
+                    )}
                   </td>
                 </tr>
               ))}

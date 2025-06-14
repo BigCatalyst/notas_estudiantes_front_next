@@ -11,7 +11,7 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ApiService from "@/services/ApiService";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { loginSuccess, State } from "@/redux/features/authSlice";
 import { User } from "@/services/Types";
 
@@ -39,12 +39,21 @@ const LoginForm = () => {
   const [isLoading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userAuth: State = useSelector((state: any) => state.auth);
-
+  const searchParams = useSearchParams();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [keyErrorMessage, setKeyErrorMessage] = useState<number>(Date.now());
+  useEffect(() => {
+    const msg = searchParams.get("errorMessage");
+    if (msg) {
+      setErrorMessage(decodeURIComponent(msg));
+      setKeyErrorMessage(Date.now());
+    }
+  }, [searchParams]);
   console.log(userAuth);
 
-  useEffect(() => {
-    if (userAuth.isAuthenticated) redirect("/dashboard");
-  }, []);
+  // useEffect(() => {
+  //   if (userAuth.isAuthenticated) redirect("/dashboard");
+  // }, [userAuth]);
 
   const onSubmit = async (data: any) => {
     setError(false);
@@ -107,7 +116,7 @@ const LoginForm = () => {
               className="w-[100px] h-[100px]"
             />
           </div>
-          Login
+          Bienvenido
         </div>
         {error && (
           <div className="animate-slide-down" key={Date.now()}>
@@ -118,11 +127,17 @@ const LoginForm = () => {
           </div>
         )}
 
+        {errorMessage && (
+          <div className="animate-slide-down" key={keyErrorMessage}>
+            <MensageError duration={10000} message={errorMessage} />
+          </div>
+        )}
+
         <div className="input-neo">
           <input
             type="text"
             id="username"
-            placeholder="Username"
+            placeholder="Usuario"
             {...register("username")}
           />
           {errors.username && <p>{errors.username.message}</p>}
@@ -133,7 +148,7 @@ const LoginForm = () => {
           <input
             type="password"
             id="password"
-            placeholder="Password"
+            placeholder="Contraseña"
             {...register("password")}
           />
           {errors.password && <p>{errors.password.message}</p>}
@@ -149,7 +164,7 @@ const LoginForm = () => {
               Iniciando Sesión...
             </span>
           ) : (
-            <span className="inline-flex items-center gap-2">LogIn</span>
+            <span className="inline-flex items-center gap-2">Acceder</span>
           )}
         </button>
       </form>

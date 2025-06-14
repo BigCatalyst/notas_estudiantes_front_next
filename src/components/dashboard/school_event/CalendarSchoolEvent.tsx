@@ -47,24 +47,26 @@ export const CalendarSchoolEvent = () => {
         initialView="dayGridMonth"
         events={events}
         locale={esLocale}
+        dayMaxEventRows={true}
+        height="auto"
         eventContent={(eventInfo: EventContentArg) => (
-          <div className="flex flex-col items-center justify-center gap-1 p-1 bg-gray-200 rounded-lg shadow-lg m-1 text-gray-700">
-            <span className="text-[17px] font-bold">
-              <i>{eventInfo.event.title}</i>
-            </span>
-            <span className="border-b-1 border-b-gray-300 w-full"></span>
-            <span className="inline-flex gap-1 items-center justify-start">
-              <FaCalendarAlt />
-              <i>{eventInfo.event.extendedProps.dateText}</i>
-            </span>
-            <span className="inline-flex gap-1 items-center justify-start">
-              <FaClock />
-              <i>{eventInfo.event.extendedProps.timeText}</i>
-            </span>
-            <span>
-              <i>{eventInfo.event.extendedProps.description}</i>
-            </span>
+          <div className="p-1 m-1 bg-gray-200 rounded-lg shadow text-gray-800 text-sm overflow-visible break-words whitespace-pre-wrap max-w-full">
+          <div className="text-[16px] font-semibold leading-snug">
+            <i>{eventInfo.event.title}</i>
           </div>
+          <div className="border-b border-gray-300 my-1 w-full"></div>
+          <div className="flex gap-1 items-center text-xs text-gray-600">
+            <FaCalendarAlt />
+            <i>{eventInfo.event.extendedProps.dateText}</i>
+          </div>
+          <div className="flex gap-1 items-center text-xs text-gray-600">
+            <FaClock />
+            <i>{eventInfo.event.extendedProps.timeText}</i>
+          </div>
+          <div className="mt-1 text-[13px] leading-tight">
+            <i>{eventInfo.event.extendedProps.description}</i>
+          </div>
+        </div>
         )}
       />
     </div>

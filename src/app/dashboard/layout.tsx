@@ -1,15 +1,15 @@
-import NavigationDashboard from "@/components/dashboard/layout/NavigationDashboard";
+import ProtectedRoutes from "@/components/dashboard/layout/ProtectedRoutes";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: { default: "Dashboard", template: "%s | Dashboard" },
+  title: { default: "ESBU_M94", template: "%s | Dashboard" },
   description: "Dashboard",
 };
 
 const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <NavigationDashboard>{children}</NavigationDashboard>
+      <ProtectedRoutes>{children}</ProtectedRoutes>
     </>
   );
 };

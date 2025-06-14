@@ -207,7 +207,7 @@ const VerifyStudents = () => {
         </div>
 
         <p className="font-bold text-lg text-gray-800">
-          Condiciones para suvir de Grado:
+          Condiciones para subir de Grado:
         </p>
 
         <ul>
@@ -378,7 +378,7 @@ const VerifyStudents = () => {
 
           {/* Botón de envío */}
           <Buttom
-            title="Subir Estudiante de Grado"
+            title="Subir Estudiantes de Grado"
             type="submit"
             isLoading={isLoading}
             className="btn1"

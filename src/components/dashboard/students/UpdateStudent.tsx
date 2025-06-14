@@ -187,6 +187,45 @@ const UpdateStudent = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+     
+          {/* Nombre */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Nombre
+            </label>
+            <input
+              {...register("first_name")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.first_name ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
+            />
+            {errors.first_name && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.first_name.message}
+              </p>
+            )}
+          </div>
+          
+          {/* Apellido */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Apellido
+            </label>
+            <input
+              {...register("last_name")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.last_name ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
+            />
+            {errors.last_name && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.last_name.message}
+              </p>
+            )}
+          </div>
+
           {/* CI */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -197,9 +236,31 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.ci ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.ci && (
               <p className="text-red-500 text-sm mt-1">{errors.ci.message}</p>
+            )}
+          </div>
+          
+          {/* Sexo */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Sexo
+            </label>
+            <select
+              {...register("sex")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.sex ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
+            >
+              <option value="">Seleccione el sexo</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+            </select>
+            {errors.sex && (
+              <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
             )}
           </div>
 
@@ -213,6 +274,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.address ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.address && (
               <p className="text-red-500 text-sm mt-1">
@@ -231,6 +293,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.grade ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             >
               <option value="">Seleccione un grado</option>
               <option value="7">7mo</option>
@@ -240,42 +303,6 @@ const UpdateStudent = () => {
             {errors.grade && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.grade.message}
-              </p>
-            )}
-          </div>
-
-          {/* Apellido */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Apellido
-            </label>
-            <input
-              {...register("last_name")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.last_name ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.last_name && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.last_name.message}
-              </p>
-            )}
-          </div>
-
-          {/* Nombre */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Nombre
-            </label>
-            <input
-              {...register("first_name")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.first_name ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.first_name && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.first_name.message}
               </p>
             )}
           </div>
@@ -292,31 +319,12 @@ const UpdateStudent = () => {
                   ? "border-red-500"
                   : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             />
             {errors.registration_number && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.registration_number.message}
               </p>
-            )}
-          </div>
-
-          {/* Sexo */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Sexo
-            </label>
-            <select
-              {...register("sex")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.sex ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            >
-              <option value="">Seleccione el sexo</option>
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-            </select>
-            {errors.sex && (
-              <p className="text-red-500 text-sm mt-1">{errors.sex.message}</p>
             )}
           </div>
 
@@ -330,6 +338,7 @@ const UpdateStudent = () => {
               className={`mt-1 p-2 block w-full rounded-md ${
                 errors.group ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+              disabled
             >
               <option value="">Seleccione un Grupo</option>
               {groups.map((group) => (

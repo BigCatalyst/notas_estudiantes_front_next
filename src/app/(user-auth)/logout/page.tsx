@@ -5,10 +5,17 @@ import { logout } from "@/redux/features/authSlice";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import ApiService from "@/services/ApiService";
 
 const Logout = () => {
   const dispatch = useDispatch();
-
+  const callApiLogout = async () => {
+    try {
+      await ApiService.logout();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     // const cerrarcecion = async () => {
     //   const res = await ApiService.logout();
@@ -17,7 +24,7 @@ const Logout = () => {
     // };
 
     // cerrarcecion();
-
+    callApiLogout();
     dispatch(logout());
     redirect("/login");
   }, []);

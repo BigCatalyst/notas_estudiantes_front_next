@@ -6,6 +6,7 @@
 import Buttom from "@/components/ui/buttom/Buttom";
 import { Rols } from "@/data/NavigationItems";
 import { State } from "@/redux/features/authSlice";
+import { GrandCarrerRes } from "@/services/api/careers";
 import ApiService from "@/services/ApiService";
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoFilterSharp } from "react-icons/io5";
 import { RiLoaderLine } from "react-icons/ri";
 import { TbPlaylistAdd } from "react-icons/tb";
+import { TbTableExport } from "react-icons/tb";
 import { useSelector } from "react-redux";
 
 const CarrerasOtorgadas = () => {
@@ -198,6 +200,47 @@ const CarrerasOtorgadas = () => {
     setLastSY(value);
   };
 
+
+  const getLabelPosition = (item: GrandCarrerRes): string => {
+    try {
+      if (item.degree_scale && item.degree_scale.ranking_number) {
+        return item.degree_scale.ranking_number + "";
+      }
+    } catch {}
+
+    return "";
+  };
+
+  const getLabelNote = (item: GrandCarrerRes): string => {
+    try {
+      if (item.degree_scale && item.degree_scale.ranking_score) {
+        const numero = Number(item.degree_scale.ranking_score);
+        const formateado = numero.toFixed(2).replace(/\.?0+$/, "");
+        return formateado;
+      }
+    } catch {}
+
+    return "";
+  };
+
+  const exportGrantCareersReport = async () => {
+  try {
+    const res = await ApiService.reportGrantCareers();
+    const pdfBlob = new Blob([res], { type: "application/pdf" });
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = "carreras_otorgadas.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.log("Error al exportar carreras otorgadas:", error);
+  }
+};
+
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="inline-flex w-full gap-3">
@@ -219,6 +262,13 @@ const CarrerasOtorgadas = () => {
               <IoFilterSharp className="w-6 h-6 text-gray-200" />
             </button>
           </div>
+
+          {/* Exportar */}
+                  <div className="mb-5">
+                    <button className="btn1" onClick={exportGrantCareersReport}>
+                      <TbTableExport /> Exportar
+                    </button>
+                  </div>                       
 
           {/* Tooltip */}
           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-sm px-2 py-2 rounded whitespace-nowrap">
@@ -346,7 +396,7 @@ const CarrerasOtorgadas = () => {
             handleFilterChange("school_year__id", e.target.value)
           }
         >
-          <option value="">SchoolYear</option>
+          <option value="">Año Escolar</option>
           {schoolYears.map((val, index) => (
             <option key={index} value={val.id}>{`${val.name}`}</option>
           ))}
@@ -357,9 +407,11 @@ const CarrerasOtorgadas = () => {
         <table className="w-full table-auto">
           <thead className="rounded-md">
             <tr className="bg-slate-700 text-gray-200">
+              <th className="p-3 text-left">Posición</th>
               <th className="p-3 text-left">Nombre</th>
               <th className="p-3 text-left">CI</th>
               <th className="p-3 text-left">Carrera</th>
+              <th className="p-3 text-left">Nota</th>           
             </tr>
           </thead>
 
@@ -368,11 +420,14 @@ const CarrerasOtorgadas = () => {
               list &&
               list.map((item: any) => (
                 <tr key={item.id} className="border-b border-b-gray-300">
+                  <td className="p-3">{getLabelPosition(item)}</td>
                   <td className="p-3">
                     {`${item.student.first_name} ${item.student.last_name}`}
                   </td>
                   <td className="p-3">{item.student.ci}</td>
                   <td className="p-3">{item.career.name}</td>
+
+                  <td className="p-3">{getLabelNote(item)}</td>
                 </tr>
               ))}
           </tbody>

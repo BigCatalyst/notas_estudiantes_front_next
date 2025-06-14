@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 interface Item {
   id: string;
   name: string;
-  label: string;
+  last_name: string;
+  first_name: string;
+  ci: string;
 }
 
 interface AutoCompleteProps {
@@ -11,10 +13,10 @@ interface AutoCompleteProps {
   placeholder?: string;
   onSelect: (item: Item) => void;
   className?: string;
-  selecteItem?: string;
+  selecteItem?: Item;
 }
 
-const AutoComplete: React.FC<AutoCompleteProps> = ({
+const AutoCompleteStudents: React.FC<AutoCompleteProps> = ({
   items,
   placeholder,
   onSelect,
@@ -26,12 +28,12 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
 
   useEffect(() => {
     console.log(selecteItem);
-    if (selecteItem) setInputValue(selecteItem);
+    if (selecteItem) setInputValue(selecteItem.name);
   }, []);
 
   // Filtrar la lista según el valor del input
   const filteredItems = items.filter((item) =>
-   item.label.toLowerCase().includes(inputValue.toLowerCase())
+    item.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   // Manejar cambios en el input
@@ -68,7 +70,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
               onClick={() => handleItemClick(item)}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100"
             >
-              {item.label}
+              {item.name}
             </div>
           ))}
         </div>
@@ -77,4 +79,4 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   );
 };
 
-export default AutoComplete;
+export default AutoCompleteStudents;

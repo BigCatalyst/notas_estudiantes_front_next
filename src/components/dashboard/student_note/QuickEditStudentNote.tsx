@@ -288,13 +288,6 @@ export const QuickEditStudentNote = () => {
         </select>
       </div>
 
-      {/* Modal */}
-      {/* <Modal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        action={deleteEntity}
-      /> */}
-
       {/* Tabla */}
       <div className="overflow-x-auto shadow-md rounded-t-xl sm:min-h-[200px]">
         <table className="w-full table-auto">

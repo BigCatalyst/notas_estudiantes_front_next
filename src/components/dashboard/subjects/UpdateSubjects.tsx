@@ -161,7 +161,7 @@ const UpdateSubjects = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <h2 className="text-2xl font-bold mb-6 mt-7 text-gray-800 border-b-2 pb-2 border-b-gray-400">
-        Actualizar Materia
+        Actualizar Asignatura
       </h2>
 
       <div className="absolute right-10 top-7">
@@ -177,6 +177,23 @@ const UpdateSubjects = () => {
         {/* Mensaje de error del servidor */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          {/* Nombre */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Nombre
+            </label>
+            <input
+              {...register("name")}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.name ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            )}
+          </div>
+
           {/* Grado */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -197,22 +214,6 @@ const UpdateSubjects = () => {
               <p className="text-red-500 text-sm mt-1">
                 {errors.grade.message}
               </p>
-            )}
-          </div>
-
-          {/* Nombre */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Nombre
-            </label>
-            <input
-              {...register("name")}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.name ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
 

@@ -12,7 +12,6 @@ import { PiWarning } from "react-icons/pi";
 import { GiCancel, GiConfirmed } from "react-icons/gi";
 import Buttom from "@/components/ui/buttom/Buttom";
 import ApiService from "@/services/ApiService";
-import { BiEdit } from "react-icons/bi";
 
 interface NavigationDashboardProps {
   children: React.ReactNode;
@@ -23,10 +22,17 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
   const [userMernuInitial, setUserMernuInitial] = useState(0);
   const [openMenu, setOpenMenu] = useState(false);
   const [openMenuInit, setOpenMenuInit] = useState(0);
+  const [openSubMenus, setOpenSubMenus] = useState<number[]>([]);
 
   const [schoolYear, setSchoolYear] = useState<string | null>(null);
 
   const [grado, setGrado] = useState("1");
+
+  const toggleSubMenu = (index: number) => {
+    setOpenSubMenus((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
 
   useEffect(() => {
     (async () => {
@@ -94,9 +100,9 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
     verifySchoolYear();
   }, []);
 
-  useEffect(() => {
-    if (!userAuth.isAuthenticated) redirect("/logout");
-  }, []);
+  // useEffect(() => {
+  //   if (!userAuth.isAuthenticated) redirect("/logout");
+  // }, []);
 
   useEffect(() => {
     if (window.innerWidth <= 640) {
@@ -184,9 +190,9 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
 
                   <div className="text-[24px] font-bold text-slate-200 cursor-default">
                     <div className="hidden md:block">
-                      Gestión
+                      ESBU.
                       <span className="text-orange-500 text-shadow text-shadow-gray-400 text-shadow-blur-1">
-                        Estudiantes
+                        Mártires-9-4
                       </span>
                       <span
                         id="id-school-year"
@@ -195,9 +201,9 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                     </div>
 
                     <div className="block md:hidden">
-                      Gest
+                      ESBU.
                       <span className="text-orange-500 text-shadow text-shadow-gray-400 text-shadow-blur-1">
-                        Estd
+                        M-9-4
                       </span>
                     </div>
                   </div>
@@ -259,7 +265,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                             role="menuitem"
                           >
-                            Profile
+                            Perfil
                           </Link>
                         </li>
                         <li>
@@ -268,7 +274,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                             role="menuitem"
                           >
-                            Logout
+                            Cerrar Sesión
                           </Link>
                         </li>
                       </ul>
@@ -293,73 +299,93 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
             <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
               <ul className="space-y-2 font-medium">
                 {navigationItemsDashboard.map(
-                  ({ name, path, Icon, rols }, index) =>
-                    rols &&
-                    rols.findIndex(
-                      (rol: string) =>
-                        userAuth.user?.roles &&
-                        userAuth.user?.roles.length > 0 &&
-                        userAuth?.user?.roles.findIndex(
-                          (item) => rol === item
-                        ) > -1
-                    ) !== -1 &&
-                    name !== "Editar Boleta" ? (
-                      <li key={index}>
-                        <Link
-                          href={path}
-                          className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white 
-                  transition-all duration-150 hover:bg-gray-100 overflow-hidden dark:hover:bg-gray-700 group relative"
-                        >
-                          {pathname === path && (
-                            <span className="absolute bg-gradient-to-tr from-gray-700 to-gray-500 right-0 z-10 blur-lg w-full h-full"></span>
+                  ({ name, path, Icon, rols, children }, index) => {
+                    const userRoles = userAuth.user?.roles || [];
+                    const hasPermission = rols?.some((rol: string) =>
+                      userRoles.includes(rol)
+                    );
+
+                    const isEditarBoleta = name === "Editar Boleta";
+                    const canSeeEditarBoleta =
+                      userRoles.includes("estudiante") && grado === "9";
+
+                    if (
+                      (hasPermission && !isEditarBoleta) ||
+                      (isEditarBoleta && canSeeEditarBoleta)
+                    ) {
+                      const isOpen = openSubMenus.includes(index);
+                      return (
+                        <li key={index}>
+                          {children && children.length > 0 ? (
+                            <>
+                              <button
+                                onClick={() => toggleSubMenu(index)}
+                                className="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-700 group"
+                              >
+                                {Icon && (
+                                  <Icon className="w-6 h-6 mr-2 text-gray-400 group-hover:text-white" />
+                                )}
+                                <span className="flex-1 text-gray-300 group-hover:text-white">
+                                  {name}
+                                </span>
+                                <IoIosArrowDown
+                                  className={`ml-auto transition-transform text-gray-400 group-hover:text-white ${
+                                    isOpen ? "rotate-180" : ""
+                                  }`}
+                                />
+                              </button>
+
+                              <ul
+                                className={`pl-6 mt-1 space-y-1 overflow-hidden transition-all duration-300 ${
+                                  isOpen ? "max-h-[500px]" : "max-h-0"
+                                }`}
+                              >
+                                {children.map((child, idx) =>
+                                  child.path ? (
+                                    <li key={idx}>
+                                      <Link
+                                        href={child.path}
+                                        className="flex items-center p-2 rounded-lg hover:bg-gray-700 group"
+                                      >
+                                        {child.Icon && (
+                                          <child.Icon className="w-4 h-4 mr-2 text-gray-400 group-hover:text-white" />
+                                        )}
+                                        <span className="text-gray-300 group-hover:text-white">
+                                          {child.name}
+                                        </span>
+                                      </Link>
+                                    </li>
+                                  ) : null
+                                )}
+                              </ul>
+                            </>
+                          ) : (
+                            path && (
+                              <Link
+                                href={path}
+                                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white 
+                transition-all duration-150 hover:bg-gray-100 overflow-hidden dark:hover:bg-gray-700 group relative"
+                              >
+                                {pathname === path && (
+                                  <span className="absolute bg-gradient-to-tr from-gray-700 to-gray-500 right-0 z-10 blur-lg w-full h-full"></span>
+                                )}
+
+                                {Icon && (
+                                  <Icon className="w-6 h-6 text-gray-500 transition duration-150 dark:text-gray-400 group-hover:text-white z-20" />
+                                )}
+
+                                <span className="flex-1 ms-3 whitespace-nowrap z-20">
+                                  {name}
+                                </span>
+                              </Link>
+                            )
                           )}
-
-                          {Icon && (
-                            <Icon className="w-6 h-6 text-gray-500 transition duration-150 dark:text-gray-400 group-hover:text-white z-20" />
-                          )}
-
-                          <span className="flex-1 ms-3 whitespace-nowrap z-20">
-                            {name}
-                          </span>
-                          {name === "Notifications" && (
-                            <span className="w-3 h-3 p-3 inline-flex items-center justify-center bg-blue-900 text-blue-300 rounded-full relative z-20">
-                              <span className="absolute z-50">4</span>
-                              <span className="absolute z-40 w-3 h-3 p-3 rounded-full bg-blue-900 animate-ping"></span>
-                            </span>
-                          )}
-                        </Link>
-                      </li>
-                    ) : (
-                      grado === "9" &&
-                      name === "Editar Boleta" && (
-                        <li key={index + Date.now()}>
-                          <Link
-                            href={navigationItemsDashboard[1].path}
-                            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white 
-          transition-all duration-150 hover:bg-gray-100 overflow-hidden dark:hover:bg-gray-700 group relative"
-                          >
-                            {pathname === navigationItemsDashboard[1].path && (
-                              <span className="absolute bg-gradient-to-tr from-gray-700 to-gray-500 right-0 z-10 blur-lg w-full h-full"></span>
-                            )}
-
-                            {navigationItemsDashboard[1].Icon && (
-                              <BiEdit className="w-6 h-6 text-gray-500 transition duration-150 dark:text-gray-400 group-hover:text-white z-20" />
-                            )}
-
-                            <span className="flex-1 ms-3 whitespace-nowrap z-20">
-                              {navigationItemsDashboard[1].name}
-                            </span>
-                            {navigationItemsDashboard[1].name ===
-                              "Notifications" && (
-                              <span className="w-3 h-3 p-3 inline-flex items-center justify-center bg-blue-900 text-blue-300 rounded-full relative z-20">
-                                <span className="absolute z-50">4</span>
-                                <span className="absolute z-40 w-3 h-3 p-3 rounded-full bg-blue-900 animate-ping"></span>
-                              </span>
-                            )}
-                          </Link>
                         </li>
-                      )
-                    )
+                      );
+                    }
+
+                    return null;
+                  }
                 )}
               </ul>
             </div>

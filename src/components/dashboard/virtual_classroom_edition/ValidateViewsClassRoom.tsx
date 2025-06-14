@@ -13,11 +13,11 @@ const ValidateViewsClassRoom = () => {
     <div>
       {userAuth.user &&
         userAuth.user?.roles.find(
-          (val) => val === Rols.admin || val === Rols.profesor
+          (val) => val === Rols.profesor
         ) && <EdicionAulaVirtual />}
 
       {userAuth.user &&
-        userAuth.user?.roles.find((val) => val === Rols.student) && (
+        userAuth.user?.roles.find((val) => val === Rols.student || val === Rols.secretary || val === Rols.admin ) && (
           <DetallesAulaVirtual />
         )}
     </div>

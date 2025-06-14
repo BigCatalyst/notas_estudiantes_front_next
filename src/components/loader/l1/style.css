@@ -9,8 +9,8 @@
   perspective: 500px;
   transform: scale(1.7);
 }
-
-.shadow {
+/* 
+.shadow-rotate {
   position: absolute;
   width: 60px;
   height: 0px;
@@ -18,8 +18,9 @@
   top: 160px;
   transform: rotateX(80deg) rotateY(0deg) rotateZ(0deg);
   box-shadow: 0 0 60px 40px rgba(0, 0, 0, 0.3);
-  animation: shadow infinite 12s ease;
-}
+  animation: shadow-rotate infinite 12s ease;
+  
+} */
 
 .inner {
   z-index: 20;
@@ -30,7 +31,8 @@
   top: 0;
   transform-style: preserve-3d;
   transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg);
-  animation: rotate infinite 12s ease;
+  /* animation: shadow-rotate infinite 12s ease; */
+  
 }
 
 .screen {
@@ -436,8 +438,8 @@
     box-shadow: 0 -2px 0 #222;
   }
 }
-
-@keyframes shadow {
+/* 
+@keyframes shadow-rotate {
   0% {
     transform: rotateX(80deg) rotateY(0deg) rotateZ(0deg);
     box-shadow: 0 0 60px 40px rgba(0, 0, 0, 0.3);
@@ -466,4 +468,4 @@
   100% {
     box-shadow: 0 0 60px 40px rgba(0, 0, 0, 0.3);
   }
-}
+} */

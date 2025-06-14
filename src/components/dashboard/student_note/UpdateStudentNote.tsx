@@ -198,6 +198,49 @@ const UpdateStudentNote = () => {
         {/* Mensaje de error del servidor */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+        <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Estudiante
+            </label>
+            <div>{selecteStudent}</div>
+          </div>
+
+          {/* Subject */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Materia
+            </label>
+            <select
+              {...register("subject")}
+              onChange={(e) => {
+                const selectedSubjectId = e.target.value;
+
+                const selectedSubject = subjects.find(
+                  (subject) => subject.id == selectedSubjectId
+                );
+                if (selectedSubject) {
+                  setShowTcp2(selectedSubject.tcp2); // Mostrar tcp2 si hasTcp2 es true
+                }
+              }}
+              className={`mt-1 p-2 block w-full rounded-md ${
+                errors.subject ? "border-red-500" : "border-gray-300"
+              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
+            >
+              <option value="">Seleccione una Materia</option>
+              {subjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.name}
+                </option>
+              ))}
+            </select>
+            {errors.subject && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.subject.message}
+              </p>
+            )}
+          </div>
+
           {/* ASC */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -212,25 +255,6 @@ const UpdateStudentNote = () => {
             />
             {errors.asc && (
               <p className="text-red-500 text-sm mt-1">{errors.asc.message}</p>
-            )}
-          </div>
-
-          {/* Final Exam */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Examen Final
-            </label>
-            <input
-              type="number"
-              {...register("final_exam", { valueAsNumber: true })}
-              className={`mt-1 p-2 block w-full rounded-md ${
-                errors.final_exam ? "border-red-500" : "border-gray-300"
-              } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            />
-            {errors.final_exam && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.final_exam.message}
-              </p>
             )}
           </div>
 
@@ -272,44 +296,21 @@ const UpdateStudentNote = () => {
             </div>
           )}
 
+          {/* Final Exam */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Estudiante
+              Examen Final
             </label>
-            <div>{selecteStudent}</div>
-          </div>
-
-          {/* Subject */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Materia
-            </label>
-            <select
-              {...register("subject")}
-              onChange={(e) => {
-                const selectedSubjectId = e.target.value;
-
-                const selectedSubject = subjects.find(
-                  (subject) => subject.id == selectedSubjectId
-                );
-                if (selectedSubject) {
-                  setShowTcp2(selectedSubject.tcp2); // Mostrar tcp2 si hasTcp2 es true
-                }
-              }}
+            <input
+              type="number"
+              {...register("final_exam", { valueAsNumber: true })}
               className={`mt-1 p-2 block w-full rounded-md ${
-                errors.subject ? "border-red-500" : "border-gray-300"
+                errors.final_exam ? "border-red-500" : "border-gray-300"
               } shadow-sm focus:border-blue-500 focus:ring-blue-500`}
-            >
-              <option value="">Seleccione una Materia</option>
-              {subjects.map((subject) => (
-                <option key={subject.id} value={subject.id}>
-                  {subject.name}
-                </option>
-              ))}
-            </select>
-            {errors.subject && (
+            />
+            {errors.final_exam && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.subject.message}
+                {errors.final_exam.message}
               </p>
             )}
           </div>
