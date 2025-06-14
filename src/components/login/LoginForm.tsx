@@ -11,7 +11,7 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ApiService from "@/services/ApiService";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { loginSuccess, State } from "@/redux/features/authSlice";
 import { User } from "@/services/Types";
 
@@ -39,7 +39,15 @@ const LoginForm = () => {
   const [isLoading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userAuth: State = useSelector((state: any) => state.auth);
+  const searchParams = useSearchParams();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    const msg = searchParams.get("errorMessage");
+    if (msg) {
+      setErrorMessage(decodeURIComponent(msg));
+    }
+  }, [searchParams]);
   console.log(userAuth);
 
   useEffect(() => {
@@ -115,6 +123,12 @@ const LoginForm = () => {
               duration={10000}
               message="Usuario o contraseña incorrecto"
             />
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="animate-slide-down" key={Date.now()}>
+            <MensageError duration={10000} message={errorMessage} />
           </div>
         )}
 
