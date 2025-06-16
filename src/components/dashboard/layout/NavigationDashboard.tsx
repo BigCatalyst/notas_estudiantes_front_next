@@ -23,6 +23,7 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openMenuInit, setOpenMenuInit] = useState(0);
   const [openSubMenus, setOpenSubMenus] = useState<number[]>([]);
+  const [puedenEditarB, setPuedenEditarB] = useState(false);
 
   const [schoolYear, setSchoolYear] = useState<string | null>(null);
 
@@ -42,6 +43,12 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
         if (res) {
           const value = res[res.length - 1];
           setSchoolYear(value.name);
+        }
+        const resB = await ApiService.student_ballot_can_edit();
+        if (resB) {
+          console.log(resB);
+          setPuedenEditarB(resB.can_edit_bullet);
+          // console.log(`Puede editar la boleta ${resB.can_edit_bullet} !!!!!!!`);
         }
       } catch (error) {
         console.log(error);
@@ -305,15 +312,28 @@ const NavigationDashboard: FC<NavigationDashboardProps> = ({ children }) => {
                       userRoles.includes(rol)
                     );
 
-                    const isEditarBoleta = name === "Editar Boleta";
+                    const isEditarBoleta = name === "LLenado Boleta";
                     const canSeeEditarBoleta =
-                      userRoles.includes("estudiante") && grado === "9";
+                      userRoles.includes("estudiante") &&
+                      grado === "9" &&
+                      puedenEditarB;
+                    // console.log(`isEditarBoleta ${isEditarBoleta}`);
+                    // console.log(`canSeeEditarBoleta ${canSeeEditarBoleta}`);
+                    // console.log(
+                    //   `isEditarBoleta && !canSeeEditarBoleta ${
+                    //     isEditarBoleta && !canSeeEditarBoleta
+                    //   }`
+                    // );
+                    if (isEditarBoleta && !canSeeEditarBoleta) {
+                      return null;
+                    }
 
                     if (
                       (hasPermission && !isEditarBoleta) ||
                       (isEditarBoleta && canSeeEditarBoleta)
                     ) {
                       const isOpen = openSubMenus.includes(index);
+
                       return (
                         <li key={index}>
                           {children && children.length > 0 ? (

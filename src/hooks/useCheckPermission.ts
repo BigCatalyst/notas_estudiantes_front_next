@@ -26,6 +26,50 @@ export const useCheckPermission = () => {
       console.log(error);
     }
   };
+  const isGrade9 = async (userAuth: State): Promise<boolean> => {
+    try {
+      if (
+        userAuth.user &&
+        userAuth.user?.id &&
+        userAuth.user.roles.findIndex((rol) => rol === Rols.student) > -1
+      ) {
+        const res = await ApiService.students(
+          `user__username=${userAuth.user?.username}`
+        );
+
+        console.log(res);
+
+        if (res && res.results.length > 0) {
+          console.log("estudianteeeeeeeeeeeeeeeeeeeee");
+          const g = res.results[0].grade && Number(res.results[0].grade);
+          if (
+            res &&
+            g === 9 &&
+            userAuth.user.roles.findIndex((val) => val === Rols.student) > -1 &&
+            res.results[0].can_edit_bullet
+          ) {
+            return true;
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    return false;
+  };
+  const canEditBullet = async (): Promise<boolean> => {
+    try {
+      const resB = await ApiService.student_ballot_can_edit();
+      if (resB) {
+        console.log(resB);
+        return resB.can_edit_bullet;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return false;
+  };
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -85,9 +129,14 @@ export const useCheckPermission = () => {
             const userRoles = state.user?.roles || [];
             const requiredRoles = currentNavItem.rols || [];
 
-            const hasPermission = requiredRoles.some((role) =>
+            let hasPermission = requiredRoles.some((role) =>
               userRoles.includes(role)
             );
+
+            const isEditarBoleta = currentNavItem.name === "LLenado Boleta";
+            if (isEditarBoleta && hasPermission && (await isGrade9(state))) {
+              hasPermission = await canEditBullet();
+            }
 
             if (!hasPermission) {
               const errorMessage =
