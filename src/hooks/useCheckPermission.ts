@@ -1,4 +1,8 @@
-import { navigationItemsDashboard, NavItem } from "@/data/NavigationItems";
+import {
+  navigationItemsDashboard,
+  NavItem,
+  Rols,
+} from "@/data/NavigationItems";
 import { State } from "@/redux/features/authSlice";
 import { logout } from "@/redux/features/authSlice";
 import ApiService from "@/services/ApiService";
@@ -57,9 +61,13 @@ export const useCheckPermission = () => {
               }
 
               if (item.children) {
+                const lastRoles: Rols[] = item.rols ?? [];
                 const childMatch = findNavItemByPath(item.children, path);
                 if (childMatch) {
-                  matches.push(childMatch);
+                  matches.push({
+                    ...childMatch,
+                    rols: lastRoles,
+                  });
                 }
               }
             }
